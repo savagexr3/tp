@@ -22,15 +22,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Team Lead
 * Responsibilities: Responsible for overall project coordination
 
-### Jane Doe
+### Xuan Rong
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/savagexr3.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/savagexr3)] [[portfolio](team/savagexr3.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Code Quality
+* Responsibilities: Looks after code quality, ensures adherence to coding standards, etc.
 
 ### Zhe Ming
 
