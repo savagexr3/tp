@@ -359,13 +359,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+4. Should automatically save all changes to the local data file after each successful command.
+5. Should not crash when the user enters invalid input, and should display clear error messages instead. 
+6. Should store all data locally in a human-editable text file.
+7. Should not require an internet connection or any remote server to function. 
+8. Should be packaged into a single JAR file and should not require installation. 
+9. Should remain responsive (within 1 second) for common commands such as add, edit, delete, and find under typical usage. 
+10. Should follow object-oriented design principles to ensure maintainability and extensibility. 
+11. Should work properly on screen resolutions of 1920×1080 and above without layout issues.
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Contact**: A stored entry representing a person, consisting of fields such as name, phone, email, address/context, and tags.
+* **Command**: A single-line instruction typed into the command box that triggers an action (e.g., add, edit, find).
+* **Tag**: A short label used to categorise contacts (e.g., recruiter, careerfair2026, fintech). 
+* **Context (Meeting context)**: The user-entered text describing where/how the contact was met (e.g., “NUS Career Fair 2026”).
+* **Duplicate contact**: Two contacts considered the same entry based on the app’s duplicate rule (define your chosen rule here, e.g., same name + phone).
 
 --------------------------------------------------------------------------------------------------------------------
 
