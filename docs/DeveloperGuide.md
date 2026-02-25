@@ -415,7 +415,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ---
 
-### **Use case: Search for a contact**
+### **Use Case 4: Search for a contact**
 **Preconditions**:The application is running.
 
 **Guarantees**:
