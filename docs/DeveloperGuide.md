@@ -302,28 +302,55 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Add a new contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to add a new contact by using the valid command format
+2.  CLinkedin validates the provided contact details
+3.  CLinkedin adds the new contact to the bottom of the list
+4.  CLinkedin displays a success message with the newly added contact's details
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. The user provided an invalid command format.
 
-  Use case ends.
+    * 2a1. CLinkedin shows an error message that the command format provided is invalid.
 
-* 3a. The given index is invalid.
+      Use case resumes at step 1.
 
-    * 3a1. AddressBook shows an error message.
+* 2b. The user provided a duplicate phone number that already exist in list.
 
-      Use case resumes at step 2.
+    * 2b1. CLinkedin shows an error message that the phone number already exists in list.
+
+      Use case resumes at step 1.
+
+**Use case: Delete a contact**
+
+**MSS**
+
+1.  User requests to delete a contact by entering the delete command along with the contact's index in list.
+2.  CLinkedin validates that the provided index is valid.
+3.  CLinkedin deletes the contact at the provided index in the list.
+4.  CLinkedin displays a success message that the contact has been deleted.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The user provided an index that does not exist in list.
+
+    * 2a1. CLinkedin shows an error message that the index is not in the list.
+
+      Use case resumes at step 1.
+
+* 2b. The user provided a non-integer index.
+
+    * 2b1. CLinkedin shows an error message that the command format provided is invalid.
+
+      Use case resumes at step 1.
 
 *{More to be added}*
 
