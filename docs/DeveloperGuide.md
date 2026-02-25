@@ -246,8 +246,8 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+    * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
@@ -334,28 +334,39 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `CLinkedin` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: List all contacts**
+---
+### **Use Case 1: List all contacts**
+**Preconditions:** The application is running.
 
-**MSS**
+**Guarantees**:
+* The current list of contacts is displayed.
+* The contact list remains unchanged.
+#### **MSS**
 
-1.  User opens CLinkedin program
-2.  User requests to list persons
-3.  AddressBook shows a list of persons
-
-**Use case: Add a new contact**
-
-**MSS**
-
-1.  User requests to add a new contact by using the valid command format
-2.  CLinkedin validates the provided contact details
-3.  CLinkedin adds the new contact to the bottom of the list
-4.  CLinkedin displays a success message with the newly added contact's details
+1.  User opens CLinkedin program.
+2.  User requests to list all contacts.
+3.  CLinkedin displays the list of contacts.
 
     Use case ends.
 
-**Extensions**
+---
+### **Use Case 2: Add a new contact**
+**Preconditions:** The application is running.
+
+**Guarantees**:
+* If successful, the new contact is stored in the contact list.
+* If unsuccessful, the contact list remains unchanged.
+#### **MSS**
+
+1.  User requests to add a new contact by using the valid command format.
+2.  CLinkedin validates the provided contact details.
+3.  CLinkedin adds the new contact to the bottom of the list.
+4.  CLinkedin displays a success message with the newly added contact's details.
+    Use case resumes at step 1.
+
+#### **Extensions**
 
 * 2a. The user provided an invalid command format.
 
@@ -369,9 +380,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 1.
 
-**Use case: Delete a contact**
+---
 
-**MSS**
+### **Use Case 3: Delete a contact**
+**Preconditions:**
+* The application is running.
+* The contact list is not empty.
+
+**Guarantees**:
+* If successful, the specified contact is permanently removed from the contact list.
+* If unsuccessful, the contact list remains unchanged.
+#### **MSS**
 
 1.  User requests to delete a contact by entering the delete command along with the contact's index in list.
 2.  CLinkedin validates that the provided index is valid.
@@ -380,44 +399,47 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Extensions**
+#### **Extensions**
 
-* 2a. The user provided an index that does not exist in list.
+* 1a. The user provided an index that does not exist in list.
 
-    * 2a1. CLinkedin shows an error message that the index is not in the list.
-
-      Use case resumes at step 1.
-
-* 2b. The user provided a non-integer index.
-
-    * 2b1. CLinkedin shows an error message that the command format provided is invalid.
+    * 1a1. CLinkedin shows an error message that the index is not in the list.
 
       Use case resumes at step 1.
 
-**Use case: Search for a contact**
+* 1b. The user provided an invalid integer index.
 
-**MSS**
+    * 1b1. CLinkedin shows an error message that the command format provided is invalid.
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to see a specific person in the list
-4.  AddressBook shows the specific person
+      Use case resumes at step 1.
 
-    Use case ends.
+---
 
-**Extensions**
+### **Use Case 4: Search for a contact**
+**Preconditions**:The application is running.
+
+**Guarantees**:
+* The displayed list reflects contacts matching the search keyword.
+* The stored contact list remains unchanged.
+#### **MSS**
+
+1. User requests to search for a specific person in the list by providing a name keyword.
+2. CLinkedin filters and displays contacts whose names match the keyword.
+
+   Use case ends.
+
+#### **Extensions**
+* 1a. No contacts match the given keyword.
+    * 1a1. CLinkedin displays an empty list.
+
+  Use case ends.
 
 * 2a. The list is empty.
 
   Use case ends.
 
-* 3a. The given name does not exist
+---
 
-    * 3a1. AddressBook shows nothing.
-
-      Use case ends.
-
-*{More to be added}*
 
 ### Non-Functional Requirements
 
@@ -425,12 +447,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4. Should automatically save all changes to the local data file after each successful command.
-5. Should not crash when the user enters invalid input, and should display clear error messages instead. 
+5. Should not crash when the user enters invalid input, and should display clear error messages instead.
 6. Should store all data locally in a human-editable text file.
-7. Should not require an internet connection or any remote server to function. 
-8. Should be packaged into a single JAR file and should not require installation. 
-9. Should remain responsive (within 1 second) for common commands such as add, edit, delete, and find under typical usage. 
-10. Should follow object-oriented design principles to ensure maintainability and extensibility. 
+7. Should not require an internet connection or any remote server to function.
+8. Should be packaged into a single JAR file and should not require installation.
+9. Should remain responsive (within 1 second) for common commands such as add, edit, delete, and find under typical usage.
+10. Should follow object-oriented design principles to ensure maintainability and extensibility.
 11. Should work properly on screen resolutions of 1920×1080 and above without layout issues.
 
 ### Glossary
@@ -439,7 +461,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Contact**: A stored entry representing a person, consisting of fields such as name, phone, email, address/context, and tags.
 * **Command**: A single-line instruction typed into the command box that triggers an action (e.g., add, edit, find).
-* **Tag**: A short label used to categorise contacts (e.g., recruiter, careerfair2026, fintech). 
+* **Tag**: A short label used to categorise contacts (e.g., recruiter, careerfair2026, fintech).
 * **Context (Meeting context)**: The user-entered text describing where/how the contact was met (e.g., “NUS Career Fair 2026”).
 * **Duplicate contact**: Two contacts considered the same entry based on the app’s duplicate rule (define your chosen rule here, e.g., same name + phone).
 
@@ -460,15 +482,15 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
@@ -477,16 +499,16 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a person while all persons are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+    1. Test case: `delete 1`<br>
+       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `delete 0`<br>
+       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
 
@@ -494,6 +516,6 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
