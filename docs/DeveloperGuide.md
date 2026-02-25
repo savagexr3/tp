@@ -336,6 +336,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
+**Use case: List all contacts**
+
+**MSS**
+
+1.  User opens CLinkedin program
+2.  User requests to list persons
+3.  AddressBook shows a list of persons
+
 **Use case: Add a new contact**
 
 **MSS**
@@ -385,6 +393,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2b1. CLinkedin shows an error message that the command format provided is invalid.
 
       Use case resumes at step 1.
+
+**Use case: Search for a contact**
+
+**MSS**
+
+1.  User requests to list persons
+2.  AddressBook shows a list of persons
+3.  User requests to see a specific person in the list
+4.  AddressBook shows the specific person
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given name does not exist
+
+    * 3a1. AddressBook shows nothing.
+
+      Use case ends.
 
 *{More to be added}*
 
