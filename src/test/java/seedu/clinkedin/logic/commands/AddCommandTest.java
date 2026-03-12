@@ -23,6 +23,7 @@ import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ReadOnlyAddressBook;
 import seedu.clinkedin.model.ReadOnlyUserPrefs;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -139,6 +140,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean hasPhoneNumber(Phone phone) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void deletePerson(Person target) {
             throw new AssertionError("This method should not be called.");
         }
@@ -187,6 +193,12 @@ public class AddCommandTest {
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return personsAdded.stream().anyMatch(person::isSamePerson);
+        }
+
+        @Override
+        public boolean hasPhoneNumber(Phone phone) {
+            requireNonNull(phone);
+            return personsAdded.stream().anyMatch(person -> person.getPhone().equals(phone));
         }
 
         @Override
