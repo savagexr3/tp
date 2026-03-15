@@ -55,16 +55,13 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_noValidTags() {
+    public void execute_tagsDoNoExistPerson_throwsCommandException() {
         Person invalidTagsPerson = new PersonBuilder().withTags("Ferrari", "Mercedes").build();
         AddCommand addCommand = new AddCommand(invalidTagsPerson);
         ModelStubWithPersonInvalidTags modelStub = new ModelStubWithPersonInvalidTags(invalidTagsPerson);
+        String errorMessage = AddCommand.MESSAGE_TAGS_DO_NOT_EXIST + invalidTagsPerson.getTags();
 
-        assertThrows(
-                CommandException.class,
-                AddCommand.MESSAGE_TAGS_DO_NOT_EXIST + invalidTagsPerson.getTags(),
-                () -> addCommand.execute(modelStub)
-        );
+        assertThrows(CommandException.class, errorMessage, () -> addCommand.execute(modelStub));
     }
 
     @Test
