@@ -214,8 +214,8 @@ public class AddCommandTest {
      * A model stub that contains a person with tags that do not exist
      */
     private class ModelStubWithPersonFriendsTag extends ModelStub {
-        private final Person person;
         final ArrayList<Person> personsAdded = new ArrayList<>();
+        private final Person person;
 
         ModelStubWithPersonFriendsTag(Person person) {
             requireNonNull(person);
