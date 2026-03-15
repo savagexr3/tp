@@ -62,11 +62,11 @@ public class AddCommand extends Command {
 
         // Checks if tag exist
         ArrayList<Tag> nonExistentTags = new ArrayList<>();
-        toAdd.getTags().stream().forEach(x -> {
-            if (!model.hasTag(x)) {
-                nonExistentTags.add(x);
+        for (Tag tag : toAdd.getTags()) {
+            if (!model.hasTag(tag)) {
+                nonExistentTags.add(tag);
             }
-        });
+        }
         if (!nonExistentTags.isEmpty()) {
             throw new CommandException(MESSAGE_TAGS_DO_NOT_EXIST + nonExistentTags.toString());
         }
