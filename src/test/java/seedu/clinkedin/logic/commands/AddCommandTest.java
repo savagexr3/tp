@@ -55,6 +55,19 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_noValidTags() {
+        Person invalidTagsPerson = new PersonBuilder().withTags("Ferrari", "Mercedes").build();
+        AddCommand addCommand = new AddCommand(invalidTagsPerson);
+        ModelStubWithPersonInvalidTags modelStub = new ModelStubWithPersonInvalidTags(invalidTagsPerson);
+
+        assertThrows(
+                CommandException.class,
+                AddCommand.MESSAGE_TAGS_DO_NOT_EXIST + invalidTagsPerson.getTags(),
+                () -> addCommand.execute(modelStub)
+        );
+    }
+
+    @Test
     public void equals() {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();
@@ -185,6 +198,30 @@ public class AddCommandTest {
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return this.person.isSamePerson(person);
+        }
+    }
+
+    /**
+     * A model stub that contains a person with tags that do not exist
+     */
+    private class ModelStubWithPersonInvalidTags extends ModelStub {
+        private final Person person;
+
+        ModelStubWithPersonInvalidTags(Person person) {
+            requireNonNull(person);
+            this.person = person;
+        }
+
+        @Override
+        public boolean hasPerson(Person person) {
+            requireNonNull(person);
+            return false;
+        }
+
+        @Override
+        public boolean hasTag(Tag tag) {
+            requireNonNull(tag);
+            return false;
         }
     }
 
