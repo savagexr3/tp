@@ -7,11 +7,14 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+
 import seedu.clinkedin.commons.util.ToStringBuilder;
 import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.tag.Tag;
 
 /**
  * Adds a person to the address book.
@@ -37,6 +40,7 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_TAGS_DO_NOT_EXIST = "These tags do not exist, please create them!: ";
 
     private final Person toAdd;
 
@@ -54,6 +58,17 @@ public class AddCommand extends Command {
 
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        // Checks if tag exist
+        ArrayList<Tag> nonExistentTags = new ArrayList<>();
+        for (Tag tag : toAdd.getTags()) {
+            if (!model.hasTag(tag)) {
+                nonExistentTags.add(tag);
+            }
+        }
+        if (!nonExistentTags.isEmpty()) {
+            throw new CommandException(MESSAGE_TAGS_DO_NOT_EXIST + nonExistentTags.toString());
         }
 
         model.addPerson(toAdd);
