@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.clinkedin.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.COMPANY_DESC_AMY;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
-import static seedu.clinkedin.logic.commands.CommandTestUtil.COMPANY_DESC_AMY;
 import static seedu.clinkedin.testutil.Assert.assertThrows;
 import static seedu.clinkedin.testutil.TypicalPersons.AMY;
 

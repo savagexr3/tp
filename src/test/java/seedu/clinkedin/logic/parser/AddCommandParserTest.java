@@ -166,12 +166,12 @@ public class AddCommandParserTest {
 
         // missing name prefix
         assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + COMPANY_DESC_BOB + ADDRESS_DESC_BOB+ ADDRESS_DESC_BOB,
+                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB+ ADDRESS_DESC_BOB,
                 expectedMessage + "NAME.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing phone prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB
-                        + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
+                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
                 expectedMessage + "PHONE.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing email prefix
