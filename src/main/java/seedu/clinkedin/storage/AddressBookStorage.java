@@ -5,10 +5,11 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.clinkedin.commons.exceptions.DataLoadingException;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.ReadOnlyAddressBook;
 
 /**
- * Represents a storage for {@link seedu.clinkedin.model.AddressBook}.
+ * Represents a storage for {@link CLinkedin}.
  */
 public interface AddressBookStorage {
 

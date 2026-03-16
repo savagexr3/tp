@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.clinkedin.commons.core.GuiSettings;
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.ReadOnlyAddressBook;
 import seedu.clinkedin.model.UserPrefs;
 
@@ -54,10 +54,10 @@ public class StorageManagerTest {
          * {@link JsonAddressBookStorage} class.
          * More extensive testing of UserPref saving/reading is done in {@link JsonAddressBookStorageTest} class.
          */
-        AddressBook original = getTypicalAddressBook();
+        CLinkedin original = getTypicalAddressBook();
         storageManager.saveAddressBook(original);
         ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
-        assertEquals(original, new AddressBook(retrieved));
+        assertEquals(original, new CLinkedin(retrieved));
     }
 
     @Test

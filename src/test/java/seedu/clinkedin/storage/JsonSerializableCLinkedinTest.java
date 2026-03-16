@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.commons.util.JsonUtil;
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.testutil.TypicalPersons;
 
-public class JsonSerializableAddressBookTest {
+public class JsonSerializableCLinkedinTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonSerializableAddressBookTest");
     private static final Path TYPICAL_PERSONS_FILE = TEST_DATA_FOLDER.resolve("typicalPersonsAddressBook.json");
@@ -24,9 +24,9 @@ public class JsonSerializableAddressBookTest {
     public void toModelType_typicalPersonsFile_success() throws Exception {
         JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(TYPICAL_PERSONS_FILE,
                 JsonSerializableAddressBook.class).get();
-        AddressBook addressBookFromFile = dataFromFile.toModelType();
-        AddressBook typicalPersonsAddressBook = TypicalPersons.getTypicalAddressBook();
-        assertEquals(addressBookFromFile, typicalPersonsAddressBook);
+        CLinkedin cLinkedinFromFile = dataFromFile.toModelType();
+        CLinkedin typicalPersonsCLinkedin = TypicalPersons.getTypicalAddressBook();
+        assertEquals(cLinkedinFromFile, typicalPersonsCLinkedin);
     }
 
     @Test

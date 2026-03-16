@@ -18,7 +18,7 @@ import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.core.GuiSettings;
 import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ReadOnlyAddressBook;
 import seedu.clinkedin.model.ReadOnlyUserPrefs;
@@ -225,7 +225,7 @@ public class AddCommandTest {
 
         @Override
         public ReadOnlyAddressBook getAddressBook() {
-            return new AddressBook();
+            return new CLinkedin();
         }
     }
 

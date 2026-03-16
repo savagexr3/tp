@@ -15,7 +15,7 @@ import seedu.clinkedin.commons.util.ConfigUtil;
 import seedu.clinkedin.commons.util.StringUtil;
 import seedu.clinkedin.logic.Logic;
 import seedu.clinkedin.logic.LogicManager;
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.ReadOnlyAddressBook;
@@ -87,7 +87,7 @@ public class MainApp extends Application {
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            initialData = new CLinkedin();
         }
 
         return new ModelManager(initialData, userPrefs);

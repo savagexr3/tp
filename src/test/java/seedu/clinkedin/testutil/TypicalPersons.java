@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.person.Person;
 
 /**
@@ -62,8 +62,8 @@ public class TypicalPersons {
     /**
      * Returns an {@code AddressBook} with all the typical persons.
      */
-    public static AddressBook getTypicalAddressBook() {
-        AddressBook ab = new AddressBook();
+    public static CLinkedin getTypicalAddressBook() {
+        CLinkedin ab = new CLinkedin();
         for (Person person : getTypicalPersons()) {
             ab.addPerson(person);
         }
