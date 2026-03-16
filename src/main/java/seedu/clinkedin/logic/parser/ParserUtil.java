@@ -13,6 +13,7 @@ import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Phone;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
@@ -23,8 +24,8 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
@@ -113,6 +114,22 @@ public class ParserUtil {
             throw new ParseException(tagNameError);
         }
         return new Tag(trimmedTag);
+    }
+
+    /**
+     * Parses a {@code String link} into a {@code Link}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code link} is invalid.
+     */
+    public static Link parseLink(String link) throws ParseException {
+        requireNonNull(link);
+        String trimmedLink = link.trim();
+        String linkError = Link.getLinkValidationError(trimmedLink);
+        if (linkError != null) {
+            throw new ParseException(linkError);
+        }
+        return new Link(trimmedLink);
     }
 
     /**
