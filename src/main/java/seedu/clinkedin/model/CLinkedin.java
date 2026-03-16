@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.util.ToStringBuilder;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.person.UniquePersonList;
 import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.model.tag.UniqueTagList;
@@ -15,7 +16,7 @@ import seedu.clinkedin.model.tag.UniqueTagList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class CLinkedin implements ReadOnlyCLinkedin {
 
     private final UniquePersonList persons;
     private final UniqueTagList tags;
@@ -32,13 +33,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags = new UniqueTagList();
     }
 
-    public AddressBook() {
-    }
+    public CLinkedin() {}
 
     /**
      * Creates an AddressBook using the Persons in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public CLinkedin(ReadOnlyCLinkedin toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -56,11 +56,10 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyCLinkedin newData) {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
-        setTags(newData.getTagList());
     }
 
     //// person-level operations
@@ -71,6 +70,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     public boolean hasPerson(Person person) {
         requireNonNull(person);
         return persons.contains(person);
+    }
+
+    /**
+     * Returns true if a person with the same phone number exists in the address book.
+     */
+    public boolean hasPhoneNumber(Phone phone) {
+        requireNonNull(phone);
+        return persons.containsPhoneNumber(phone);
     }
 
     /**
@@ -149,16 +156,16 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddressBook)) {
+        if (!(other instanceof CLinkedin)) {
             return false;
         }
 
-        AddressBook otherAddressBook = (AddressBook) other;
-        return persons.equals(otherAddressBook.persons) && tags.equals(otherAddressBook.tags);
+        CLinkedin otherCLinkedin = (CLinkedin) other;
+        return persons.equals(otherCLinkedin.persons) && tags.equals(otherCLinkedin.tags);
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode() + tags.hashCode();
+        return persons.hashCode();
     }
 }

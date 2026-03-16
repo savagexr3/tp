@@ -25,10 +25,10 @@ import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
-import seedu.clinkedin.model.ReadOnlyAddressBook;
+import seedu.clinkedin.model.ReadOnlyCLinkedin;
 import seedu.clinkedin.model.UserPrefs;
 import seedu.clinkedin.model.person.Person;
-import seedu.clinkedin.storage.JsonAddressBookStorage;
+import seedu.clinkedin.storage.JsonCLinkedinStorage;
 import seedu.clinkedin.storage.JsonUserPrefsStorage;
 import seedu.clinkedin.storage.StorageManager;
 import seedu.clinkedin.testutil.PersonBuilder;
@@ -45,8 +45,8 @@ public class LogicManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonAddressBookStorage addressBookStorage =
-                new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonCLinkedinStorage addressBookStorage =
+                new JsonCLinkedinStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
@@ -123,7 +123,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
             String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getCLinkedin(), new UserPrefs());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -150,9 +150,9 @@ public class LogicManagerTest {
         Path prefPath = temporaryFolder.resolve("ExceptionUserPrefs.json");
 
         // Inject LogicManager with an AddressBookStorage that throws the IOException e when saving
-        JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(prefPath) {
+        JsonCLinkedinStorage addressBookStorage = new JsonCLinkedinStorage(prefPath) {
             @Override
-            public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath)
+            public void saveCLinkedin(ReadOnlyCLinkedin addressBook, Path filePath)
                     throws IOException {
                 throw e;
             }

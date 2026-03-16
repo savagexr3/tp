@@ -7,7 +7,7 @@ import seedu.clinkedin.model.tag.Tag;
 /**
  * Unmodifiable view of an address book
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyCLinkedin {
 
     /**
      * Returns an unmodifiable view of the persons list.

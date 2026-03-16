@@ -1,6 +1,6 @@
 package seedu.clinkedin.testutil;
 
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.person.Person;
 
 /**
@@ -10,25 +10,25 @@ import seedu.clinkedin.model.person.Person;
  */
 public class AddressBookBuilder {
 
-    private AddressBook addressBook;
+    private CLinkedin cLinkedin;
 
     public AddressBookBuilder() {
-        addressBook = new AddressBook();
+        cLinkedin = new CLinkedin();
     }
 
-    public AddressBookBuilder(AddressBook addressBook) {
-        this.addressBook = addressBook;
+    public AddressBookBuilder(CLinkedin cLinkedin) {
+        this.cLinkedin = cLinkedin;
     }
 
     /**
      * Adds a new {@code Person} to the {@code AddressBook} that we are building.
      */
     public AddressBookBuilder withPerson(Person person) {
-        addressBook.addPerson(person);
+        cLinkedin.addPerson(person);
         return this;
     }
 
-    public AddressBook build() {
-        return addressBook;
+    public CLinkedin build() {
+        return cLinkedin;
     }
 }
