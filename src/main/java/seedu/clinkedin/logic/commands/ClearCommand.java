@@ -2,7 +2,7 @@ package seedu.clinkedin.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 
 /**
@@ -17,7 +17,7 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.setAddressBook(new AddressBook());
+        model.setAddressBook(new CLinkedin());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

@@ -44,8 +44,9 @@ public class ParserUtil {
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+        String nameError = Name.getNameValidationError(trimmedName);
+        if (nameError != null) {
+            throw new ParseException(nameError);
         }
         return new Name(trimmedName);
     }
@@ -59,8 +60,9 @@ public class ParserUtil {
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
         String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+        String phoneError = Phone.getPhoneValidationError(trimmedPhone);
+        if (phoneError != null) {
+            throw new ParseException(phoneError);
         }
         return new Phone(trimmedPhone);
     }
@@ -74,8 +76,9 @@ public class ParserUtil {
     public static Address parseAddress(String address) throws ParseException {
         requireNonNull(address);
         String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
+        String addressError = Address.getAddressValidationError(trimmedAddress);
+        if (addressError != null) {
+            throw new ParseException(addressError);
         }
         return new Address(trimmedAddress);
     }
@@ -89,8 +92,9 @@ public class ParserUtil {
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
+        String emailError = Email.getEmailValidationError(trimmedEmail);
+        if (emailError != null) {
+            throw new ParseException(emailError);
         }
         return new Email(trimmedEmail);
     }
@@ -104,8 +108,9 @@ public class ParserUtil {
     public static Tag parseTag(String tag) throws ParseException {
         requireNonNull(tag);
         String trimmedTag = tag.trim();
-        if (!Tag.isValidTagName(trimmedTag)) {
-            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+        String tagNameError = Tag.getTagNameValidationError(trimmedTag);
+        if (tagNameError != null) {
+            throw new ParseException(tagNameError);
         }
         return new Tag(trimmedTag);
     }

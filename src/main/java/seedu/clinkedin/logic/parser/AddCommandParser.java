@@ -7,8 +7,9 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
@@ -33,8 +34,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
-                || !argMultimap.getPreamble().isEmpty()) {
+        checkFields(argMultimap);
+
+        if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
@@ -51,11 +53,29 @@ public class AddCommandParser implements Parser<AddCommand> {
     }
 
     /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
+     * Checks if any required prefixes are missing and throws a ParseException with a detailed error message if so.
      */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
+    private void checkFields(ArgumentMultimap argumentMultimap) throws ParseException {
+        List<String> fields = new ArrayList<>();
 
+        if (argumentMultimap.getValue(PREFIX_NAME).isEmpty()) {
+            fields.add("NAME");
+        }
+        if (argumentMultimap.getValue(PREFIX_PHONE).isEmpty()) {
+            fields.add("PHONE");
+        }
+        if (argumentMultimap.getValue(PREFIX_EMAIL).isEmpty()) {
+            fields.add("EMAIL");
+        }
+        if (argumentMultimap.getValue(PREFIX_ADDRESS).isEmpty()) {
+            fields.add("ADDRESS");
+        }
+
+        if (!fields.isEmpty()) {
+            String errorMessage = "Invalid command format! Missing required fields: "
+                    + String.join(", ", fields) + ".\n"
+                    + AddCommand.MESSAGE_USAGE;
+            throw new ParseException(errorMessage);
+        }
+    }
 }

@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.core.GuiSettings;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
@@ -48,10 +49,15 @@ public interface Model {
     /**
      * Replaces address book data with the data in {@code addressBook}.
      */
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setAddressBook(ReadOnlyCLinkedin addressBook);
 
     /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyCLinkedin getCLinkedin();
+
+    /**
+     * Returns true if a person with the same phone number exists in the address book.
+     */
+    boolean hasPhoneNumber(Phone phone);
 
     /**
      * Returns true if a person with the same identity as {@code person} exists in the address book.

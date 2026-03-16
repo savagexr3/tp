@@ -1,5 +1,6 @@
 package seedu.clinkedin.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.testutil.Assert.assertThrows;
@@ -17,6 +18,35 @@ public class AddressTest {
     public void constructor_invalidAddress_throwsIllegalArgumentException() {
         String invalidAddress = "";
         assertThrows(IllegalArgumentException.class, () -> new Address(invalidAddress));
+    }
+    @Test
+    public void getAddressValidationError() {
+
+        // empty
+        assertEquals(Address.MESSAGE_EMPTY,
+                Address.getAddressValidationError(""));
+
+        // spaces only
+        assertEquals(Address.MESSAGE_EMPTY,
+                Address.getAddressValidationError("   "));
+
+        // too long
+        assertEquals(Address.MESSAGE_TOO_LONG,
+                Address.getAddressValidationError("a".repeat(101)));
+
+        // multiple spaces
+        assertEquals(Address.MESSAGE_MULTIPLE_SPACES,
+                Address.getAddressValidationError("123  Main Street"));
+
+        // valid addresses
+        assertEquals(null,
+                Address.getAddressValidationError("123 Main Street"));
+
+        assertEquals(null,
+                Address.getAddressValidationError("NUS Computing 13 Computing Drive"));
+
+        assertEquals(null,
+                Address.getAddressValidationError("Blk 30 Geylang Street 29 #06-40"));
     }
 
     @Test

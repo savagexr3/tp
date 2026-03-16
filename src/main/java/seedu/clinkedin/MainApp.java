@@ -15,15 +15,15 @@ import seedu.clinkedin.commons.util.ConfigUtil;
 import seedu.clinkedin.commons.util.StringUtil;
 import seedu.clinkedin.logic.Logic;
 import seedu.clinkedin.logic.LogicManager;
-import seedu.clinkedin.model.AddressBook;
+import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
-import seedu.clinkedin.model.ReadOnlyAddressBook;
+import seedu.clinkedin.model.ReadOnlyCLinkedin;
 import seedu.clinkedin.model.ReadOnlyUserPrefs;
 import seedu.clinkedin.model.UserPrefs;
 import seedu.clinkedin.model.util.SampleDataUtil;
-import seedu.clinkedin.storage.AddressBookStorage;
-import seedu.clinkedin.storage.JsonAddressBookStorage;
+import seedu.clinkedin.storage.CLinkedinStorage;
+import seedu.clinkedin.storage.JsonCLinkedinStorage;
 import seedu.clinkedin.storage.JsonUserPrefsStorage;
 import seedu.clinkedin.storage.Storage;
 import seedu.clinkedin.storage.StorageManager;
@@ -57,8 +57,8 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        CLinkedinStorage cLinkedinStorage = new JsonCLinkedinStorage(userPrefs.getAddressBookFilePath());
+        storage = new StorageManager(cLinkedinStorage, userPrefsStorage);
 
         model = initModelManager(storage, userPrefs);
 
@@ -73,21 +73,21 @@ public class MainApp extends Application {
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
-        logger.info("Using data file : " + storage.getAddressBookFilePath());
+        logger.info("Using data file : " + storage.getCLinkedinFilePath());
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+        Optional<ReadOnlyCLinkedin> addressBookOptional;
+        ReadOnlyCLinkedin initialData;
         try {
-            addressBookOptional = storage.readAddressBook();
+            addressBookOptional = storage.readCLinkedin();
             if (!addressBookOptional.isPresent()) {
-                logger.info("Creating a new data file " + storage.getAddressBookFilePath()
+                logger.info("Creating a new data file " + storage.getCLinkedinFilePath()
                         + " populated with a sample AddressBook.");
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
+            logger.warning("Data file at " + storage.getCLinkedinFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            initialData = new CLinkedin();
         }
 
         return new ModelManager(initialData, userPrefs);
