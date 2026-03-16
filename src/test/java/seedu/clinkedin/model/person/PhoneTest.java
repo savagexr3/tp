@@ -1,5 +1,6 @@
 package seedu.clinkedin.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.testutil.Assert.assertThrows;
@@ -20,6 +21,33 @@ public class PhoneTest {
     }
 
     @Test
+    public void getPhoneValidationError() {
+
+        // null
+        assertEquals(Phone.MESSAGE_NULL, Phone.getPhoneValidationError(null));
+
+        // empty
+        assertEquals(Phone.MESSAGE_EMPTY, Phone.getPhoneValidationError(""));
+
+        // non digit
+        assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("phone"));
+        assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("9011p041"));
+        assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("9312 1534"));
+
+        // too short
+        assertEquals(Phone.MESSAGE_TOO_SHORT, Phone.getPhoneValidationError("1234567"));
+
+        // too long
+        assertEquals(Phone.MESSAGE_TOO_LONG,
+                Phone.getPhoneValidationError("1234567890123456"));
+
+        // valid numbers
+        assertEquals(null, Phone.getPhoneValidationError("12345678"));
+        assertEquals(null, Phone.getPhoneValidationError("93121534"));
+        assertEquals(null, Phone.getPhoneValidationError("123456789012345"));
+    }
+
+    @Test
     public void isValidPhone() {
         // null phone number
         assertThrows(NullPointerException.class, () -> Phone.isValidPhone(null));
@@ -33,17 +61,17 @@ public class PhoneTest {
         assertFalse(Phone.isValidPhone("9312 1534")); // spaces within digits
 
         // valid phone numbers
-        assertTrue(Phone.isValidPhone("911")); // exactly 3 numbers
+        assertTrue(Phone.isValidPhone("91112356")); // exactly 9 numbers
         assertTrue(Phone.isValidPhone("93121534"));
         assertTrue(Phone.isValidPhone("124293842033123")); // long phone numbers
     }
 
     @Test
     public void equals() {
-        Phone phone = new Phone("999");
+        Phone phone = new Phone("91829354");
 
         // same values -> returns true
-        assertTrue(phone.equals(new Phone("999")));
+        assertTrue(phone.equals(new Phone("91829354")));
 
         // same object -> returns true
         assertTrue(phone.equals(phone));
@@ -55,6 +83,6 @@ public class PhoneTest {
         assertFalse(phone.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(phone.equals(new Phone("995")));
+        assertFalse(phone.equals(new Phone("99574534")));
     }
 }

@@ -1,5 +1,6 @@
 package seedu.clinkedin.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.testutil.Assert.assertThrows;
@@ -17,6 +18,57 @@ public class EmailTest {
     public void constructor_invalidEmail_throwsIllegalArgumentException() {
         String invalidEmail = "";
         assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail));
+    }
+
+    @Test
+    public void getEmailValidationError() {
+        // null
+        assertEquals(Email.MESSAGE_NULL, Email.getEmailValidationError(null));
+
+        // empty
+        assertEquals(Email.MESSAGE_EMPTY, Email.getEmailValidationError(""));
+
+        // spaces not allowed
+        assertEquals(Email.MESSAGE_SPACE_NOT_ALLOWED,
+                Email.getEmailValidationError("john doe@gmail.com"));
+
+        // invalid @ count
+        assertEquals(Email.MESSAGE_INVALID_AT,
+                Email.getEmailValidationError("johndoegmail.com"));
+        assertEquals(Email.MESSAGE_INVALID_AT,
+                Email.getEmailValidationError("john@@gmail.com"));
+
+        // invalid local part
+        assertEquals(Email.MESSAGE_INVALID_LOCAL_PART,
+                Email.getEmailValidationError("@gmail.com"));
+        assertEquals(Email.MESSAGE_INVALID_LOCAL_PART,
+                Email.getEmailValidationError(".john@gmail.com"));
+        assertEquals(Email.MESSAGE_INVALID_LOCAL_PART,
+                Email.getEmailValidationError("john.@gmail.com"));
+        assertEquals(Email.MESSAGE_INVALID_LOCAL_PART,
+                Email.getEmailValidationError("john!doe@gmail.com"));
+
+        // invalid domain
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@gmailcom"));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@.domain"));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@.com"));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@gmail."));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@-gmail.com"));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@gmail-.com"));
+        assertEquals(Email.MESSAGE_INVALID_DOMAIN,
+                Email.getEmailValidationError("john@gmail.c"));
+
+
+        // valid email
+        assertEquals(null, Email.getEmailValidationError("john@gmail.com"));
+        assertEquals(null, Email.getEmailValidationError("abc123@test.org"));
+        assertEquals(null, Email.getEmailValidationError("john.doe+tag@test-domain.com"));
     }
 
     @Test
@@ -51,15 +103,15 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@-example.com")); // domain name starts with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.com-")); // domain name ends with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
+        assertFalse(Email.isValidEmail("a@bc")); // minimal
+        assertFalse(Email.isValidEmail("123@145")); // numeric local part and domain name
 
         // valid email
         assertTrue(Email.isValidEmail("PeterJack_1190@example.com")); // underscore in local part
         assertTrue(Email.isValidEmail("PeterJack.1190@example.com")); // period in local part
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
         assertTrue(Email.isValidEmail("PeterJack-1190@example.com")); // hyphen in local part
-        assertTrue(Email.isValidEmail("a@bc")); // minimal
-        assertTrue(Email.isValidEmail("test@localhost")); // alphabets only
-        assertTrue(Email.isValidEmail("123@145")); // numeric local part and domain name
+        assertTrue(Email.isValidEmail("test@localhost.com")); // alphabets only
         assertTrue(Email.isValidEmail("a1+be.d@example1.com")); // mixture of alphanumeric and special characters
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com")); // long local part
@@ -68,10 +120,10 @@ public class EmailTest {
 
     @Test
     public void equals() {
-        Email email = new Email("valid@email");
+        Email email = new Email("valid@email.sg");
 
         // same values -> returns true
-        assertTrue(email.equals(new Email("valid@email")));
+        assertTrue(email.equals(new Email("valid@email.sg")));
 
         // same object -> returns true
         assertTrue(email.equals(email));
@@ -83,6 +135,6 @@ public class EmailTest {
         assertFalse(email.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(email.equals(new Email("other.valid@email")));
+        assertFalse(email.equals(new Email("other.valid@email.sg")));
     }
 }
