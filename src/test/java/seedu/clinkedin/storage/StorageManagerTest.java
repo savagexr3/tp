@@ -2,7 +2,7 @@ package seedu.clinkedin.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static seedu.clinkedin.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.clinkedin.testutil.TypicalPersons.getTypicalCLinkedin;
 
 import java.nio.file.Path;
 
@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.clinkedin.commons.core.GuiSettings;
-import seedu.clinkedin.model.AddressBook;
-import seedu.clinkedin.model.ReadOnlyAddressBook;
+import seedu.clinkedin.model.CLinkedin;
+import seedu.clinkedin.model.ReadOnlyCLinkedin;
 import seedu.clinkedin.model.UserPrefs;
 
 public class StorageManagerTest {
@@ -24,7 +24,7 @@ public class StorageManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(getTempFilePath("ab"));
+        JsonCLinkedinStorage addressBookStorage = new JsonCLinkedinStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         storageManager = new StorageManager(addressBookStorage, userPrefsStorage);
     }
@@ -54,15 +54,15 @@ public class StorageManagerTest {
          * {@link JsonAddressBookStorage} class.
          * More extensive testing of UserPref saving/reading is done in {@link JsonAddressBookStorageTest} class.
          */
-        AddressBook original = getTypicalAddressBook();
-        storageManager.saveAddressBook(original);
-        ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
-        assertEquals(original, new AddressBook(retrieved));
+        CLinkedin original = getTypicalCLinkedin();
+        storageManager.saveCLinkedin(original);
+        ReadOnlyCLinkedin retrieved = storageManager.readCLinkedin().get();
+        assertEquals(original, new CLinkedin(retrieved));
     }
 
     @Test
-    public void getAddressBookFilePath() {
-        assertNotNull(storageManager.getAddressBookFilePath());
+    public void getCLinkedinFilePath() {
+        assertNotNull(storageManager.getCLinkedinFilePath());
     }
 
 }

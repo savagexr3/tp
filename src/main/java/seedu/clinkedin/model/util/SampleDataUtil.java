@@ -4,9 +4,13 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import seedu.clinkedin.model.AddressBook;
-import seedu.clinkedin.model.ReadOnlyAddressBook;
-import seedu.clinkedin.model.person.*;
+import seedu.clinkedin.model.CLinkedin;
+import seedu.clinkedin.model.ReadOnlyCLinkedin;
+import seedu.clinkedin.model.person.Address;
+import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Name;
+import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
@@ -41,8 +45,8 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyAddressBook getSampleAddressBook() {
-        AddressBook sampleAb = new AddressBook();
+    public static ReadOnlyCLinkedin getSampleAddressBook() {
+        CLinkedin sampleAb = new CLinkedin();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
         }

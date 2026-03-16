@@ -12,6 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.clinkedin.commons.core.GuiSettings;
 import seedu.clinkedin.commons.core.LogsCenter;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
@@ -20,25 +21,25 @@ import seedu.clinkedin.model.tag.Tag;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final CLinkedin cLinkedin;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(addressBook, userPrefs);
+    public ModelManager(ReadOnlyCLinkedin cLinkedin, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(cLinkedin, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + cLinkedin + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.cLinkedin = new CLinkedin(cLinkedin);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersons = new FilteredList<>(this.cLinkedin.getPersonList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new CLinkedin(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -79,29 +80,35 @@ public class ModelManager implements Model {
     //=========== AddressBook ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setAddressBook(ReadOnlyCLinkedin cLinkedin) {
+        this.cLinkedin.resetData(cLinkedin);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyCLinkedin getCLinkedin() {
+        return cLinkedin;
     }
 
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return addressBook.hasPerson(person);
+        return cLinkedin.hasPerson(person);
+    }
+
+    @Override
+    public boolean hasPhoneNumber(Phone phone) {
+        requireNonNull(phone);
+        return cLinkedin.hasPhoneNumber(phone);
     }
 
     @Override
     public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+        cLinkedin.removePerson(target);
     }
 
     @Override
     public void addPerson(Person person) {
-        addressBook.addPerson(person);
+        cLinkedin.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
@@ -109,19 +116,19 @@ public class ModelManager implements Model {
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        addressBook.setPerson(target, editedPerson);
+        cLinkedin.setPerson(target, editedPerson);
     }
 
     @Override
     public boolean hasTag(Tag tag) {
         requireNonNull(tag);
-        return addressBook.hasTag(tag);
+        return cLinkedin.hasTag(tag);
     }
 
     @Override
     public void addTag(Tag tag) {
         requireNonNull(tag);
-        addressBook.addTag(tag);
+        cLinkedin.addTag(tag);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -153,7 +160,7 @@ public class ModelManager implements Model {
         }
 
         ModelManager otherModelManager = (ModelManager) other;
-        return addressBook.equals(otherModelManager.addressBook)
+        return cLinkedin.equals(otherModelManager.cLinkedin)
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }

@@ -29,7 +29,7 @@ import seedu.clinkedin.testutil.EditPersonDescriptorBuilder;
 import seedu.clinkedin.testutil.PersonBuilder;
 import seedu.clinkedin.testutil.PersonUtil;
 
-public class AddressBookParserTest {
+public class CLinkedinParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
 

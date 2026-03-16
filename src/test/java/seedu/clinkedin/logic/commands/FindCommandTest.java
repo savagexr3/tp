@@ -8,7 +8,7 @@ import static seedu.clinkedin.logic.commands.CommandTestUtil.assertCommandSucces
 import static seedu.clinkedin.testutil.TypicalPersons.CARL;
 import static seedu.clinkedin.testutil.TypicalPersons.ELLE;
 import static seedu.clinkedin.testutil.TypicalPersons.FIONA;
-import static seedu.clinkedin.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.clinkedin.testutil.TypicalPersons.getTypicalCLinkedin;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,8 +24,8 @@ import seedu.clinkedin.model.person.NameContainsKeywordsPredicate;
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalCLinkedin(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalCLinkedin(), new UserPrefs());
 
     @Test
     public void equals() {
