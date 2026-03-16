@@ -11,9 +11,9 @@ import seedu.clinkedin.commons.util.StringUtil;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Phone;
-import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.tag.Tag;
 
 /**

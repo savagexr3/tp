@@ -9,7 +9,8 @@ import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
  */
 public class Link {
 
-    public static final String MESSAGE_CONSTRAINTS = "Links should be a valid URL and adhere to the following constraints:\n"
+    public static final String MESSAGE_CONSTRAINTS =
+            "Links should be a valid URL and adhere to the following constraints:\n"
             + "1. The link must start with 'http://' or 'https://'.\n"
             + "2. This is followed by a domain name made up of domain labels separated by periods.\n"
             + "The domain name must:\n"

@@ -3,10 +3,10 @@ package seedu.clinkedin.logic.parser;
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_LINK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_LINK;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,10 @@ import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
-import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
@@ -34,7 +34,8 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_LINK, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
+                        PREFIX_ADDRESS, PREFIX_LINK, PREFIX_TAG);
 
         checkFields(argMultimap);
 
