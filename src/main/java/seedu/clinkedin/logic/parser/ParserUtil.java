@@ -10,6 +10,7 @@ import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.commons.util.StringUtil;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.person.Address;
+import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Phone;
@@ -65,6 +66,22 @@ public class ParserUtil {
             throw new ParseException(phoneError);
         }
         return new Phone(trimmedPhone);
+    }
+
+    /**
+     * Parses a {@code String company} into a {@code Company}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code company} is invalid.
+     */
+    public static Company parseCompany(String company) throws ParseException {
+        requireNonNull(company);
+        String trimmedCompanyName = company.trim();
+        String companyNameError = Company.getCompanyNameValidationError(trimmedCompanyName);
+        if (companyNameError != null) {
+            throw new ParseException(companyNameError);
+        }
+        return new Company(trimmedCompanyName);
     }
 
     /**
