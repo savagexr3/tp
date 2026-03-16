@@ -33,7 +33,6 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
-
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.clinkedin.testutil.TypicalPersons.AMY;
@@ -166,18 +165,18 @@ public class AddCommandParserTest {
 
         // missing name prefix
         assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB+ ADDRESS_DESC_BOB,
+                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + ADDRESS_DESC_BOB,
                 expectedMessage + "NAME.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing phone prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB
-                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
+                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
                 expectedMessage + "PHONE.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing email prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB
-                        + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage+ "EMAIL.\n" + AddCommand.MESSAGE_USAGE);
+                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
+                expectedMessage + "EMAIL.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing company prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
