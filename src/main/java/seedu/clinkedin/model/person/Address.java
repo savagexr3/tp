@@ -60,6 +60,7 @@ public class Address {
      * Returns true if a given string is a valid address.
      */
     public static boolean isValidAddress(String test) {
+        requireNonNull(test);
         return getAddressValidationError(test) == null;
     }
 

@@ -35,6 +35,7 @@ public class Email {
             "The local-part of the email is invalid.";
     public static final String MESSAGE_INVALID_DOMAIN =
             "The domain name is invalid.";
+    public static final String MESSAGE_CONSECUTIVE_DOT = "Email cannot contain consecutive \".\"";
 
     /**
      * General regex for the full email format.
@@ -73,6 +74,10 @@ public class Email {
 
         if (test.contains(" ")) {
             return MESSAGE_SPACE_NOT_ALLOWED;
+        }
+
+        if (test.contains("..")) {
+            return MESSAGE_CONSECUTIVE_DOT;
         }
 
         long atCount = test.chars().filter(ch -> ch == '@').count();
@@ -137,6 +142,7 @@ public class Email {
      * Returns if a given string is a valid email.
      */
     public static boolean isValidEmail(String test) {
+        requireNonNull(test);
         return getEmailValidationError(test) == null;
     }
 

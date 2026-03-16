@@ -68,6 +68,7 @@ public class Tag {
      * Returns true if a given string is a valid tag name.
      */
     public static boolean isValidTagName(String test) {
+        requireNonNull(test);
         return getTagNameValidationError(test) == null;
     }
 
