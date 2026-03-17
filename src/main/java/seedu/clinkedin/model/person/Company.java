@@ -10,7 +10,7 @@ import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
 public class Company {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Company name must be 1-100 characters long, contain only letters, spaces, "
+            "Company name must be 1-50 characters long, contain only letters, spaces, "
                     + "apostrophes (') and hyphens (-), and use only single spaces between words.";
 
     /**
