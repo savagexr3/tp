@@ -121,13 +121,38 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     /**
      * Adds a tag to the address book.
      * The tag must not already exist in the address book.
+     *
+     * @param t The tag to be added.
      */
     public void addTag(Tag t) {
         tags.add(t);
     }
 
+    /**
+     * Replaces the contents of the tag list with {@code tags}.
+     * {@code tags} must not contain duplicate tags.
+     *
+     * @param tags The new list of tags.
+     */
     public void setTags(List<Tag> tags) {
         this.tags.setTags(tags);
+    }
+
+    /**
+     * Removes the specified tag from the address book.
+     * Also removes the tag from all persons who currently have it.
+     *
+     * @param t The tag to be removed.
+     */
+    public void removeTag(Tag t) {
+        tags.remove(t);
+        List<Person> currentPersons = getPersonList();
+        for (Person person : currentPersons) {
+            if (person.getTags().contains(t)) {
+                Person updatedPerson = person.removeTag(t);
+                persons.setPerson(person, updatedPerson);
+            }
+        }
     }
 
     /// / util methods

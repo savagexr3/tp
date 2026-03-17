@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.clinkedin.model.tag.exceptions.DuplicateTagException;
+import seedu.clinkedin.model.tag.exceptions.TagNotFoundException;
 
 /**
  * A list of tags that enforces uniqueness between its elements and does not allow nulls.
@@ -77,12 +78,32 @@ public class UniqueTagList implements Iterable<Tag> {
         internalList.add(toAdd);
     }
 
+    /**
+     * Replaces the contents of this list with {@code tags}.
+     * {@code tags} must not contain duplicate tags.
+     *
+     * @param tags The list of tags to replace the current list.
+     * @throws DuplicateTagException if {@code tags} contains duplicate tags.
+     */
     public void setTags(List<Tag> tags) {
         requireNonNull(tags);
         if (!tagsAreUnique(tags)) {
             throw new DuplicateTagException();
         }
         internalList.setAll(tags);
+    }
+
+    /**
+     * Removes the specified tag from the list.
+     *
+     * @param toRemove The tag to be removed.
+     * @throws TagNotFoundException if the tag is not found in the list.
+     */
+    public void remove(Tag toRemove) {
+        requireNonNull(toRemove);
+        if (!internalList.remove(toRemove)) {
+            throw new TagNotFoundException();
+        }
     }
 
     private boolean tagsAreUnique(List<Tag> tags) {
