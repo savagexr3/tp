@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.model.person.Address;
+import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -24,6 +25,7 @@ public class PersonCardTest {
                 new Name("John Doe"),
                 new Phone("91234567"),
                 new Email("john@example.com"),
+                new Company("Google"),
                 new Address("123 Street"),
                 link != null ? Optional.of(new Link(link)) : Optional.empty(),
                 SampleDataUtil.getTagSet()
@@ -33,7 +35,6 @@ public class PersonCardTest {
     @Test
     public void hasLink_personWithLink_returnsTrue() {
         Person person = buildPerson("https://linkedin.com/in/johndoe");
-        // simulate what PersonCard.hasLink() checks
         assertTrue(person.getLink() != null);
     }
 
@@ -57,11 +58,7 @@ public class PersonCardTest {
     }
 
     @Test
-    public void openLink_invalidUrl_returnsFalse() {
-        // Test openLink with a malformed URI — should catch exception and return false
-        Person person = buildPerson("https://linkedin.com/in/johndoe");
-        // We can't call PersonCard directly without JavaFX,
-        // but we can verify the URI parsing logic
+    public void openLink_validUrl_parsesSuccessfully() {
         boolean result = false;
         try {
             new java.net.URI("https://linkedin.com/in/johndoe");
