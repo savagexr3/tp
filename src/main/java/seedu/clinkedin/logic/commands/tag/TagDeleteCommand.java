@@ -42,4 +42,19 @@ public class TagDeleteCommand extends TagCommand {
         model.deleteTag(deleteTag);
         return new CommandResult(String.format(MESSAGE_SUCCESS, deleteTag.tagName));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagDeleteCommand)) {
+            return false;
+        }
+
+        TagDeleteCommand otherTagDeleteCommand = (TagDeleteCommand) other;
+        return deleteTag.equals(otherTagDeleteCommand.deleteTag);
+    }
 }
