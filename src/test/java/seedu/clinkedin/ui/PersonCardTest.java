@@ -78,7 +78,7 @@ public class PersonCardTest {
     }
 
     @Test
-    public void linkUtil_nullHandling_personWithLink_hasCorrectValue() {
+    public void linkUtil_personWithLink_hasCorrectValue() {
         String url = "https://linkedin.com/in/johndoe";
         Person person = buildPerson(url);
         String linkValue = person.getLink() != null ? person.getLink().value : null;
@@ -86,7 +86,7 @@ public class PersonCardTest {
     }
 
     @Test
-    public void linkUtil_nullHandling_personWithoutLink_returnsNull() {
+    public void linkUtil_personWithoutLink_returnsNull() {
         Person person = buildPerson(null);
         String linkValue = person.getLink() != null ? person.getLink().value : null;
         assertNull(linkValue);
