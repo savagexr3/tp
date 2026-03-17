@@ -22,6 +22,8 @@ import seedu.clinkedin.logic.commands.ExitCommand;
 import seedu.clinkedin.logic.commands.FindCommand;
 import seedu.clinkedin.logic.commands.HelpCommand;
 import seedu.clinkedin.logic.commands.ListCommand;
+import seedu.clinkedin.logic.commands.tag.TagCommand;
+import seedu.clinkedin.logic.commands.tag.TagShowCommand;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.person.NameContainsKeywordsPredicate;
 import seedu.clinkedin.model.person.Person;
@@ -97,5 +99,14 @@ public class CLinkedinParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_tagShow() throws Exception {
+        assertTrue(parser.parseCommand(
+                TagCommand.COMMAND_WORD
+                        + " "
+                        + TagShowCommand.COMMAND_WORD
+                        + " friends") instanceof TagShowCommand);
     }
 }

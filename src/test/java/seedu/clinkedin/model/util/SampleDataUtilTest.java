@@ -1,13 +1,14 @@
 package seedu.clinkedin.model.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.clinkedin.model.ReadOnlyCLinkedin;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.ReadOnlyCLinkedin;
 
 public class SampleDataUtilTest {
 
@@ -64,5 +65,10 @@ public class SampleDataUtilTest {
         assertEquals(1, SampleDataUtil.getTagSet("friends").size());
         assertEquals(2, SampleDataUtil.getTagSet("friends", "colleagues").size());
         assertEquals(0, SampleDataUtil.getTagSet().size());
+    public void getSampleData_success() {
+        ReadOnlyCLinkedin sampleAb = SampleDataUtil.getSampleAddressBook();
+        assertNotNull(sampleAb);
+        assertFalse(sampleAb.getPersonList().isEmpty());
+        assertFalse(sampleAb.getTagList().isEmpty());
     }
 }

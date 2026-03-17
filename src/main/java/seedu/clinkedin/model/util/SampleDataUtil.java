@@ -52,6 +52,11 @@ public class SampleDataUtil {
         CLinkedin sampleAb = new CLinkedin();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
+            for (Tag tag : samplePerson.getTags()) {
+                if (!sampleAb.hasTag(tag)) {
+                    sampleAb.addTag(tag);
+                }
+            }
         }
         return sampleAb;
     }
