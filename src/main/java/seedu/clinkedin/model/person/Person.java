@@ -79,6 +79,21 @@ public class Person {
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
     }
+    /**
+     * Returns a new {@code Person} with the specified tag removed.
+     * The original person remains unchanged.
+     *
+     * @param tagToRemove The tag to be removed.
+     * @return A new person without the specified tag.
+     */
+    public Person removeTag(Tag tagToRemove) {
+        requireAllNonNull(tagToRemove);
+
+        Set<Tag> updatedTags = new HashSet<>(tags);
+        updatedTags.remove(tagToRemove);
+
+        return new Person(name, phone, email, address, link, updatedTags);
+    }
 
     /**
      * Returns true if both persons have the same identity and data fields.
