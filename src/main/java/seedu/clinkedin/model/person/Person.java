@@ -23,6 +23,7 @@ public class Person {
     private final Email email;
 
     // Data fields
+    private final Company company;
     private final Address address;
     private final Link link;
     private final Set<Tag> tags = new HashSet<>();
@@ -31,11 +32,12 @@ public class Person {
      * Name, phone, email, address and tags must be present and not null.
      * Link is optional and may be absent.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Optional<Link> link, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, Company company, Address address, Optional<Link> link, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, company, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.company = company;
         this.address = address;
         this.link = link.orElse(null);
         this.tags.addAll(tags);
@@ -51,6 +53,10 @@ public class Person {
 
     public Email getEmail() {
         return email;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     public Address getAddress() {
@@ -84,6 +90,21 @@ public class Person {
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
     }
+    /**
+     * Returns a new {@code Person} with the specified tag removed.
+     * The original person remains unchanged.
+     *
+     * @param tagToRemove The tag to be removed.
+     * @return A new person without the specified tag.
+     */
+    public Person removeTag(Tag tagToRemove) {
+        requireAllNonNull(tagToRemove);
+
+        Set<Tag> updatedTags = new HashSet<>(tags);
+        updatedTags.remove(tagToRemove);
+
+        return new Person(name, phone, email, company, address, link, updatedTags);
+    }
 
     /**
      * Returns true if both persons have the same identity and data fields.
@@ -103,6 +124,7 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
+                && company.equals(otherPerson.company)
                 && address.equals(otherPerson.address)
                 && Objects.equals(link, otherPerson.link)
                 && tags.equals(otherPerson.tags);
@@ -110,7 +132,8 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, phone, email, address, link, tags);
+        // use this method for custom fields hashing instead of implementing your own
+        return Objects.hash(name, phone, email, company, address, link, tags);
     }
 
     @Override
@@ -119,6 +142,7 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
+                .add("company", company)
                 .add("address", address)
                 .add("link", link)
                 .add("tags", tags)

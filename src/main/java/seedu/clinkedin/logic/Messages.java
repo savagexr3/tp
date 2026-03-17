@@ -42,6 +42,8 @@ public class Messages {
                 .append(person.getPhone())
                 .append("; Email: ")
                 .append(person.getEmail())
+                .append("; Company: ")
+                .append(person.getCompany())
                 .append("; Address: ")
                 .append(person.getAddress());
         if (person.getLink() != null) {

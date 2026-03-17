@@ -131,6 +131,11 @@ public class ModelManager implements Model {
         cLinkedin.addTag(tag);
     }
 
+    @Override
+    public void deleteTag(Tag tag) {
+        requireNonNull(tag);
+        cLinkedin.removeTag(tag);
+    }
     //=========== Filtered Person List Accessors =============================================================
 
     /**

@@ -41,4 +41,19 @@ public class TagCreateCommand extends TagCommand {
         model.addTag(newTag);
         return new CommandResult(String.format(MESSAGE_SUCCESS, newTag.tagName));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagCreateCommand)) {
+            return false;
+        }
+
+        TagCreateCommand otherTagCreateCommand = (TagCreateCommand) other;
+        return newTag.equals(otherTagCreateCommand.newTag);
+    }
 }

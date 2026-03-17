@@ -4,6 +4,7 @@
     "name" : "Alice Pauline",
     "phone" : "94351253",
     "email" : "alice@example.com",
+    "company" : "Google",
     "address" : "123, Jurong West Ave 6, #08-111",
     "link" : "https://linkedin.com/in/alicepauline",
     "tags" : [ "friends" ]
@@ -11,6 +12,7 @@
     "name" : "Benson Meier",
     "phone" : "98765432",
     "email" : "johnd@example.com",
+    "company" : "Shopee",
     "address" : "311, Clementi Ave 2, #02-25",
     "link" : "https://linkedin.com/in/bensonmeier",
     "tags" : [ "owesMoney", "friends" ]
@@ -18,12 +20,14 @@
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "email" : "heinz@example.com",
+    "company" : "Grab",
     "address" : "wall street",
     "tags" : [ ]
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
     "email" : "cornelia@example.com",
+    "company" : "GovTech",
     "address" : "10th street",
     "link" : "https://linkedin.com/in/danielmeier",
     "tags" : [ "friends" ]
@@ -31,12 +35,14 @@
     "name" : "Elle Meyer",
     "phone" : "94822244",
     "email" : "werner@example.com",
+    "company" : "DBS",
     "address" : "michegan ave",
     "tags" : [ ]
   }, {
     "name" : "Fiona Kunz",
     "phone" : "94824277",
     "email" : "lydia@example.com",
+    "company" : "NUS Computing",
     "address" : "little tokyo",
     "link" : "https://linkedin.com/in/fionakunz",
     "tags" : [ ]
@@ -44,6 +50,7 @@
     "name" : "George Best",
     "phone" : "94824422",
     "email" : "anna@example.com",
+    "company" : "Sea",
     "address" : "4th street",
     "tags" : [ ]
   } ]

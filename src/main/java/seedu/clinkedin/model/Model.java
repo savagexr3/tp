@@ -95,4 +95,6 @@ public interface Model {
     boolean hasTag(Tag tag);
 
     void addTag(Tag tag);
+
+    void deleteTag(Tag tag);
 }

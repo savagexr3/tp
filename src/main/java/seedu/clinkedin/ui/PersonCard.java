@@ -33,6 +33,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
+    private Label company;
+    @FXML
     private Label address;
     @FXML
     private Label email;
@@ -62,6 +64,16 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
+        String companyName = person.getCompany().companyName;
+        if (companyName.isEmpty()) {
+            company.setManaged(false);
+            company.setVisible(false);
+        } else {
+            company.setText(companyName);
+            company.setManaged(true);
+            company.setVisible(true);
+        }
     }
 
     /**
