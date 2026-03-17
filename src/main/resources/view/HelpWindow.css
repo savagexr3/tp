@@ -17,3 +17,15 @@
 #helpMessageContainer {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
+
+.hyperlink {
+    -fx-text-fill: #4a90d9;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #4a90d9;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #76b3e8;
+}

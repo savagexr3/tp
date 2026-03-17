@@ -350,3 +350,15 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+.hyperlink {
+    -fx-text-fill: #4a90d9;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #4a90d9;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #76b3e8;
+}
