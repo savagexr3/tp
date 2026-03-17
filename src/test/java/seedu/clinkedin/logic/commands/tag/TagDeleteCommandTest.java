@@ -1,7 +1,5 @@
 package seedu.clinkedin.logic.commands.tag;
 
-import org.junit.jupiter.api.Test;
-
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,6 +8,8 @@ import static seedu.clinkedin.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
+
+import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.core.GuiSettings;
@@ -36,8 +36,7 @@ public class TagDeleteCommandTest {
 
         CommandResult result = new TagDeleteCommand(validTag).execute(modelStub);
 
-        assertEquals(String.format(TagDeleteCommand.MESSAGE_SUCCESS, validTag.tagName),
-                result.getFeedbackToUser());
+        assertEquals(String.format(TagDeleteCommand.MESSAGE_SUCCESS, validTag.tagName), result.getFeedbackToUser());
         assertFalse(modelStub.hasTag(validTag));
     }
 
@@ -47,8 +46,7 @@ public class TagDeleteCommandTest {
         TagDeleteCommand command = new TagDeleteCommand(validTag);
         ModelStub modelStub = new ModelStubWithoutTag();
 
-        assertThrows(CommandException.class, TagDeleteCommand.MESSAGE_NOT_EXIST_TAG, ()
-                -> command.execute(modelStub));
+        assertThrows(CommandException.class, TagDeleteCommand.MESSAGE_NOT_EXIST_TAG, () -> command.execute(modelStub));
     }
 
     @Test
