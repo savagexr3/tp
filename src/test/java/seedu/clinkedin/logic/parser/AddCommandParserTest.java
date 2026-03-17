@@ -10,9 +10,12 @@ import static seedu.clinkedin.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_COMPANY_DESC;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_LINK_DESC;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.LINK_DESC_AMY;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.LINK_DESC_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -24,6 +27,7 @@ import static seedu.clinkedin.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_COMPANY_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_LINK_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
@@ -31,6 +35,7 @@ import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_LINK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -45,6 +50,7 @@ import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
@@ -60,7 +66,8 @@ public class AddCommandParserTest {
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
+                + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_FRIEND,
+                new AddCommand(expectedPerson));
 
 
         // multiple tags - all accepted
@@ -68,14 +75,14 @@ public class AddCommandParserTest {
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + COMPANY_DESC_BOB
-                        + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
     }
 
     @Test
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_FRIEND;
+                + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_FRIEND;
 
         // multiple names
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
@@ -97,13 +104,17 @@ public class AddCommandParserTest {
         assertParseFailure(parser, ADDRESS_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // multiple links
+        assertParseFailure(parser, LINK_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LINK));
+
         // multiple fields repeated
         assertParseFailure(parser,
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY
-                        + COMPANY_DESC_AMY + ADDRESS_DESC_AMY
+                        + COMPANY_DESC_AMY + ADDRESS_DESC_AMY + LINK_DESC_AMY
                         + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME, PREFIX_ADDRESS,
-                        PREFIX_COMPANY, PREFIX_EMAIL, PREFIX_PHONE));
+                        PREFIX_COMPANY, PREFIX_EMAIL, PREFIX_PHONE, PREFIX_LINK));
 
         // invalid value followed by valid value
 
@@ -127,6 +138,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // invalid link
+        assertParseFailure(parser, INVALID_LINK_DESC + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LINK));
+
         // valid value followed by invalid value
 
         // invalid name
@@ -148,6 +163,10 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, validExpectedPersonString + INVALID_ADDRESS_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+
+        // invalid link
+        assertParseFailure(parser, validExpectedPersonString + INVALID_LINK_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LINK));
     }
 
     @Test
@@ -155,7 +174,7 @@ public class AddCommandParserTest {
         // zero tags
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY
-                        + COMPANY_DESC_AMY + ADDRESS_DESC_AMY,
+                        + COMPANY_DESC_AMY + ADDRESS_DESC_AMY + LINK_DESC_AMY,
                 new AddCommand(expectedPerson));
     }
 
@@ -165,32 +184,36 @@ public class AddCommandParserTest {
 
         // missing name prefix
         assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + ADDRESS_DESC_BOB,
+                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB,
                 expectedMessage + "NAME.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing phone prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB
-                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
+                          + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB,
                 expectedMessage + "PHONE.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing email prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB
-                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB,
+                         + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB,
                 expectedMessage + "EMAIL.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing company prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + VALID_COMPANY_BOB + ADDRESS_DESC_BOB,
+                        + VALID_COMPANY_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB,
                 expectedMessage + "COMPANY.\n" + AddCommand.MESSAGE_USAGE);
 
         // missing address prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + COMPANY_DESC_BOB + VALID_ADDRESS_BOB,
+                        + COMPANY_DESC_BOB + VALID_ADDRESS_BOB + LINK_DESC_BOB,
                 expectedMessage + "ADDRESS.\n" + AddCommand.MESSAGE_USAGE);
+
+        // missing link prefix
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + COMPANY_DESC_BOB + ADDRESS_DESC_BOB
+                + VALID_LINK_BOB, expectedMessage + "LINK.\n" + AddCommand.MESSAGE_USAGE);
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB
-                        + VALID_COMPANY_BOB + VALID_ADDRESS_BOB,
+                        + VALID_COMPANY_BOB + VALID_ADDRESS_BOB + VALID_LINK_BOB,
                 expectedMessage + "NAME, PHONE, EMAIL, COMPANY, ADDRESS.\n" + AddCommand.MESSAGE_USAGE);
     }
 
@@ -198,36 +221,44 @@ public class AddCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + COMPANY_DESC_BOB
-                + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Name.MESSAGE_INVALID_CHARACTERS);
+                + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                Name.MESSAGE_INVALID_CHARACTERS);
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + EMAIL_DESC_BOB + COMPANY_DESC_BOB
-                + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Phone.MESSAGE_NON_DIGIT);
+                + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Phone.MESSAGE_NON_DIGIT);
 
         // invalid email
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_EMAIL_DESC + COMPANY_DESC_BOB
-                + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Email.MESSAGE_INVALID_AT);
+                + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Email.MESSAGE_INVALID_AT);
 
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + COMPANY_DESC_BOB
-                + INVALID_ADDRESS_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Address.MESSAGE_EMPTY);
+                + INVALID_ADDRESS_DESC + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Address.MESSAGE_EMPTY);
 
         // invalid company
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_COMPANY_DESC
-                + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Company.MESSAGE_INVALID_CHARACTERS);
+                + ADDRESS_DESC_BOB + LINK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                Company.MESSAGE_INVALID_CHARACTERS);
+
+        // invalid link
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + INVALID_LINK_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Link.MESSAGE_INVALID_SCHEME);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + COMPANY_DESC_BOB
-                + ADDRESS_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_FRIEND, Tag.MESSAGE_INVALID_CHARACTERS);
+                + ADDRESS_DESC_BOB + LINK_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_FRIEND,
+                Tag.MESSAGE_INVALID_CHARACTERS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + COMPANY_DESC_BOB + INVALID_ADDRESS_DESC,
+                        + COMPANY_DESC_BOB + INVALID_ADDRESS_DESC + LINK_DESC_BOB,
                 Name.MESSAGE_INVALID_CHARACTERS);
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB
-                        + EMAIL_DESC_BOB + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + EMAIL_DESC_BOB + COMPANY_DESC_BOB + ADDRESS_DESC_BOB + LINK_DESC_BOB
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 }

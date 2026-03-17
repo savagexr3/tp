@@ -6,6 +6,7 @@
     "email" : "alice@example.com",
     "company" : "Google",
     "address" : "123, Jurong West Ave 6, #08-111",
+    "link" : "https://linkedin.com/in/alicepauline",
     "tags" : [ "friends" ]
   }, {
     "name" : "Benson Meier",
@@ -13,6 +14,7 @@
     "email" : "johnd@example.com",
     "company" : "Shopee",
     "address" : "311, Clementi Ave 2, #02-25",
+    "link" : "https://linkedin.com/in/bensonmeier",
     "tags" : [ "owesMoney", "friends" ]
   }, {
     "name" : "Carl Kurz",
@@ -20,6 +22,7 @@
     "email" : "heinz@example.com",
     "company" : "Grab",
     "address" : "wall street",
+    "link" : "https://linkedin.com/in/carlkurz",
     "tags" : [ ]
   }, {
     "name" : "Daniel Meier",
@@ -27,6 +30,7 @@
     "email" : "cornelia@example.com",
     "company" : "GovTech",
     "address" : "10th street",
+    "link" : "https://linkedin.com/in/danielmeier",
     "tags" : [ "friends" ]
   }, {
     "name" : "Elle Meyer",
@@ -34,6 +38,7 @@
     "email" : "werner@example.com",
     "company" : "DBS",
     "address" : "michegan ave",
+    "link" : "https://linkedin.com/in/ellemeyer",
     "tags" : [ ]
   }, {
     "name" : "Fiona Kunz",
@@ -41,6 +46,7 @@
     "email" : "lydia@example.com",
     "company" : "NUS Computing",
     "address" : "little tokyo",
+    "link" : "https://linkedin.com/in/fionakunz",
     "tags" : [ ]
   }, {
     "name" : "George Best",
@@ -48,6 +54,7 @@
     "email" : "anna@example.com",
     "company" : "Sea",
     "address" : "4th street",
+    "link" : "https://linkedin.com/in/georgebest",
     "tags" : [ ]
   } ]
 }

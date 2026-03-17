@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_LINK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
@@ -25,6 +26,7 @@ import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
@@ -46,6 +48,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_COMPANY + "COMPANY] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_LINK + "LINK] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -103,9 +106,11 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Company updatedCompany = editPersonDescriptor.getCompany().orElse(personToEdit.getCompany());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        Link updatedLink = editPersonDescriptor.getLink().orElse(personToEdit.getLink());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedCompany, updatedAddress, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedCompany, updatedAddress,
+                updatedLink, updatedTags);
     }
 
     @Override
@@ -142,6 +147,7 @@ public class EditCommand extends Command {
         private Email email;
         private Company company;
         private Address address;
+        private Link link;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -156,6 +162,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setCompany(toCopy.company);
             setAddress(toCopy.address);
+            setLink(toCopy.link);
             setTags(toCopy.tags);
         }
 
@@ -163,7 +170,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, company, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, company, address, link, tags);
         }
 
         public void setName(Name name) {
@@ -207,6 +214,14 @@ public class EditCommand extends Command {
         }
 
 
+        public void setLink(Link link) {
+            this.link = link;
+        }
+
+        public Optional<Link> getLink() {
+            return Optional.ofNullable(link);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -241,6 +256,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(company, otherEditPersonDescriptor.company)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(link, otherEditPersonDescriptor.link)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -252,6 +268,7 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("company", company)
                     .add("address", address)
+                    .add("link", link)
                     .add("tags", tags)
                     .toString();
         }

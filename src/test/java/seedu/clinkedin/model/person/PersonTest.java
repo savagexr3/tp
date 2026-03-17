@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_COMPANY_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_LINK_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
@@ -81,8 +83,16 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
+        // different company -> returns false
+        editedAlice = new PersonBuilder(ALICE).withCompany(VALID_COMPANY_BOB).build();
+        assertFalse(ALICE.equals(editedAlice));
+
         // different address -> returns false
         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // different link -> returns false
+        editedAlice = new PersonBuilder(ALICE).withLink(VALID_LINK_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
         // different tags -> returns false
@@ -94,7 +104,7 @@ public class PersonTest {
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
                 + ", email=" + ALICE.getEmail() + ", company=" + ALICE.getCompany() + ", address=" + ALICE.getAddress()
-                + ", tags=" + ALICE.getTags() + "}";
+                + ", link=" + ALICE.getLink() + ", tags=" + ALICE.getTags() + "}";
         assertEquals(expected, ALICE.toString());
     }
 }

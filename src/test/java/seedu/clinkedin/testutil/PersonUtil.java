@@ -3,6 +3,7 @@ package seedu.clinkedin.testutil;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_LINK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
@@ -36,8 +37,9 @@ public class PersonUtil {
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
         sb.append(PREFIX_COMPANY + person.getCompany().companyName + " ");
         sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
+        sb.append(PREFIX_LINK + person.getLink().value + " ");
         person.getTags().stream().forEach(
-            s -> sb.append(PREFIX_TAG + s.tagName + " ")
+                s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
         return sb.toString();
     }
@@ -54,6 +56,8 @@ public class PersonUtil {
                 .append(" "));
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value)
                 .append(" "));
+        descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
+        descriptor.getLink().ifPresent(link -> sb.append(PREFIX_LINK).append(link.value).append(" "));
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {

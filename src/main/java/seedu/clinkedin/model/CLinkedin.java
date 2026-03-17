@@ -60,6 +60,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        setTags(newData.getTagList());
     }
 
     //// person-level operations

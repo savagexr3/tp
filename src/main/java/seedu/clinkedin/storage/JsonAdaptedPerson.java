@@ -13,6 +13,7 @@ import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
+import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String company;
     private final String address;
+    private final String link;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -38,12 +40,14 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("company") String company,
-            @JsonProperty("address") String address, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("address") String address, @JsonProperty("link") String link,
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.company = company;
         this.address = address;
+        this.link = link;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -58,6 +62,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         company = source.getCompany().companyName;
         address = source.getAddress().value;
+        link = source.getLink().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -120,8 +125,16 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
+        if (link == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Link.class.getSimpleName()));
+        }
+        if (!Link.isValidLink(link)) {
+            throw new IllegalValueException(Link.MESSAGE_CONSTRAINTS);
+        }
+        final Link modelLink = new Link(link);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelCompany, modelAddress, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelCompany, modelAddress, modelLink, modelTags);
     }
 
 }
