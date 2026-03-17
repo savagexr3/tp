@@ -13,6 +13,7 @@ import seedu.clinkedin.logic.commands.tag.TagCreateCommand;
 import seedu.clinkedin.logic.commands.tag.TagDeleteCommand;
 import seedu.clinkedin.logic.commands.tag.TagListCommand;
 import seedu.clinkedin.logic.commands.tag.TagShowCommand;
+import seedu.clinkedin.logic.commands.tag.TagUnassignCommand;
 import seedu.clinkedin.logic.parser.Parser;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 
@@ -56,6 +57,8 @@ public class TagCommandParser implements Parser<TagCommand> {
             return new TagListCommand();
         case TagAssignCommand.COMMAND_WORD:
             return new TagAssignCommandParser().parse(arguments);
+        case TagUnassignCommand.COMMAND_WORD:
+            return new TagUnassignCommandParser().parse(arguments);
         default:
             throw new ParseException(MESSAGE_UNKNOWN_TAG_COMMAND);
         }
