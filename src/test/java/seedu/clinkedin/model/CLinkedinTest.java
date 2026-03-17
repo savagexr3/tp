@@ -45,6 +45,17 @@ public class CLinkedinTest {
     }
 
     @Test
+    public void resetData_withValidReadOnlyCLinkedinWithTags_replacesTagData() {
+        CLinkedin newData = new CLinkedin();
+        Tag friends = new Tag("friends");
+
+        newData.addTag(friends);
+        cLinkedin.resetData(newData);
+
+        assertEquals(newData.getTagList(), cLinkedin.getTagList());
+    }
+
+    @Test
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
         // Two persons with the same identity fields
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
@@ -77,6 +88,58 @@ public class CLinkedinTest {
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         assertTrue(cLinkedin.hasPerson(editedAlice));
+    }
+
+    // ================= TAG TESTS =================
+
+    @Test
+    public void constructor_initialisesWithEmptyTagList() {
+        assertEquals(Collections.emptyList(), cLinkedin.getTagList());
+    }
+
+    @Test
+    public void hasTag_nullTag_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> cLinkedin.hasTag(null));
+    }
+
+    @Test
+    public void hasTag_tagNotInCLinkedin_returnsFalse() {
+        Tag friends = new Tag("friends");
+        assertFalse(cLinkedin.hasTag(friends));
+    }
+
+    @Test
+    public void hasTag_tagInCLinkedin_returnsTrue() {
+        Tag friends = new Tag("friends");
+        cLinkedin.addTag(friends);
+        assertTrue(cLinkedin.hasTag(friends));
+    }
+
+    @Test
+    public void getTagList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> cLinkedin.getTagList().remove(0));
+    }
+
+    @Test
+    public void removeTag_tagInTagList_removesTag() {
+        Tag friends = new Tag("friends");
+        cLinkedin.addTag(friends);
+
+        cLinkedin.removeTag(friends);
+
+        assertFalse(cLinkedin.hasTag(friends));
+    }
+
+    @Test
+    public void removeTag_tagLinkedToPersons_removesTagFromAllPersons() {
+        Tag friends = new Tag("friends");
+        cLinkedin.addTag(friends);
+        cLinkedin.addPerson(ALICE);
+
+        cLinkedin.removeTag(friends);
+
+        assertFalse(cLinkedin.hasTag(friends));
+        assertFalse(cLinkedin.getPersonList().get(0).getTags().contains(friends));
     }
 
     @Test

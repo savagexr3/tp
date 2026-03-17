@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.core.GuiSettings;
 import seedu.clinkedin.model.person.NameContainsKeywordsPredicate;
+import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -91,6 +92,58 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    // ================= TAG TESTS =================
+    @Test
+    public void hasTag_nullTag_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasTag(null));
+    }
+
+    @Test
+    public void hasTag_tagNotInCLinkedin_returnsFalse() {
+        Tag friends = new Tag("friends");
+        assertFalse(modelManager.hasTag(friends));
+    }
+
+    @Test
+    public void hasTag_tagInCLinkedin_returnsTrue() {
+        Tag friends = new Tag("friends");
+        modelManager.addTag(friends);
+        assertTrue(modelManager.hasTag(friends));
+    }
+
+    @Test
+    public void addTag_nullTag_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.addTag(null));
+    }
+
+    @Test
+    public void deleteTag_nullTag_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.deleteTag(null));
+    }
+
+    @Test
+    public void deleteTag_existingTag_removesTag() {
+        Tag friends = new Tag("friends");
+        modelManager.addTag(friends);
+
+        modelManager.deleteTag(friends);
+
+        assertFalse(modelManager.hasTag(friends));
+    }
+
+    @Test
+    public void deleteTag_tagLinkedToPersons_removesTagFromAllPersons() {
+        Tag friends = new Tag("friends");
+
+        modelManager.addTag(friends);
+        modelManager.addPerson(ALICE); // already has "friends"
+
+        modelManager.deleteTag(friends);
+
+        assertFalse(modelManager.hasTag(friends));
+        assertFalse(modelManager.getCLinkedin().getPersonList().get(0).getTags().contains(friends));
     }
 
     @Test
