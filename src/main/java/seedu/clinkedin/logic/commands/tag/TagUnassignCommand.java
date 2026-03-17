@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
-import java.util.Optional;
 
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.logic.Messages;
