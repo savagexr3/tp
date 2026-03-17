@@ -105,7 +105,8 @@ public class EditCommand extends Command {
         Link updatedLink = editPersonDescriptor.getLink().orElse(personToEdit.getLink());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, Optional.ofNullable(updatedLink), updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
+                Optional.ofNullable(updatedLink), updatedTags);
     }
 
     @Override
