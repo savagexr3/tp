@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.model.person.Address;
+import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -24,6 +25,7 @@ public class PersonCardTest {
                 new Name("John Doe"),
                 new Phone("91234567"),
                 new Email("john@example.com"),
+                new Company("Google"),
                 new Address("123 Street"),
                 link != null ? Optional.of(new Link(link)) : Optional.empty(),
                 SampleDataUtil.getTagSet()
@@ -33,7 +35,6 @@ public class PersonCardTest {
     @Test
     public void hasLink_personWithLink_returnsTrue() {
         Person person = buildPerson("https://linkedin.com/in/johndoe");
-        // simulate what PersonCard.hasLink() checks
         assertTrue(person.getLink() != null);
     }
 
@@ -57,30 +58,37 @@ public class PersonCardTest {
     }
 
     @Test
-    public void openLink_invalidUrl_returnsFalse() {
-        // Test openLink with a malformed URI — should catch exception and return false
-        Person person = buildPerson("https://linkedin.com/in/johndoe");
-        // We can't call PersonCard directly without JavaFX,
-        // but we can verify the URI parsing logic
-        boolean result = false;
-        try {
-            new java.net.URI("https://linkedin.com/in/johndoe");
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        assertTrue(result);
+    public void linkUtil_validUrl_isValidUri() {
+        assertTrue(LinkUtil.isValidUri("https://linkedin.com/in/johndoe"));
     }
 
     @Test
-    public void openLink_malformedUrl_throwsException() {
-        boolean result = true;
-        try {
-            new java.net.URI("not a valid uri with spaces");
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        assertFalse(result);
+    public void linkUtil_malformedUrl_isNotValidUri() {
+        assertFalse(LinkUtil.isValidUri("not a valid uri with spaces"));
+    }
+
+    @Test
+    public void linkUtil_httpUrl_isValidUri() {
+        assertTrue(LinkUtil.isValidUri("http://example.com"));
+    }
+
+    @Test
+    public void linkUtil_emptyUrl_isValidUri() {
+        assertTrue(LinkUtil.isValidUri(""));
+    }
+
+    @Test
+    public void linkUtil_personWithLink_hasCorrectValue() {
+        String url = "https://linkedin.com/in/johndoe";
+        Person person = buildPerson(url);
+        String linkValue = person.getLink() != null ? person.getLink().value : null;
+        assertEquals(url, linkValue);
+    }
+
+    @Test
+    public void linkUtil_personWithoutLink_returnsNull() {
+        Person person = buildPerson(null);
+        String linkValue = person.getLink() != null ? person.getLink().value : null;
+        assertNull(linkValue);
     }
 }

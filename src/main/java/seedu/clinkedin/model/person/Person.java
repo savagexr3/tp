@@ -32,7 +32,8 @@ public class Person {
      * Name, phone, email, address and tags must be present and not null.
      * Link is optional and may be absent.
      */
-    public Person(Name name, Phone phone, Email email, Company company, Address address, Optional<Link> link, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Company company,
+                  Address address, Optional<Link> link, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, company, address, tags);
         this.name = name;
         this.phone = phone;
@@ -103,7 +104,7 @@ public class Person {
         Set<Tag> updatedTags = new HashSet<>(tags);
         updatedTags.remove(tagToRemove);
 
-        return new Person(name, phone, email, company, address, link, updatedTags);
+        return new Person(name, phone, email, company, address, Optional.ofNullable(link), updatedTags);
     }
 
     /**

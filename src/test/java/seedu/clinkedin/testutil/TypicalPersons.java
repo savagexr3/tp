@@ -28,7 +28,6 @@ import seedu.clinkedin.model.person.Person;
 public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
-            .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("94351253")
             .withEmail("alice@example.com")
             .withCompany("Google")
@@ -51,7 +50,6 @@ public class TypicalPersons {
             .withEmail("heinz@example.com")
             .withCompany("Grab")
             .withAddress("wall street")
-            .withLink("https://linkedin.com/in/carlkurz")
             .build();
 
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
@@ -68,7 +66,6 @@ public class TypicalPersons {
             .withEmail("werner@example.com")
             .withCompany("DBS")
             .withAddress("michegan ave")
-            .withLink("https://linkedin.com/in/ellemeyer")
             .build();
 
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
@@ -84,7 +81,6 @@ public class TypicalPersons {
             .withEmail("anna@example.com")
             .withCompany("Sea")
             .withAddress("4th street")
-            .withLink("https://linkedin.com/in/georgebest")
             .build();
 
     // Manually added

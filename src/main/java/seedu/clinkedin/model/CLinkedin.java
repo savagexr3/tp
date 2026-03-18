@@ -2,6 +2,7 @@ package seedu.clinkedin.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.ObservableList;
@@ -146,7 +147,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
      */
     public void removeTag(Tag t) {
         tags.remove(t);
-        List<Person> currentPersons = getPersonList();
+        List<Person> currentPersons = new ArrayList<>(getPersonList());
         for (Person person : currentPersons) {
             if (person.getTags().contains(t)) {
                 Person updatedPerson = person.removeTag(t);

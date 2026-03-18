@@ -51,7 +51,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        Company company = ParserUtil.parseCompany(argMultimap.getValue(PREFIX_COMPANY).orElse(""));
+        Company company = ParserUtil.parseCompany(argMultimap.getValue(PREFIX_COMPANY).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Optional<Link> link = ParserUtil.parseLink(argMultimap.getValue(PREFIX_LINK));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
@@ -75,6 +75,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
         if (argumentMultimap.getValue(PREFIX_EMAIL).isEmpty()) {
             fields.add("EMAIL");
+        }
+        if (argumentMultimap.getValue(PREFIX_COMPANY).isEmpty()) {
+            fields.add("COMPANY");
         }
         if (argumentMultimap.getValue(PREFIX_ADDRESS).isEmpty()) {
             fields.add("ADDRESS");
