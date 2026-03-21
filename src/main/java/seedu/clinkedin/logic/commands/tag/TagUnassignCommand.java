@@ -3,10 +3,11 @@ package seedu.clinkedin.logic.commands.tag;
 import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import seedu.clinkedin.commons.core.index.Index;
-import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.CommandResult;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
@@ -14,29 +15,31 @@ import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
- * Removes a tag from a person in the address book.
+ * Removes a tag from one or more persons in the address book.
  */
 public class TagUnassignCommand extends TagCommand {
 
     public static final String COMMAND_WORD = "unassign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a tag from a person.\n"
-            + "Parameters: PERSON_INDEX TAG_NAME\n"
-            + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " 1 friends";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a tag from one or more persons.\n"
+            + "Parameters: INDEX[,INDEX]... TAG_NAME\n"
+            + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " 1,2,3 friends";
 
-    public static final String MESSAGE_SUCCESS = "Tag removed successfully.";
-    public static final String MESSAGE_TAG_NOT_ASSIGNED = "Tag not found for this contact.";
+    public static final String MESSAGE_SUCCESS = "Tag removed successfully from %d contact(s).";
+    public static final String MESSAGE_TAG_NOT_ASSIGNED = "Tag not found for contact at index %d.";
+    public static final String MESSAGE_INVALID_INDEX = "Invalid index: %d.";
 
-    private final Index index;
+    private final List<Index> indexes;
     private final Tag tag;
 
     /**
-     * Creates a TagUnassignCommand to remove the specified {@code Tag} from the person at {@code index}.
+     * Creates a TagUnassignCommand to remove the specified {@code Tag}
+     * from all persons at the given {@code indexes}.
      */
-    public TagUnassignCommand(Index index, Tag tag) {
-        requireNonNull(index);
+    public TagUnassignCommand(List<Index> indexes, Tag tag) {
+        requireNonNull(indexes);
         requireNonNull(tag);
-        this.index = index;
+        this.indexes = indexes;
         this.tag = tag;
     }
 
@@ -45,21 +48,34 @@ public class TagUnassignCommand extends TagCommand {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        // validate all indexes first
+        for (Index index : indexes) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(
+                        String.format(MESSAGE_INVALID_INDEX, index.getOneBased()));
+            }
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-
-        if (!personToEdit.getTags().contains(tag)) {
-            throw new CommandException(MESSAGE_TAG_NOT_ASSIGNED);
+        // check all persons have the tag
+        for (Index index : indexes) {
+            Person person = lastShownList.get(index.getZeroBased());
+            if (!person.getTags().contains(tag)) {
+                throw new CommandException(
+                        String.format(MESSAGE_TAG_NOT_ASSIGNED, index.getOneBased()));
+            }
         }
 
-        Person editedPerson = personToEdit.removeTag(tag);
+        // remove tag from all persons
+        List<Person> snapshot = new ArrayList<>(lastShownList);
+        for (Index index : indexes) {
+            Person personToEdit = snapshot.get(index.getZeroBased());
+            Person currentPerson = model.getFilteredPersonList().get(index.getZeroBased());
+            Person editedPerson = currentPerson.removeTag(tag);
+            model.setPerson(personToEdit, editedPerson);
+        }
 
-        model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, indexes.size()));
     }
 
     @Override
@@ -71,6 +87,6 @@ public class TagUnassignCommand extends TagCommand {
             return false;
         }
         TagUnassignCommand otherCommand = (TagUnassignCommand) other;
-        return index.equals(otherCommand.index) && tag.equals(otherCommand.tag);
+        return indexes.equals(otherCommand.indexes) && tag.equals(otherCommand.tag);
     }
 }
