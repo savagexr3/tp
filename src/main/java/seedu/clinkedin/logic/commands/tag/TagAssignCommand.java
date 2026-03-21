@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.clinkedin.commons.core.index.Index;
-import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.CommandResult;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
