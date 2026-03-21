@@ -63,8 +63,7 @@ public class TagAssignCommandTest {
         }
         TagAssignCommand command = new TagAssignCommand(List.of(INDEX_FIRST_PERSON), tag);
         assertThrows(CommandException.class,
-                String.format(TagAssignCommand.MESSAGE_TAG_ALREADY_ASSIGNED, 1),
-                () -> command.execute(model));
+                String.format(TagAssignCommand.MESSAGE_TAG_ALREADY_ASSIGNED, 1), () -> command.execute(model));
     }
 
     @Test
