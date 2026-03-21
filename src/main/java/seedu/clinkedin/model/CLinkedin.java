@@ -3,10 +3,12 @@ package seedu.clinkedin.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.util.ToStringBuilder;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.person.UniquePersonList;
@@ -21,6 +23,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
 
     private final UniquePersonList persons;
     private final UniqueTagList tags;
+    private List<DeletedPersonRecord> deletedPersonRecords;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -34,7 +37,8 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         tags = new UniqueTagList();
     }
 
-    public CLinkedin() {}
+    public CLinkedin() {
+    }
 
     /**
      * Creates an AddressBook using the Persons in the {@code toBeCopied}
@@ -61,6 +65,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        deletedPersonRecords = new ArrayList<>();
         setTags(newData.getTagList());
     }
 
@@ -102,11 +107,26 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code key} from this {@code AddressBook} and records its deletion.
      * {@code key} must exist in the address book.
      */
     public void removePerson(Person key) {
+        requireNonNull(key);
         persons.remove(key);
+        deletedPersonRecords.add(new DeletedPersonRecord(key));
+    }
+
+    //// deleted person operations
+
+    /**
+     * Adds a deleted person record to the deleted records list.
+     * This method is primarily used when loading data from storage.
+     *
+     * @param record The deleted person record to be added.
+     */
+    public void addDeletedPersonRecord(DeletedPersonRecord record) {
+        requireNonNull(record);
+        deletedPersonRecords.add(record);
     }
 
     //// tag-level operations
@@ -169,6 +189,11 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
+    }
+
+    @Override
+    public List<DeletedPersonRecord> getDeletedPersonRecords() {
+        return Collections.unmodifiableList(deletedPersonRecords);
     }
 
     @Override

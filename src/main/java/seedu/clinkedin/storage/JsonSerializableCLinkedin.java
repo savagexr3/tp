@@ -25,16 +25,23 @@ class JsonSerializableCLinkedin {
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedDeletedPersonRecord> deletedPersonRecords = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonSerializableAddressBook} with the given persons.
      */
     @JsonCreator
     public JsonSerializableCLinkedin(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+                                     @JsonProperty("deletedPersonRecords") List<JsonAdaptedDeletedPersonRecord> deletedPersonRecords,
                                      @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         if (persons != null) {
             this.persons.addAll(persons);
         }
+
+        if (deletedPersonRecords != null) {
+            this.deletedPersonRecords.addAll(deletedPersonRecords);
+        }
+
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -47,6 +54,8 @@ class JsonSerializableCLinkedin {
      */
     public JsonSerializableCLinkedin(ReadOnlyCLinkedin source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+        deletedPersonRecords.addAll(source.getDeletedPersonRecords().stream()
+                .map(JsonAdaptedDeletedPersonRecord::new).collect(Collectors.toList()));
         tags.addAll(source.getTagList().stream().map(JsonAdaptedTag::new).collect(Collectors.toList()));
     }
 
@@ -64,6 +73,11 @@ class JsonSerializableCLinkedin {
             }
             cLinkedin.addPerson(person);
         }
+
+        for (JsonAdaptedDeletedPersonRecord jsonRecord : deletedPersonRecords) {
+            cLinkedin.addDeletedPersonRecord(jsonRecord.toModelType());
+        }
+
         for (JsonAdaptedTag jsonAdaptedTag : tags) {
             Tag tag = jsonAdaptedTag.toModelType();
             if (cLinkedin.hasTag(tag)) {
