@@ -1,6 +1,7 @@
 package seedu.clinkedin.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.clinkedin.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
@@ -87,6 +88,12 @@ public class LogicManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void getFilteredDeletedPersonRecordList_modifyList_throwsUnsupportedOperationException() throws Exception {
+        assertThrows(UnsupportedOperationException.class,
+                () -> logic.getFilteredDeletedPersonRecordList().remove(0));
     }
 
     /**

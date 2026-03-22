@@ -149,4 +149,12 @@ public class PersonCard extends UiPart<Region> {
 
         return "Deleted: " + timeAgo + " (on " + formattedDate + ")";
     }
+
+    /**
+     * Returns the deleted date-time label for testing purposes.
+     * Package-private to avoid exposing UI internals publicly.
+     */
+    Label getDeletedDateTimeLabel() {
+        return deletedDateTime;
+    }
 }
