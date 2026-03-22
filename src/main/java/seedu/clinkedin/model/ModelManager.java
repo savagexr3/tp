@@ -110,10 +110,9 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void restorePerson(DeletedPersonRecord deletedPersonRecord, Person personToRestore) {
+    public void restorePerson(DeletedPersonRecord deletedPersonRecord) {
         requireNonNull(deletedPersonRecord);
-        requireNonNull(personToRestore);
-        cLinkedin.restorePerson(deletedPersonRecord, personToRestore);
+        cLinkedin.restorePerson(deletedPersonRecord);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         updateFilteredDeletedPersonRecordList(PREDICATE_SHOW_ALL_DELETED_PERSON_RECORDS);
     }

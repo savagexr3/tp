@@ -3,9 +3,6 @@ package seedu.clinkedin.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.commons.util.ToStringBuilder;
@@ -13,8 +10,6 @@ import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
-import seedu.clinkedin.model.person.Person;
-import seedu.clinkedin.model.tag.Tag;
 
 /**
  * Restores a deleted person identified using its displayed index from the deleted person list.
@@ -48,33 +43,18 @@ public class RestoreCommand extends Command {
         }
 
         DeletedPersonRecord recordToRestore = lastShownList.get(targetIndex.getZeroBased());
-        Person originalPerson = recordToRestore.getPerson();
 
-        Set<Tag> existingTags = originalPerson.getTags().stream()
-                .filter(model::hasTag)
-                .collect(Collectors.toSet());
-
-        Person cleanedPerson = new Person(
-                originalPerson.getName(),
-                originalPerson.getPhone(),
-                originalPerson.getEmail(),
-                originalPerson.getCompany(),
-                originalPerson.getAddress(),
-                Optional.ofNullable(originalPerson.getLink()),
-                existingTags
-        );
-
-        if (model.hasPerson(cleanedPerson)) {
+        if (model.hasPerson(recordToRestore.getPerson())) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        if (model.hasPhoneNumber(cleanedPerson.getPhone())) {
+        if (model.hasPhoneNumber(recordToRestore.getPerson().getPhone())) {
             throw new CommandException(MESSAGE_DUPLICATE_PHONE);
         }
 
-        model.restorePerson(recordToRestore, cleanedPerson);
+        model.restorePerson(recordToRestore);
         return new CommandResult(String.format(MESSAGE_RESTORE_PERSON_SUCCESS,
-                Messages.format(cleanedPerson)));
+                Messages.format(recordToRestore.getPerson())));
     }
 
     @Override

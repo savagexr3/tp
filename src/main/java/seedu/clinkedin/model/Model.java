@@ -99,7 +99,7 @@ public interface Model {
      * The person in the record will be added back to the address book,
      * and the deleted person record will be removed.
      */
-    void restorePerson(DeletedPersonRecord deletedPersonRecord, Person cleanedPerson);
+    void restorePerson(DeletedPersonRecord deletedPersonRecord);
 
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.

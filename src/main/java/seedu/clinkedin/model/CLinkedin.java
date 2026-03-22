@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -126,11 +129,26 @@ public class CLinkedin implements ReadOnlyCLinkedin {
      *
      * @param record The deleted person record to restore.
      */
-    public void restorePerson(DeletedPersonRecord record, Person personToRestore) {
+    public void restorePerson(DeletedPersonRecord record) {
         requireNonNull(record);
-        requireNonNull(personToRestore);
 
-        persons.add(personToRestore);
+        Person originalPerson = record.getPerson();
+
+        Set<Tag> existingTags = originalPerson.getTags().stream()
+                .filter(tags::contains)
+                .collect(Collectors.toSet());
+
+        Person cleanedPerson = new Person(
+                originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getCompany(),
+                originalPerson.getAddress(),
+                Optional.ofNullable(originalPerson.getLink()),
+                existingTags
+        );
+
+        persons.add(cleanedPerson);
         deletedPersonRecords.remove(record);
     }
 
