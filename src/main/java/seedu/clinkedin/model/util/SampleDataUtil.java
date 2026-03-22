@@ -1,5 +1,6 @@
 package seedu.clinkedin.model.util;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -13,6 +14,7 @@ import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 
@@ -49,11 +51,52 @@ public class SampleDataUtil {
             };
     }
 
+    /**
+     * Returns sample deleted person records for showcasing the deleted-history feature.
+     *
+     * One record is intentionally older than 7 days so it will be pruned automatically.
+     */
+    public static DeletedPersonRecord[] getSampleDeletedPersonRecords() {
+        return new DeletedPersonRecord[] {
+                new DeletedPersonRecord(
+                        new Person(new Name("Brandon Lee"), new Phone("93334444"), new Email("brandon@example.com"),
+                                new Company("Sea"), new Address("21 Jurong West Street 52"),
+                                Optional.empty(),
+                                getTagSet("colleagues")),
+                        LocalDateTime.now().minusDays(3)
+                ),
+                new DeletedPersonRecord(
+                        new Person(new Name("Cheryl Ng"), new Phone("97778888"), new Email("cheryl@example.com"),
+                                new Company("GovTech"), new Address("8 Clementi Avenue 2"),
+                                Optional.of(new Link("https://www.linkedin.com/in/cherylng")),
+                                getTagSet("classmates")),
+                        LocalDateTime.now().minusHours(2)
+                ),
+                new DeletedPersonRecord(
+                        new Person(new Name("Brandon Lee"), new Phone("93334444"), new Email("brandon.old@example.com"),
+                                new Company("Sea"), new Address("21 Jurong West Street 52"),
+                                Optional.empty(),
+                                getTagSet("colleagues")),
+                        LocalDateTime.now().minusMinutes(45)
+                )
+        };
+    }
+
     public static ReadOnlyCLinkedin getSampleAddressBook() {
         CLinkedin sampleAb = new CLinkedin();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
             for (Tag tag : samplePerson.getTags()) {
+                if (!sampleAb.hasTag(tag)) {
+                    sampleAb.addTag(tag);
+                }
+            }
+        }
+
+        for (DeletedPersonRecord deletedRecord : getSampleDeletedPersonRecords()) {
+            sampleAb.addDeletedPersonRecord(deletedRecord);
+
+            for (Tag tag : deletedRecord.getPerson().getTags()) {
                 if (!sampleAb.hasTag(tag)) {
                     sampleAb.addTag(tag);
                 }
