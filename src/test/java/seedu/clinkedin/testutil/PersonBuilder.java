@@ -25,7 +25,6 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_COMPANY = "AWS";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_DATEADDED = "20-03-2026";
 
     private Name name;
     private Phone phone;
@@ -47,7 +46,7 @@ public class PersonBuilder {
         company = new Company(DEFAULT_COMPANY);
         address = new Address(DEFAULT_ADDRESS);
         link = null;
-        dateAdded = new DateAdded(DEFAULT_DATEADDED);
+        dateAdded = new DateAdded();
         tags = new HashSet<>();
     }
 
@@ -120,6 +119,15 @@ public class PersonBuilder {
         this.link = new Link(link);
         return this;
     }
+
+    /**
+     * Sets the {@code DateAdded} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withDateAdded(String dateAdded) {
+        this.dateAdded = new DateAdded(dateAdded);
+        return this;
+    }
+
 
     public Person build() {
         return new Person(name, phone, email, company, address, Optional.ofNullable(link), dateAdded, tags);

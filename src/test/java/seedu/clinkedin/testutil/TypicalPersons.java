@@ -33,6 +33,7 @@ public class TypicalPersons {
             .withCompany("Google")
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withLink("https://linkedin.com/in/alicepauline")
+            .withDateAdded("20-03-2026")
             .withTags("friends")
             .build();
 
@@ -42,6 +43,7 @@ public class TypicalPersons {
             .withCompany("Shopee")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withLink("https://linkedin.com/in/bensonmeier")
+            .withDateAdded("20-03-2026")
             .withTags("owesMoney", "friends")
             .build();
 
@@ -50,6 +52,7 @@ public class TypicalPersons {
             .withEmail("heinz@example.com")
             .withCompany("Grab")
             .withAddress("wall street")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
@@ -58,6 +61,7 @@ public class TypicalPersons {
             .withCompany("GovTech")
             .withAddress("10th street")
             .withLink("https://linkedin.com/in/danielmeier")
+            .withDateAdded("20-03-2026")
             .withTags("friends")
             .build();
 
@@ -66,6 +70,7 @@ public class TypicalPersons {
             .withEmail("werner@example.com")
             .withCompany("DBS")
             .withAddress("michegan ave")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
@@ -74,6 +79,7 @@ public class TypicalPersons {
             .withCompany("NUS Computing")
             .withAddress("little tokyo")
             .withLink("https://linkedin.com/in/fionakunz")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
@@ -81,6 +87,7 @@ public class TypicalPersons {
             .withEmail("anna@example.com")
             .withCompany("Sea")
             .withAddress("4th street")
+            .withDateAdded("20-03-2026")
             .build();
 
     // Manually added
@@ -90,6 +97,7 @@ public class TypicalPersons {
             .withCompany("Grab")
             .withAddress("little india")
             .withLink("https://linkedin.com/in/hoonmeier")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
@@ -98,6 +106,7 @@ public class TypicalPersons {
             .withCompany("Google")
             .withAddress("chicago ave")
             .withLink("https://linkedin.com/in/idamueller")
+            .withDateAdded("20-03-2026")
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
