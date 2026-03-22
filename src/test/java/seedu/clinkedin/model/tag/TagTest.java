@@ -19,6 +19,12 @@ public class TagTest {
     }
 
     @Test
+    public void constructor_invalidColorName_throwsIllegalArgumentException() {
+        String invalidColorName = "bloo";
+        assertThrows(IllegalArgumentException.class, () -> new Tag("s", invalidColorName));
+    }
+
+    @Test
     public void getTagNameValidationError() {
         // null
         assertEquals(Tag.MESSAGE_NULL, Tag.getTagNameValidationError(null));
@@ -50,4 +56,15 @@ public class TagTest {
         assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
     }
 
+    @Test
+    public void getColorNameValidationError() {
+        // Invalid color name
+        assertEquals(Tag.MESSAGE_INVALID_COLOR_NAME, Tag.getColorNameValidationError("bloo"));
+    }
+
+    @Test
+    public void isValidColorName() {
+        // null color name
+        assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
+    }
 }
