@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_DELETED_PERSON_RECORD_DISPLAYED_INDEX;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.clinkedin.testutil.TypicalPersons.ALICE;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.clinkedin.testutil.TypicalPersons.ALICE;
 import static seedu.clinkedin.testutil.TypicalPersons.getTypicalCLinkedin;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -19,7 +19,8 @@ public class RestoreCommand extends Command {
     public static final String COMMAND_WORD = "restore";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Restores the deleted person identified by the index number used in the displayed deleted person list.\n"
+            + ": Restores the deleted person identified by "
+            + "the index number used in the displayed deleted person list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 

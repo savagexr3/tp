@@ -36,7 +36,8 @@ public class CLinkedin implements ReadOnlyCLinkedin {
      *
      * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
      *   among constructors.
-     */ {
+     */
+    {
         persons = new UniquePersonList();
         deletedPersonRecords = FXCollections.observableArrayList();
         tags = new UniqueTagList();
