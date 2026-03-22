@@ -173,6 +173,48 @@ public class CLinkedinTest {
         assertFalse(cLinkedin.getDeletedPersonRecords().contains(oldRecord));
         assertTrue(cLinkedin.getDeletedPersonRecords().contains(recentRecord));
     }
+
+    @Test
+    public void restorePerson_validDeletedRecord_restoresPersonAndRemovesDeletedRecord() {
+        cLinkedin.addPerson(ALICE);
+        cLinkedin.removePerson(ALICE);
+
+        DeletedPersonRecord recordToRestore = cLinkedin.getDeletedPersonRecords().get(0);
+
+        cLinkedin.restorePerson(recordToRestore);
+
+        assertTrue(cLinkedin.getPersonList().stream()
+                .anyMatch(person -> person.isSamePerson(ALICE)));
+        assertEquals(0, cLinkedin.getDeletedPersonRecords().size());
+    }
+
+    @Test
+    public void restorePerson_nonExistentTags_tagsRemovedAndPersonStillRestored() {
+        Tag wooperTag = new Tag("wooper");
+
+        Person personWithWooperTag = new PersonBuilder(ALICE)
+                .withTags("wooper")
+                .build();
+
+        cLinkedin.addPerson(personWithWooperTag);
+        cLinkedin.removePerson(personWithWooperTag);
+
+        DeletedPersonRecord recordToRestore = cLinkedin.getDeletedPersonRecords().get(0);
+
+        cLinkedin.restorePerson(recordToRestore);
+
+        Person restoredPerson = cLinkedin.getPersonList().get(0);
+
+        assertTrue(restoredPerson.isSamePerson(personWithWooperTag));
+        assertFalse(restoredPerson.getTags().contains(wooperTag));
+        assertEquals(0, cLinkedin.getDeletedPersonRecords().size());
+    }
+
+    @Test
+    public void restorePerson_nullRecord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> cLinkedin.restorePerson(null));
+    }
+
     // ================= TAG TESTS =================
 
     @Test
