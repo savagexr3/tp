@@ -63,7 +63,7 @@ public class PersonCard extends UiPart<Region> {
         }
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> tags.getChildren().add(TagUtil.tagLabel(tag.tagName, tag.tagColor)));
 
         String companyName = person.getCompany().companyName;
         if (companyName.isEmpty()) {

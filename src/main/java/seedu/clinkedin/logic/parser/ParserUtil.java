@@ -135,6 +135,28 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String tag} into a {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tag} is invalid.
+     */
+    public static Tag parseTag(String tag, String color) throws ParseException {
+        requireNonNull(tag);
+        requireNonNull(color);
+        String trimmedTag = tag.trim();
+        String trimmedColor = color.trim();
+        String tagNameError = Tag.getTagNameValidationError(trimmedTag);
+        String tagColorError = Tag.getColorNameValidationError(trimmedColor);
+        if (tagNameError != null) {
+            throw new ParseException(tagNameError);
+        }
+        if (tagColorError != null) {
+            throw new ParseException(tagColorError);
+        }
+        return new Tag(trimmedTag, trimmedColor);
+    }
+
+    /**
      * Parses a {@code String link} into a {@code Link}.
      * Leading and trailing whitespaces will be trimmed.
      *

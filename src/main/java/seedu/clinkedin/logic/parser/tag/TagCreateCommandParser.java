@@ -21,9 +21,14 @@ public class TagCreateCommandParser implements Parser<TagCreateCommand> {
      */
     public TagCreateCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
+        String[] parts = trimmedArgs.split("\\s+", 2);
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCreateCommand.MESSAGE_USAGE));
+        }
+
+        if (parts.length == 2) {
+            return new TagCreateCommand(ParserUtil.parseTag(parts[0], parts[1]));
         }
 
         Tag tag = ParserUtil.parseTag(trimmedArgs);

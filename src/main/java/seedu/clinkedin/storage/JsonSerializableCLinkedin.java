@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
@@ -47,6 +48,7 @@ class JsonSerializableCLinkedin {
      */
     public JsonSerializableCLinkedin(ReadOnlyCLinkedin source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+        ObservableList<Tag> test = source.getTagList();
         tags.addAll(source.getTagList().stream().map(JsonAdaptedTag::new).collect(Collectors.toList()));
     }
 

@@ -64,7 +64,12 @@ public class TagAssignCommand extends TagCommand {
         }
 
         Set<Tag> updatedTags = new HashSet<>(personToEdit.getTags());
-        updatedTags.add(tag);
+        for (Tag t : model.getCLinkedin().getTagList()) {
+            if (t.tagName.equalsIgnoreCase(tag.tagName)) {
+                updatedTags.add(t);
+                break;
+            }
+        }
 
         Person editedPerson = new Person(
                 personToEdit.getName(),
