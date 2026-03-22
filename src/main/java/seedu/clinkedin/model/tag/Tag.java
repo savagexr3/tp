@@ -3,6 +3,8 @@ package seedu.clinkedin.model.tag;
 import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
 
+import javafx.scene.paint.Color;
+
 /**
  * Represents a Tag in the address book.
  * Guarantees: immutable; valid according to {@link #getTagNameValidationError(String)}.
@@ -27,7 +29,10 @@ public class Tag {
 
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
 
+    public static final Color DEFAULT_COLOR = Color.web("#3e7b91");
+
     public final String tagName;
+    public final Color tagColor;
 
     /**
      * Constructs a {@code Tag}.
@@ -39,6 +44,22 @@ public class Tag {
         String error = getTagNameValidationError(tagName);
         checkArgument(error == null, error);
         this.tagName = tagName;
+        this.tagColor = DEFAULT_COLOR;
+    }
+
+    /**
+     * Constructs a {@code Tag} with a specified color
+     *
+     * @param tagName A valid tag name.
+     * @param tagColor A valid Color object.
+     */
+    public Tag(String tagName, Color tagColor) {
+        requireNonNull(tagName);
+        requireNonNull(tagColor);
+        String error = getTagNameValidationError(tagName);
+        checkArgument(error == null, error);
+        this.tagName = tagName;
+        this.tagColor = tagColor;
     }
 
     /**
