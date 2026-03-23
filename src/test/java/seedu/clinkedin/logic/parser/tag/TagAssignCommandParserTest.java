@@ -5,6 +5,11 @@ import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseFail
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.clinkedin.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +21,17 @@ public class TagAssignCommandParserTest {
     private TagAssignCommandParser parser = new TagAssignCommandParser();
 
     @Test
-    public void parse_validArgs_returnsTagAssignCommand() {
+    public void parse_singleValidIndex_returnsTagAssignCommand() {
         assertParseSuccess(parser, "1 friends",
-                new TagAssignCommand(INDEX_FIRST_PERSON, new Tag("friends")));
+                new TagAssignCommand(List.of(INDEX_FIRST_PERSON), new Tag("friends")));
+    }
+
+    @Test
+    public void parse_multipleValidIndexes_returnsTagAssignCommand() {
+        assertParseSuccess(parser, "1,2,3 friends",
+                new TagAssignCommand(
+                        Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                        new Tag("friends")));
     }
 
     @Test
@@ -43,6 +56,13 @@ public class TagAssignCommandParserTest {
     public void parse_invalidIndex_throwsParseException() {
         assertParseFailure(parser, "0 friends", MESSAGE_INVALID_INDEX);
         assertParseFailure(parser, "-1 friends", MESSAGE_INVALID_INDEX);
+    }
+
+    @Test
+    public void parse_malformedIndexList_throwsParseException() {
+        // empty segment between commas
+        assertParseFailure(parser, "1,,2 friends",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagAssignCommand.MESSAGE_USAGE));
     }
 
     @Test

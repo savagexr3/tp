@@ -171,11 +171,9 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
-        // zero tags
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
-
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + COMPANY_DESC_AMY
-                + ADDRESS_DESC_AMY + LINK_DESC_AMY, new AddCommand(expectedPerson));
+            + ADDRESS_DESC_AMY + LINK_DESC_AMY, new AddCommand(expectedPerson));
 
         // no link
         Person expectedPersonNoLink = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
