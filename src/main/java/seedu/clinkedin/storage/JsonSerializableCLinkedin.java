@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
