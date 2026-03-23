@@ -93,4 +93,19 @@ public class TagColorCommand extends TagCommand {
                 updatedTags
         );
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagColorCommand)) {
+            return false;
+        }
+
+        TagColorCommand otherTagColorCommand = (TagColorCommand) other;
+        return tag.equals(otherTagColorCommand.tag) && color.equals(otherTagColorCommand.color);
+    }
 }
