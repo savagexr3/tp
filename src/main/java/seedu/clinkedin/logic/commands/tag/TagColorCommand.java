@@ -24,9 +24,8 @@ public class TagColorCommand extends TagCommand {
             + "Parameters: TAG_NAME VALID_COLOR\n"
             + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " rich gold";
 
-    public static final String MESSAGE_SUCCESS = "Tag assigned successfully.";
+    public static final String MESSAGE_SUCCESS = "Tag color changed successfully.";
     public static final String MESSAGE_TAG_NOT_FOUND = "Tag does not exist.";
-    public static final String MESSAGE_TAG_ALREADY_ASSIGNED = "Tag already assigned to this contact.";
 
     private Tag tag;
     private String color;

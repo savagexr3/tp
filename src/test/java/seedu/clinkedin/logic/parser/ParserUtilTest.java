@@ -188,6 +188,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTag_invalidColor_throwsParseException() {
+        String color = "bloo";
+        assertThrows(ParseException.class, () -> ParserUtil.parseTag("friends", color));
+    }
+
+    @Test
     public void parseTags_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTags(null));
     }
