@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.exceptions.DuplicatePersonException;
 import seedu.clinkedin.model.tag.Tag;
@@ -61,7 +62,7 @@ public class CLinkedinTest {
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
-        CLinkedinStub newData = new CLinkedinStub(newPersons, Collections.emptyList());
+        CLinkedinStub newData = new CLinkedinStub(newPersons, Collections.emptyList(), Collections.emptyList());
 
         assertThrows(DuplicatePersonException.class, () -> cLinkedin.resetData(newData));
     }
@@ -155,20 +156,28 @@ public class CLinkedinTest {
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     * A stub ReadOnlyCLinkedin whose persons list can violate interface constraints.
      */
     private static class CLinkedinStub implements ReadOnlyCLinkedin {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final List<DeletedPersonRecord> deletedPersonRecords = FXCollections.observableArrayList();
         private final ObservableList<Tag> tags = FXCollections.observableArrayList();
 
-        CLinkedinStub(Collection<Person> persons, Collection<Tag> tags) {
+        CLinkedinStub(Collection<Person> persons, List<DeletedPersonRecord> deletedPersonRecords,
+                      Collection<Tag> tags) {
             this.persons.setAll(persons);
+            this.deletedPersonRecords.addAll(deletedPersonRecords);
             this.tags.setAll(tags);
         }
 
         @Override
         public ObservableList<Person> getPersonList() {
             return persons;
+        }
+
+        @Override
+        public List<DeletedPersonRecord> getDeletedPersonRecords() {
+            return deletedPersonRecords;
         }
 
         @Override
