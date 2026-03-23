@@ -22,6 +22,7 @@ import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.UserPrefs;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.testutil.PersonBuilder;
 
 public class RestoreCommandTest {
@@ -31,6 +32,7 @@ public class RestoreCommandTest {
     @BeforeEach
     public void setUp() {
         model = new ModelManager(getTypicalCLinkedin(), new UserPrefs());
+        model.addTag(new Tag("friends"));
         model.deletePerson(ALICE);
     }
 

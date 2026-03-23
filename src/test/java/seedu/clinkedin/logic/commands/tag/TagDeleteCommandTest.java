@@ -150,7 +150,7 @@ public class TagDeleteCommandTest {
         }
 
         @Override
-        public void restorePerson(DeletedPersonRecord deletedPersonRecord) {
+        public Person restorePerson(DeletedPersonRecord deletedPersonRecord) {
             throw new AssertionError("This method should not be called.");
         }
 

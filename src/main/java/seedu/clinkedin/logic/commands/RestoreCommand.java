@@ -10,6 +10,7 @@ import seedu.clinkedin.logic.Messages;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
+import seedu.clinkedin.model.person.Person;
 
 /**
  * Restores a deleted person identified using its displayed index from the deleted person list.
@@ -53,9 +54,9 @@ public class RestoreCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PHONE);
         }
 
-        model.restorePerson(recordToRestore);
+        Person cleanedPerson = model.restorePerson(recordToRestore);
         return new CommandResult(String.format(MESSAGE_RESTORE_PERSON_SUCCESS,
-                Messages.format(recordToRestore.getPerson())));
+                Messages.format(cleanedPerson)));
     }
 
     @Override

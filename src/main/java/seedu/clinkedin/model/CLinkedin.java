@@ -125,12 +125,14 @@ public class CLinkedin implements ReadOnlyCLinkedin {
 
     /**
      * Restores a deleted person record back into the address book.
-     * The person will be added back to the person list,
-     * and the deleted record will be removed.
+     * The associated person is re-added to the main person list after
+     * filtering out any tags that no longer exist in the address book.
+     * The corresponding deleted record is then removed from the deleted list.
      *
-     * @param record The deleted person record to restore.
+     * @param record The deleted person record to restore. Must not be null.
+     * @return The restored {@code Person} instance with only existing tags retained.
      */
-    public void restorePerson(DeletedPersonRecord record) {
+    public Person restorePerson(DeletedPersonRecord record) {
         requireNonNull(record);
 
         Person originalPerson = record.getPerson();
@@ -151,6 +153,8 @@ public class CLinkedin implements ReadOnlyCLinkedin {
 
         persons.add(cleanedPerson);
         deletedPersonRecords.remove(record);
+
+        return cleanedPerson;
     }
 
     //// deleted person operations
