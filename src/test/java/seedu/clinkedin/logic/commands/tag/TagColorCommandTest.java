@@ -14,7 +14,6 @@ import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.UserPrefs;
 import seedu.clinkedin.model.tag.Tag;
-import seedu.clinkedin.model.tag.TagContainsKeywordPredicate;
 
 public class TagColorCommandTest {
 
