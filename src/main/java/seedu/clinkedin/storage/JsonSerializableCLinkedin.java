@@ -48,7 +48,6 @@ class JsonSerializableCLinkedin {
      */
     public JsonSerializableCLinkedin(ReadOnlyCLinkedin source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
-        ObservableList<Tag> test = source.getTagList();
         tags.addAll(source.getTagList().stream().map(JsonAdaptedTag::new).collect(Collectors.toList()));
     }
 
