@@ -22,6 +22,7 @@ import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
 import seedu.clinkedin.model.ReadOnlyUserPrefs;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
@@ -194,6 +195,16 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredDeletedPersonRecordList(Predicate<DeletedPersonRecord> predicate) {
             throw new AssertionError("This method should not be called.");
         }
 

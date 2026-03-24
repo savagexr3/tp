@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.logic.commands.ClearCommand;
 import seedu.clinkedin.logic.commands.DeleteCommand;
+import seedu.clinkedin.logic.commands.DeletedCommand;
 import seedu.clinkedin.logic.commands.EditCommand;
 import seedu.clinkedin.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.clinkedin.logic.commands.ExitCommand;
@@ -88,6 +89,12 @@ public class CLinkedinParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_deleted() throws Exception {
+        assertTrue(parser.parseCommand(DeletedCommand.COMMAND_WORD) instanceof DeletedCommand);
+        assertTrue(parser.parseCommand(DeletedCommand.COMMAND_WORD + " 3") instanceof DeletedCommand);
     }
 
     @Test

@@ -74,4 +74,14 @@ public class SampleDataUtilTest {
         assertFalse(sampleAb.getPersonList().isEmpty());
         assertFalse(sampleAb.getTagList().isEmpty());
     }
+
+    @Test
+    public void getSampleAddressBook_containsSampleDeletedPersonRecords() {
+        ReadOnlyCLinkedin addressBook = SampleDataUtil.getSampleAddressBook();
+
+        assertNotNull(addressBook.getDeletedPersonRecords());
+        assertFalse(addressBook.getDeletedPersonRecords().isEmpty());
+        assertEquals(SampleDataUtil.getSampleDeletedPersonRecords().length,
+                addressBook.getDeletedPersonRecords().size());
+    }
 }

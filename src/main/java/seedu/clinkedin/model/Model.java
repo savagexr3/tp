@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.core.GuiSettings;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
@@ -13,8 +14,15 @@ import seedu.clinkedin.model.tag.Tag;
  * The API of the Model component.
  */
 public interface Model {
-    /** {@code Predicate} that always evaluate to true */
+    /**
+     * {@code Predicate} that always evaluate to true
+     */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+
+    /**
+     * {@code Predicate} that always evaluates to true for deleted person records.
+     */
+    Predicate<DeletedPersonRecord> PREDICATE_SHOW_ALL_DELETED_PERSON_RECORDS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -88,9 +96,22 @@ public interface Model {
 
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.
+     *
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Returns an unmodifiable view of the filtered deleted person record list.
+     */
+    ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList();
+
+    /**
+     * Updates the filter of the filtered deleted person record list to filter by the given {@code predicate}.
+     *
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredDeletedPersonRecordList(Predicate<DeletedPersonRecord> predicate);
 
     boolean hasTag(Tag tag);
 

@@ -12,6 +12,7 @@ import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.logic.commands.ClearCommand;
 import seedu.clinkedin.logic.commands.Command;
 import seedu.clinkedin.logic.commands.DeleteCommand;
+import seedu.clinkedin.logic.commands.DeletedCommand;
 import seedu.clinkedin.logic.commands.EditCommand;
 import seedu.clinkedin.logic.commands.ExitCommand;
 import seedu.clinkedin.logic.commands.FindComCommand;
@@ -76,6 +77,9 @@ public class AddressBookParser {
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case DeletedCommand.COMMAND_WORD:
+            return new DeletedCommand();
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();

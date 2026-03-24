@@ -15,6 +15,7 @@ import seedu.clinkedin.logic.parser.AddressBookParser;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.storage.Storage;
 
@@ -69,6 +70,11 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return model.getFilteredPersonList();
+    }
+
+    @Override
+    public ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList() {
+        return model.getFilteredDeletedPersonRecordList();
     }
 
     @Override
