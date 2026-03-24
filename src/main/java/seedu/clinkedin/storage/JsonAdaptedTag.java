@@ -1,7 +1,7 @@
 package seedu.clinkedin.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.tag.Tag;
@@ -12,13 +12,15 @@ import seedu.clinkedin.model.tag.Tag;
 class JsonAdaptedTag {
 
     private final String tagName;
+    private final String tagColor;
 
     /**
      * Constructs a {@code JsonAdaptedTag} with the given {@code tagName}.
      */
     @JsonCreator
-    public JsonAdaptedTag(String tagName) {
+    public JsonAdaptedTag(@JsonProperty("tagName") String tagName, @JsonProperty("tagColor") String tagColor) {
         this.tagName = tagName;
+        this.tagColor = tagColor;
     }
 
     /**
@@ -26,11 +28,7 @@ class JsonAdaptedTag {
      */
     public JsonAdaptedTag(Tag source) {
         tagName = source.tagName;
-    }
-
-    @JsonValue
-    public String getTagName() {
-        return tagName;
+        tagColor = source.tagColor;
     }
 
     /**
@@ -42,7 +40,10 @@ class JsonAdaptedTag {
         if (!Tag.isValidTagName(tagName)) {
             throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
         }
-        return new Tag(tagName);
+        if (!Tag.isValidColorName(tagColor)) {
+            throw new IllegalValueException(Tag.MESSAGE_INVALID_COLOR_NAME);
+        }
+        return new Tag(tagName, tagColor);
     }
 
 }

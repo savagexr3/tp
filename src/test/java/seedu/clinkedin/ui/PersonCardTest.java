@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
+import seedu.clinkedin.model.person.DateAdded;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -30,6 +31,7 @@ public class PersonCardTest {
                 new Address("123 Street"),
                 Optional.of(new Remark("Play basketball")),
                 link != null ? Optional.of(new Link(link)) : Optional.empty(),
+                new DateAdded("20-03-2026"),
                 SampleDataUtil.getTagSet()
         );
     }

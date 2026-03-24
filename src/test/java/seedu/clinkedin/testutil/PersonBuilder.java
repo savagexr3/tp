@@ -6,6 +6,7 @@ import java.util.Set;
 
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
+import seedu.clinkedin.model.person.DateAdded;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -33,6 +34,7 @@ public class PersonBuilder {
     private Address address;
     private Remark remark;
     private Link link; // null if not provided
+    private DateAdded dateAdded;
     private Set<Tag> tags;
 
     /**
@@ -47,6 +49,7 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         remark = null;
         link = null;
+        dateAdded = new DateAdded();
         tags = new HashSet<>();
     }
 
@@ -61,6 +64,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         remark = personToCopy.getRemark();
         link = personToCopy.getLink();
+        dateAdded = personToCopy.getDateAdded();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -129,11 +133,17 @@ public class PersonBuilder {
     }
 
     /**
-     * Builds and returns a {@code Person} with the current state of this builder.
+     * Sets the {@code DateAdded} of the {@code Person} that we are building.
      */
+    public PersonBuilder withDateAdded(String dateAdded) {
+        this.dateAdded = new DateAdded(dateAdded);
+        return this;
+    }
+
+
     public Person build() {
         return new Person(name, phone, email, Optional.ofNullable(company), address,
-                Optional.ofNullable(remark), Optional.ofNullable(link), tags);
+                Optional.ofNullable(remark), Optional.ofNullable(link), dateAdded, tags);
     }
 
 }

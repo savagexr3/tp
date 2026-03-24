@@ -2,6 +2,9 @@ package seedu.clinkedin.ui;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -12,6 +15,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.clinkedin.commons.core.LogsCenter;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 
 /**
@@ -43,7 +47,11 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Hyperlink link;
     @FXML
+    private Label dateAdded;
+    @FXML
     private FlowPane tags;
+    @FXML
+    private Label deletedDateTime;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -63,6 +71,7 @@ public class PersonCard extends UiPart<Region> {
             link.setVisible(false);
             link.setManaged(false);
         }
+        dateAdded.setText("Added on: " + person.getDateAdded().value);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
@@ -80,6 +89,20 @@ public class PersonCard extends UiPart<Region> {
             remark.setVisible(false);
             remark.setManaged(false);
         }
+
+        deletedDateTime.setVisible(false);
+        deletedDateTime.setManaged(false);
+    }
+
+    /**
+     * Creates a {@code PersonCard} for a deleted person record.
+     */
+    public PersonCard(DeletedPersonRecord deletedPersonRecord, int displayedIndex) {
+        this(deletedPersonRecord.getPerson(), displayedIndex);
+
+        deletedDateTime.setText(formatDeletedDateTime(deletedPersonRecord.getDeletedDateTime()));
+        deletedDateTime.setVisible(true);
+        deletedDateTime.setManaged(true);
     }
 
     /**
@@ -111,5 +134,36 @@ public class PersonCard extends UiPart<Region> {
         } catch (Exception e) {
             logger.warning("Failed to open link: " + url + " — " + e.getMessage());
         }
+    }
+
+    private String formatDeletedDateTime(LocalDateTime deletedTime) {
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(deletedTime, now);
+
+        long days = duration.toDays();
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes();
+
+        String timeAgo;
+        if (days > 0) {
+            timeAgo = days + (days == 1 ? " day ago" : " days ago");
+        } else if (hours > 0) {
+            timeAgo = hours + (hours == 1 ? " hour ago" : " hours ago");
+        } else {
+            timeAgo = minutes + (minutes == 1 ? " minute ago" : " minutes ago");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mm a");
+        String formattedDate = deletedTime.format(formatter);
+
+        return "Deleted: " + timeAgo + " (on " + formattedDate + ")";
+    }
+
+    /**
+     * Returns the deleted date-time label for testing purposes.
+     * Package-private to avoid exposing UI internals publicly.
+     */
+    Label getDeletedDateTimeLabel() {
+        return deletedDateTime;
     }
 }

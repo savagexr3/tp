@@ -5,12 +5,14 @@ import static seedu.clinkedin.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.commons.util.JsonUtil;
 import seedu.clinkedin.model.CLinkedin;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.testutil.TypicalPersons;
 
 public class JsonSerializableCLinkedinTest {
@@ -44,4 +46,46 @@ public class JsonSerializableCLinkedinTest {
                 dataFromFile::toModelType);
     }
 
+    @Test
+    public void toModelType_withDeletedPersonRecords_success() throws Exception {
+        CLinkedin cLinkedin = new CLinkedin();
+        cLinkedin.addPerson(TypicalPersons.ALICE);
+        cLinkedin.removePerson(TypicalPersons.ALICE);
+
+        JsonSerializableCLinkedin json = new JsonSerializableCLinkedin(cLinkedin);
+        CLinkedin result = json.toModelType();
+
+        assertEquals(cLinkedin.getDeletedPersonRecords(),
+                result.getDeletedPersonRecords());
+    }
+
+    @Test
+    public void constructor_nullDeletedPersonRecords_handlesGracefully() throws Exception {
+        JsonSerializableCLinkedin json =
+                new JsonSerializableCLinkedin(null, null, null);
+
+        CLinkedin result = json.toModelType();
+
+        assertEquals(0, result.getDeletedPersonRecords().size());
+    }
+
+    @Test
+    public void toModelType_prunesExpiredDeletedRecords() throws Exception {
+        CLinkedin cLinkedin = new CLinkedin();
+
+        // old record (>7 days)
+        cLinkedin.addDeletedPersonRecord(
+                new DeletedPersonRecord(TypicalPersons.ALICE,
+                        LocalDateTime.now().minusDays(8)));
+
+        // recent record
+        cLinkedin.addDeletedPersonRecord(
+                new DeletedPersonRecord(TypicalPersons.ALICE,
+                        LocalDateTime.now()));
+
+        JsonSerializableCLinkedin json = new JsonSerializableCLinkedin(cLinkedin);
+        CLinkedin result = json.toModelType();
+
+        assertEquals(1, result.getDeletedPersonRecords().size());
+    }
 }

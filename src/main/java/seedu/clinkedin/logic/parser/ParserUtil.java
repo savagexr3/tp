@@ -24,7 +24,7 @@ import seedu.clinkedin.model.tag.Tag;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_INDEX = "Index must be a positive non-zero integer.";
 
 
     /**

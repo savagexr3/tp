@@ -34,6 +34,9 @@
       <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
       <Hyperlink fx:id="link" styleClass="cell_small_label link-no-padding" text="\$link" />
       <Label fx:id="remark" styleClass="remark-text" text="\$remark" />
+      <Label fx:id="dateAdded" styleClass="date-added-label" text="\$dateAdded" />
+      <Label fx:id="deletedDateTime" styleClass="cell_small_label" text="\$deletedDateTime"
+             managed = "false" visible="false" />
     </VBox>
   </GridPane>
 </HBox>

@@ -19,6 +19,7 @@ import seedu.clinkedin.logic.commands.AddCommand;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
+import seedu.clinkedin.model.person.DateAdded;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -59,7 +60,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Optional<Link> link = ParserUtil.parseLink(argMultimap.getValue(PREFIX_LINK));
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, email, company, address, remark, link, tagList);
+        Person person = new Person(name, phone, email, company, address, remark, link, new DateAdded(), tagList);
 
         return new AddCommand(person);
     }

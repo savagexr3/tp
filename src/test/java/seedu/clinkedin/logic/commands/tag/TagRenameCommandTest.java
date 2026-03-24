@@ -66,6 +66,7 @@ public class TagRenameCommandTest {
                         person.getAddress(),
                         Optional.ofNullable(person.getRemark()),
                         Optional.ofNullable(person.getLink()),
+                        person.getDateAdded(),
                         updatedTags
                 );
                 expectedModel.setPerson(person, editedPerson);

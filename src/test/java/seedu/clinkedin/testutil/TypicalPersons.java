@@ -36,6 +36,7 @@ public class TypicalPersons {
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withRemark("Enjoys networking events")
             .withLink("https://linkedin.com/in/alicepauline")
+            .withDateAdded("20-03-2026")
             .withTags("friends")
             .build();
 
@@ -46,6 +47,7 @@ public class TypicalPersons {
             .withAddress("311, Clementi Ave 2, #02-25")
             .withRemark("Met during internship")
             .withLink("https://linkedin.com/in/bensonmeier")
+            .withDateAdded("20-03-2026")
             .withTags("owesMoney", "friends")
             .build();
 
@@ -55,6 +57,7 @@ public class TypicalPersons {
             .withCompany("Grab")
             .withAddress("wall street")
             .withRemark("Prefers email contact")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
@@ -64,6 +67,7 @@ public class TypicalPersons {
             .withAddress("10th street")
             .withRemark("Interested in public sector tech")
             .withLink("https://linkedin.com/in/danielmeier")
+            .withDateAdded("20-03-2026")
             .withTags("friends")
             .build();
 
@@ -72,6 +76,7 @@ public class TypicalPersons {
             .withEmail("werner@example.com")
             .withCompany("DBS")
             .withAddress("michegan ave")
+            .withDateAdded("20-03-2026")
             .withRemark("Works in finance")
             .build();
 
@@ -82,6 +87,7 @@ public class TypicalPersons {
             .withAddress("little tokyo")
             .withRemark("Coursemate from CS2103")
             .withLink("https://linkedin.com/in/fionakunz")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person GEORGE = new PersonBuilder().withName("George Best")
@@ -89,6 +95,7 @@ public class TypicalPersons {
             .withEmail("anna@example.com")
             .withCompany("Sea")
             .withAddress("4th street")
+            .withDateAdded("20-03-2026")
             .withRemark("Interested in product roles")
             .build();
 
@@ -100,6 +107,7 @@ public class TypicalPersons {
             .withAddress("little india")
             .withRemark("Reach out about internships")
             .withLink("https://linkedin.com/in/hoonmeier")
+            .withDateAdded("20-03-2026")
             .build();
 
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
@@ -109,6 +117,7 @@ public class TypicalPersons {
             .withAddress("chicago ave")
             .withRemark("Met at career fair")
             .withLink("https://linkedin.com/in/idamueller")
+            .withDateAdded("20-03-2026")
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
@@ -124,7 +133,7 @@ public class TypicalPersons {
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
-    private TypicalPersons() {}
+    private TypicalPersons() {} // prevents instantiation
 
     /**
      * Returns an {@code CLinkedin} with all the typical persons.

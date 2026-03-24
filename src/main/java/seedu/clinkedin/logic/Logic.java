@@ -8,6 +8,7 @@ import seedu.clinkedin.logic.commands.CommandResult;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 
 /**
@@ -32,6 +33,9 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
+
+    /** Returns an unmodifiable view of the filtered list of deleted person records. */
+    ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList();
 
     /**
      * Returns the user prefs' address book file path.

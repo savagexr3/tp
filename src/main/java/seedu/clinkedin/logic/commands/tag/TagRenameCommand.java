@@ -92,6 +92,7 @@ public class TagRenameCommand extends TagCommand {
                 personToEdit.getAddress(),
                 ofNullable(personToEdit.getRemark()),
                 ofNullable(personToEdit.getLink()),
+                personToEdit.getDateAdded(),
                 updatedTags
         );
     }

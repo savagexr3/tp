@@ -15,6 +15,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.core.GuiSettings;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.NameContainsKeywordsPredicate;
 import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.testutil.AddressBookBuilder;
@@ -92,6 +93,77 @@ public class ModelManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    }
+
+    // ================= DELETED PERSON RECORD TESTS =================
+    @Test
+    public void deletePerson_personInCLinkedin_removesPersonAndAddsDeletedRecord() {
+        modelManager.addPerson(ALICE);
+
+        int originalDeletedSize = modelManager.getFilteredDeletedPersonRecordList().size();
+
+        modelManager.deletePerson(ALICE);
+
+        // Check: person removed and deleted record added
+        assertFalse(modelManager.getCLinkedin().getPersonList().contains(ALICE));
+        assertEquals(originalDeletedSize + 1,
+                modelManager.getFilteredDeletedPersonRecordList().size());
+        assertEquals(ALICE,
+                modelManager.getFilteredDeletedPersonRecordList()
+                        .get(originalDeletedSize).getPerson());
+    }
+
+    @Test
+    public void restorePerson_deletedRecordInCLinkedin_restoresPersonAndRemovesDeletedRecord() {
+        modelManager.addPerson(ALICE);
+        modelManager.deletePerson(ALICE);
+
+        DeletedPersonRecord recordToRestore = modelManager.getFilteredDeletedPersonRecordList().get(0);
+
+        modelManager.restorePerson(recordToRestore);
+
+        assertTrue(modelManager.getCLinkedin().getPersonList().stream()
+                .anyMatch(p -> p.isSamePerson(ALICE)));
+        assertEquals(0, modelManager.getFilteredDeletedPersonRecordList().size());
+    }
+
+    @Test
+    public void restorePerson_updatesFilteredLists_showsAllAfterRestore() {
+        modelManager.addPerson(ALICE);
+        modelManager.deletePerson(ALICE);
+
+        DeletedPersonRecord recordToRestore = modelManager.getFilteredDeletedPersonRecordList().get(0);
+
+        modelManager.updateFilteredPersonList(person -> false);
+        modelManager.updateFilteredDeletedPersonRecordList(record -> false);
+
+        modelManager.restorePerson(recordToRestore);
+
+        assertTrue(modelManager.getFilteredPersonList().stream()
+                .anyMatch(p -> p.isSamePerson(ALICE)));
+        assertEquals(0, modelManager.getFilteredDeletedPersonRecordList().size());
+    }
+
+    @Test
+    public void restorePerson_nullDeletedPersonRecord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.restorePerson(null));
+    }
+
+    @Test
+    public void getFilteredDeletedPersonRecordList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, ()
+                -> modelManager.getFilteredDeletedPersonRecordList().remove(0));
+    }
+
+    @Test
+    public void updateFilteredDeletedPersonRecordList_filterApplied_listFiltered() {
+        modelManager.addPerson(ALICE);
+        modelManager.deletePerson(ALICE);
+
+        // filter to show none
+        modelManager.updateFilteredDeletedPersonRecordList(record -> false);
+
+        assertEquals(0, modelManager.getFilteredDeletedPersonRecordList().size());
     }
 
     // ================= TAG TESTS =================
@@ -181,5 +253,11 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(cLinkedin, differentUserPrefs)));
+
+        // different filteredDeletedPersonRecords -> returns false
+        modelManager.deletePerson(ALICE);
+        modelManager.addPerson(ALICE);
+
+        assertFalse(modelManager.equals(new ModelManager(cLinkedin, userPrefs)));
     }
 }

@@ -26,6 +26,7 @@ import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
+import seedu.clinkedin.model.person.DateAdded;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -61,6 +62,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_PHONE = "Duplicate phone number detected";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -93,6 +95,10 @@ public class EditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
+        if (!personToEdit.getPhone().equals(editedPerson.getPhone()) && model.hasPhoneNumber(editedPerson.getPhone())) {
+            throw new CommandException(MESSAGE_DUPLICATE_PHONE);
+        }
+
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
@@ -116,10 +122,11 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Optional<Link> updatedLink = editPersonDescriptor.getLink()
                 .or(() -> Optional.ofNullable(personToEdit.getLink()));
+        DateAdded dateAdded = personToEdit.getDateAdded();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedCompany, updatedAddress,
-                updatedRemark, updatedLink, updatedTags);
+                updatedRemark, updatedLink, dateAdded, updatedTags);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.person.Address;
 import seedu.clinkedin.model.person.Company;
+import seedu.clinkedin.model.person.DateAdded;
 import seedu.clinkedin.model.person.Email;
 import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Name;
@@ -35,6 +36,7 @@ class JsonAdaptedPerson {
     private final String address;
     private final String remark;
     private final String link;
+    private final String dateAdded;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -44,7 +46,7 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("company") String company,
             @JsonProperty("address") String address, @JsonProperty("remark") String remark,
-                             @JsonProperty("link") String link,
+                             @JsonProperty("link") String link, @JsonProperty("dateAdded") String dateAdded,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
@@ -53,6 +55,7 @@ class JsonAdaptedPerson {
         this.address = address;
         this.remark = remark;
         this.link = link;
+        this.dateAdded = dateAdded;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -69,6 +72,7 @@ class JsonAdaptedPerson {
         address = source.getAddress().value;
         remark = source.getRemark() != null ? source.getRemark().value : null;
         link = source.getLink() != null ? source.getLink().value : null;
+        dateAdded = source.getDateAdded().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -146,9 +150,18 @@ class JsonAdaptedPerson {
 
         Optional<Link> modelLink = (link == null) ? Optional.empty() : Optional.of(new Link(link));
 
+        if (dateAdded == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    DateAdded.class.getSimpleName()));
+        }
+        if (!DateAdded.isValidDate(dateAdded)) {
+            throw new IllegalValueException(DateAdded.MESSAGE_CONSTRAINTS);
+        }
+        final DateAdded modelDateAdded = new DateAdded(dateAdded);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelEmail, modelCompany, modelAddress, modelRemark,
-                modelLink, modelTags);
+                modelLink, modelDateAdded, modelTags);
     }
 
 }

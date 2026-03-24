@@ -1,5 +1,5 @@
 {
-  "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
+  "_comment" : "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
   "persons" : [ {
     "name" : "Alice Pauline",
     "phone" : "94351253",
@@ -8,7 +8,11 @@
     "address" : "123, Jurong West Ave 6, #08-111",
     "remark" : "Enjoys networking events",
     "link" : "https://linkedin.com/in/alicepauline",
-    "tags" : [ "friends" ]
+    "dateAdded": "20-03-2026",
+    "tags" : [ {
+      "tagName" : "friends",
+      "tagColor" : "#3e7b91"
+    } ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
@@ -17,7 +21,14 @@
     "address" : "311, Clementi Ave 2, #02-25",
     "remark" : "Met during internship",
     "link" : "https://linkedin.com/in/bensonmeier",
-    "tags" : [ "owesMoney", "friends" ]
+    "dateAdded": "20-03-2026",
+    "tags" : [ {
+      "tagName" : "owesMoney",
+      "tagColor" : "#3e7b91"
+    }, {
+      "tagName" : "friends",
+      "tagColor" : "#3e7b91"
+    } ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
@@ -25,6 +36,7 @@
     "company" : "Grab",
     "remark" : "Prefers email contact",
     "address" : "wall street",
+    "dateAdded": "20-03-2026",
     "tags" : [ ]
   }, {
     "name" : "Daniel Meier",
@@ -34,7 +46,11 @@
     "address" : "10th street",
     "remark" : "Interested in public sector tech",
     "link" : "https://linkedin.com/in/danielmeier",
-    "tags" : [ "friends" ]
+    "dateAdded": "20-03-2026",
+    "tags" : [ {
+      "tagName" : "friends",
+      "tagColor" : "#3e7b91"
+    } ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "94822244",
@@ -42,6 +58,7 @@
     "company" : "DBS",
     "address" : "michegan ave",
     "remark" : "Works in finance",
+    "dateAdded": "20-03-2026",
     "tags" : [ ]
   }, {
     "name" : "Fiona Kunz",
@@ -51,6 +68,7 @@
     "address" : "little tokyo",
     "remark" : "Coursemate from CS2103",
     "link" : "https://linkedin.com/in/fionakunz",
+    "dateAdded": "20-03-2026",
     "tags" : [ ]
   }, {
     "name" : "George Best",
@@ -59,6 +77,7 @@
     "company" : "Sea",
     "address" : "4th street",
     "remark" : "Interested in product roles",
+    "dateAdded": "20-03-2026",
     "tags" : [ ]
   } ]
 }

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.clinkedin.commons.core.GuiSettings;
 import seedu.clinkedin.commons.core.LogsCenter;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
@@ -24,6 +25,7 @@ public class ModelManager implements Model {
     private final CLinkedin cLinkedin;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<DeletedPersonRecord> filteredDeletedPersonRecords;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,6 +38,7 @@ public class ModelManager implements Model {
         this.cLinkedin = new CLinkedin(cLinkedin);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.cLinkedin.getPersonList());
+        filteredDeletedPersonRecords = new FilteredList<>(this.cLinkedin.getDeletedPersonRecords());
     }
 
     public ModelManager() {
@@ -107,6 +110,15 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Person restorePerson(DeletedPersonRecord deletedPersonRecord) {
+        requireNonNull(deletedPersonRecord);
+        Person cleanedPerson = cLinkedin.restorePerson(deletedPersonRecord);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredDeletedPersonRecordList(PREDICATE_SHOW_ALL_DELETED_PERSON_RECORDS);
+        return cleanedPerson;
+    }
+
+    @Override
     public void addPerson(Person person) {
         cLinkedin.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -153,6 +165,19 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
+    //=========== Filtered Deleted Person List Accessors =============================================================
+
+    @Override
+    public ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList() {
+        return filteredDeletedPersonRecords;
+    }
+
+    @Override
+    public void updateFilteredDeletedPersonRecordList(Predicate<DeletedPersonRecord> predicate) {
+        requireNonNull(predicate);
+        filteredDeletedPersonRecords.setPredicate(predicate);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -167,7 +192,8 @@ public class ModelManager implements Model {
         ModelManager otherModelManager = (ModelManager) other;
         return cLinkedin.equals(otherModelManager.cLinkedin)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredPersons.equals(otherModelManager.filteredPersons)
+                && filteredDeletedPersonRecords.equals(otherModelManager.filteredDeletedPersonRecords);
     }
 
 }

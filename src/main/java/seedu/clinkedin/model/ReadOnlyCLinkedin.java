@@ -1,6 +1,7 @@
 package seedu.clinkedin.model;
 
 import javafx.collections.ObservableList;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.tag.Tag;
 
@@ -14,6 +15,11 @@ public interface ReadOnlyCLinkedin {
      * This list will not contain any duplicate persons.
      */
     ObservableList<Person> getPersonList();
+
+    /**
+     * Returns an unmodifiable view of the deleted person records list.
+     */
+    ObservableList<DeletedPersonRecord> getDeletedPersonRecords();
 
     /**
      * Returns an unmodifiable view of the tags list.
