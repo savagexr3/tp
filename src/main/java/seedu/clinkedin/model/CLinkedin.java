@@ -2,11 +2,18 @@ package seedu.clinkedin.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.clinkedin.commons.util.ToStringBuilder;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.person.UniquePersonList;
@@ -21,6 +28,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
 
     private final UniquePersonList persons;
     private final UniqueTagList tags;
+    private ObservableList<DeletedPersonRecord> deletedPersonRecords;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -31,10 +39,12 @@ public class CLinkedin implements ReadOnlyCLinkedin {
      */
     {
         persons = new UniquePersonList();
+        deletedPersonRecords = FXCollections.observableArrayList();
         tags = new UniqueTagList();
     }
 
-    public CLinkedin() {}
+    public CLinkedin() {
+    }
 
     /**
      * Creates an AddressBook using the Persons in the {@code toBeCopied}
@@ -61,6 +71,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        deletedPersonRecords.setAll(newData.getDeletedPersonRecords());
         setTags(newData.getTagList());
     }
 
@@ -102,11 +113,62 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code key} from this {@code AddressBook} and records its deletion.
      * {@code key} must exist in the address book.
      */
     public void removePerson(Person key) {
+        requireNonNull(key);
+        pruneExpiredDeletedPersonRecords();
         persons.remove(key);
+        deletedPersonRecords.add(new DeletedPersonRecord(key));
+    }
+
+    /**
+     * Restores a deleted person record back into the address book.
+     * The associated person is re-added to the main person list after
+     * filtering out any tags that no longer exist in the address book.
+     * The corresponding deleted record is then removed from the deleted list.
+     *
+     * @param record The deleted person record to restore. Must not be null.
+     * @return The restored {@code Person} instance with only existing tags retained.
+     */
+    public Person restorePerson(DeletedPersonRecord record) {
+        requireNonNull(record);
+
+        Person originalPerson = record.getPerson();
+
+        Set<Tag> existingTags = originalPerson.getTags().stream()
+                .filter(tags::contains)
+                .collect(Collectors.toSet());
+
+        Person cleanedPerson = new Person(
+                originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getCompany(),
+                originalPerson.getAddress(),
+                Optional.ofNullable(originalPerson.getLink()),
+                originalPerson.getDateAdded(),
+                existingTags
+        );
+
+        persons.add(cleanedPerson);
+        deletedPersonRecords.remove(record);
+
+        return cleanedPerson;
+    }
+
+    //// deleted person operations
+
+    /**
+     * Adds a deleted person record to the deleted records list.
+     * This method is primarily used when loading data from storage.
+     *
+     * @param record The deleted person record to be added.
+     */
+    public void addDeletedPersonRecord(DeletedPersonRecord record) {
+        requireNonNull(record);
+        deletedPersonRecords.add(record);
     }
 
     //// tag-level operations
@@ -172,6 +234,11 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     }
 
     @Override
+    public ObservableList<DeletedPersonRecord> getDeletedPersonRecords() {
+        return FXCollections.unmodifiableObservableList(deletedPersonRecords);
+    }
+
+    @Override
     public ObservableList<Tag> getTagList() {
         return tags.asUnmodifiableObservableList();
     }
@@ -188,11 +255,22 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         }
 
         CLinkedin otherCLinkedin = (CLinkedin) other;
-        return persons.equals(otherCLinkedin.persons) && tags.equals(otherCLinkedin.tags);
+        return persons.equals(otherCLinkedin.persons)
+                && deletedPersonRecords.equals(otherCLinkedin.deletedPersonRecords)
+                && tags.equals(otherCLinkedin.tags);
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode();
+        return Objects.hash(persons, deletedPersonRecords, tags);
+    }
+
+    /**
+     * Removes all deleted person records that are older than 7 days
+     * from the current date and time.
+     */
+    public void pruneExpiredDeletedPersonRecords() {
+        deletedPersonRecords.removeIf(record ->
+                record.getDeletedDateTime().isBefore(LocalDateTime.now().minusDays(7)));
     }
 }

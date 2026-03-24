@@ -9,6 +9,7 @@ import static seedu.clinkedin.testutil.Assert.assertThrows;
 import static seedu.clinkedin.testutil.TypicalPersons.ALICE;
 import static seedu.clinkedin.testutil.TypicalPersons.getTypicalCLinkedin;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.exceptions.DuplicatePersonException;
 import seedu.clinkedin.model.tag.Tag;
@@ -56,12 +58,25 @@ public class CLinkedinTest {
     }
 
     @Test
+    public void resetData_withDeletedPersonRecords_replacesDeletedRecords() {
+        DeletedPersonRecord record = new DeletedPersonRecord(ALICE);
+
+        CLinkedin newData = new CLinkedin();
+        newData.addDeletedPersonRecord(record);
+
+        cLinkedin.resetData(newData);
+
+        assertEquals(newData.getDeletedPersonRecords(),
+                cLinkedin.getDeletedPersonRecords());
+    }
+
+    @Test
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
         // Two persons with the same identity fields
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
-        CLinkedinStub newData = new CLinkedinStub(newPersons, Collections.emptyList());
+        CLinkedinStub newData = new CLinkedinStub(newPersons, Collections.emptyList(), Collections.emptyList());
 
         assertThrows(DuplicatePersonException.class, () -> cLinkedin.resetData(newData));
     }
@@ -88,6 +103,116 @@ public class CLinkedinTest {
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         assertTrue(cLinkedin.hasPerson(editedAlice));
+    }
+
+    // ================= DELETED PERSON RECORD TESTS =================
+    @Test
+    public void removePerson_personInCLinkedin_removesPersonAndAddsDeletedRecord() {
+        cLinkedin.addPerson(ALICE);
+
+        int originalDeletedSize = cLinkedin.getDeletedPersonRecords().size();
+
+        cLinkedin.removePerson(ALICE);
+
+        assertFalse(cLinkedin.getPersonList().contains(ALICE));
+        assertEquals(originalDeletedSize + 1, cLinkedin.getDeletedPersonRecords().size());
+        assertEquals(ALICE,
+                cLinkedin.getDeletedPersonRecords().get(originalDeletedSize).getPerson());
+    }
+
+    @Test
+    public void removePerson_samePersonTwice_recordsBothDeletions() {
+        cLinkedin.addPerson(ALICE);
+
+        // First deletion
+        cLinkedin.removePerson(ALICE);
+
+        // Re-add and delete again
+        cLinkedin.addPerson(ALICE);
+        cLinkedin.removePerson(ALICE);
+
+        // Check: two deleted records exist for the same person
+        assertEquals(2, cLinkedin.getDeletedPersonRecords().size());
+        assertEquals(ALICE, cLinkedin.getDeletedPersonRecords().get(0).getPerson());
+        assertEquals(ALICE, cLinkedin.getDeletedPersonRecords().get(1).getPerson());
+    }
+
+    @Test
+    public void addDeletedPersonRecord_validRecord_addsRecord() {
+        DeletedPersonRecord record = new DeletedPersonRecord(ALICE);
+
+        cLinkedin.addDeletedPersonRecord(record);
+
+        assertTrue(cLinkedin.getDeletedPersonRecords().contains(record));
+    }
+
+    @Test
+    public void addDeletedPersonRecord_nullRecord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, ()
+                -> cLinkedin.addDeletedPersonRecord(null));
+    }
+
+    @Test
+    public void getDeletedPersonRecords_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, ()
+                -> cLinkedin.getDeletedPersonRecords().remove(0));
+    }
+
+    @Test
+    public void pruneExpiredDeletedPersonRecords_removesOldRecords() {
+        DeletedPersonRecord oldRecord =
+                new DeletedPersonRecord(ALICE, LocalDateTime.now().minusDays(8));
+        DeletedPersonRecord recentRecord =
+                new DeletedPersonRecord(ALICE, LocalDateTime.now());
+
+        cLinkedin.addDeletedPersonRecord(oldRecord);
+        cLinkedin.addDeletedPersonRecord(recentRecord);
+
+        cLinkedin.pruneExpiredDeletedPersonRecords();
+
+        assertFalse(cLinkedin.getDeletedPersonRecords().contains(oldRecord));
+        assertTrue(cLinkedin.getDeletedPersonRecords().contains(recentRecord));
+    }
+
+    @Test
+    public void restorePerson_validDeletedRecord_restoresPersonAndRemovesDeletedRecord() {
+        cLinkedin.addPerson(ALICE);
+        cLinkedin.removePerson(ALICE);
+
+        DeletedPersonRecord recordToRestore = cLinkedin.getDeletedPersonRecords().get(0);
+
+        cLinkedin.restorePerson(recordToRestore);
+
+        assertTrue(cLinkedin.getPersonList().stream()
+                .anyMatch(person -> person.isSamePerson(ALICE)));
+        assertEquals(0, cLinkedin.getDeletedPersonRecords().size());
+    }
+
+    @Test
+    public void restorePerson_nonExistentTags_tagsRemovedAndPersonStillRestored() {
+        Tag wooperTag = new Tag("wooper");
+
+        Person personWithWooperTag = new PersonBuilder(ALICE)
+                .withTags("wooper")
+                .build();
+
+        cLinkedin.addPerson(personWithWooperTag);
+        cLinkedin.removePerson(personWithWooperTag);
+
+        DeletedPersonRecord recordToRestore = cLinkedin.getDeletedPersonRecords().get(0);
+
+        cLinkedin.restorePerson(recordToRestore);
+
+        Person restoredPerson = cLinkedin.getPersonList().get(0);
+
+        assertTrue(restoredPerson.isSamePerson(personWithWooperTag));
+        assertFalse(restoredPerson.getTags().contains(wooperTag));
+        assertEquals(0, cLinkedin.getDeletedPersonRecords().size());
+    }
+
+    @Test
+    public void restorePerson_nullRecord_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> cLinkedin.restorePerson(null));
     }
 
     // ================= TAG TESTS =================
@@ -155,20 +280,28 @@ public class CLinkedinTest {
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     * A stub ReadOnlyCLinkedin whose persons list can violate interface constraints.
      */
     private static class CLinkedinStub implements ReadOnlyCLinkedin {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<DeletedPersonRecord> deletedPersonRecords = FXCollections.observableArrayList();
         private final ObservableList<Tag> tags = FXCollections.observableArrayList();
 
-        CLinkedinStub(Collection<Person> persons, Collection<Tag> tags) {
+        CLinkedinStub(Collection<Person> persons, List<DeletedPersonRecord> deletedPersonRecords,
+                      Collection<Tag> tags) {
             this.persons.setAll(persons);
+            this.deletedPersonRecords.addAll(deletedPersonRecords);
             this.tags.setAll(tags);
         }
 
         @Override
         public ObservableList<Person> getPersonList() {
             return persons;
+        }
+
+        @Override
+        public ObservableList<DeletedPersonRecord> getDeletedPersonRecords() {
+            return deletedPersonRecords;
         }
 
         @Override

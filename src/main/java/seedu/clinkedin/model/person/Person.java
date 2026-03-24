@@ -26,6 +26,7 @@ public class Person {
     private final Company company;
     private final Address address;
     private final Link link;
+    private final DateAdded dateAdded;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -33,14 +34,15 @@ public class Person {
      * Link is optional and may be absent.
      */
     public Person(Name name, Phone phone, Email email, Company company,
-                  Address address, Optional<Link> link, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, company, address, tags);
+                  Address address, Optional<Link> link, DateAdded dateAdded, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, company, address, dateAdded, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.company = company;
         this.address = address;
         this.link = link.orElse(null);
+        this.dateAdded = dateAdded;
         this.tags.addAll(tags);
     }
 
@@ -69,6 +71,10 @@ public class Person {
      */
     public Link getLink() {
         return link;
+    }
+
+    public DateAdded getDateAdded() {
+        return dateAdded;
     }
 
     /**
@@ -104,7 +110,7 @@ public class Person {
         Set<Tag> updatedTags = new HashSet<>(tags);
         updatedTags.remove(tagToRemove);
 
-        return new Person(name, phone, email, company, address, Optional.ofNullable(link), updatedTags);
+        return new Person(name, phone, email, company, address, Optional.ofNullable(link), dateAdded, updatedTags);
     }
 
     /**
@@ -128,13 +134,14 @@ public class Person {
                 && company.equals(otherPerson.company)
                 && address.equals(otherPerson.address)
                 && Objects.equals(link, otherPerson.link)
+                && dateAdded.equals(otherPerson.dateAdded)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, company, address, link, tags);
+        return Objects.hash(name, phone, email, company, address, link, dateAdded, tags);
     }
 
     @Override
@@ -146,6 +153,7 @@ public class Person {
                 .add("company", company)
                 .add("address", address)
                 .add("link", link)
+                .add("dateAdded", dateAdded)
                 .add("tags", tags)
                 .toString();
     }

@@ -20,6 +20,8 @@ public class Messages {
     public static final String MESSAGE_COMPANIES_LISTED_OVERVIEW = "%d contacts listed working at \"%s\".";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
+    public static final String MESSAGE_INVALID_DELETED_PERSON_RECORD_DISPLAYED_INDEX =
+            "The deleted person record index provided is invalid";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

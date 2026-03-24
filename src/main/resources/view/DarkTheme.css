@@ -24,6 +24,13 @@
     -fx-opacity: 1;
 }
 
+.date-added-label {
+    -fx-font-size: 9pt;
+    -fx-text-fill: #E8E2D8 !important;
+    -fx-font-style: italic;
+    -fx-padding: 10 0 0 0;
+}
+
 .text-field {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";

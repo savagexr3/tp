@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.clinkedin.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
@@ -14,9 +13,11 @@ import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.logic.Messages;
+import seedu.clinkedin.logic.commands.exceptions.CommandException;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.UserPrefs;
+import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 
 /**
@@ -28,17 +29,25 @@ public class DeleteCommandTest {
     private Model model = new ModelManager(getTypicalCLinkedin(), new UserPrefs());
 
     @Test
-    public void execute_validIndexUnfilteredList_success() {
+    public void execute_validIndexUnfilteredList_success() throws CommandException {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getCLinkedin(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
+        int originalDeletedRecordCount = model.getFilteredDeletedPersonRecordList().size();
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        CommandResult result = deleteCommand.execute(model);
+
+        // Check: message correct, person deleted, deleted record added (ignore timestamp)
+        assertEquals(expectedMessage, result.getFeedbackToUser());
+        assertFalse(model.getCLinkedin().getPersonList().contains(personToDelete));
+        assertEquals(originalDeletedRecordCount + 1, model.getFilteredDeletedPersonRecordList().size());
+
+        DeletedPersonRecord addedRecord =
+                model.getFilteredDeletedPersonRecordList().get(originalDeletedRecordCount);
+        assertEquals(personToDelete, addedRecord.getPerson());
     }
 
     @Test
@@ -50,7 +59,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_validIndexFilteredList_success() {
+    public void execute_validIndexFilteredList_success() throws CommandException {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -63,7 +72,17 @@ public class DeleteCommandTest {
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        int originalDeletedRecordCount = model.getFilteredDeletedPersonRecordList().size();
+
+        CommandResult result = deleteCommand.execute(model);
+
+        // Check: message correct, person deleted, deleted record added (ignore timestamp)
+        assertEquals(expectedMessage, result.getFeedbackToUser());
+        assertEquals(0, model.getFilteredPersonList().size());
+        assertFalse(model.getCLinkedin().getPersonList().contains(personToDelete));
+        assertEquals(originalDeletedRecordCount + 1, model.getFilteredDeletedPersonRecordList().size());
+        assertEquals(personToDelete,
+                model.getFilteredDeletedPersonRecordList().get(originalDeletedRecordCount).getPerson());
     }
 
     @Test

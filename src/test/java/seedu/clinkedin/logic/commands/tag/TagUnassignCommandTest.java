@@ -8,6 +8,9 @@ import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.clinkedin.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.clinkedin.testutil.TypicalPersons.getTypicalCLinkedin;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.clinkedin.commons.core.index.Index;
@@ -23,37 +26,49 @@ public class TagUnassignCommandTest {
     private Model model = new ModelManager(getTypicalCLinkedin(), new UserPrefs());
 
     @Test
-    public void execute_validIndexValidTag_success() throws Exception {
+    public void execute_singleValidIndex_success() throws Exception {
         // ALICE (first person) has "friends" tag
         Tag tag = new Tag("friends");
-        TagUnassignCommand command = new TagUnassignCommand(INDEX_FIRST_PERSON, tag);
+        TagUnassignCommand command = new TagUnassignCommand(List.of(INDEX_FIRST_PERSON), tag);
         CommandResult result = command.execute(model);
-        assertEquals(TagUnassignCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(String.format(TagUnassignCommand.MESSAGE_SUCCESS, 1), result.getFeedbackToUser());
         assertFalse(model.getFilteredPersonList().get(0).getTags().contains(tag));
+    }
+
+    @Test
+    public void execute_multipleValidIndexes_success() throws Exception {
+        // ALICE and BENSON both have "friends" tag
+        Tag tag = new Tag("friends");
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
+        TagUnassignCommand command = new TagUnassignCommand(indexes, tag);
+        CommandResult result = command.execute(model);
+        assertEquals(String.format(TagUnassignCommand.MESSAGE_SUCCESS, 2), result.getFeedbackToUser());
+        assertFalse(model.getFilteredPersonList().get(0).getTags().contains(tag));
+        assertFalse(model.getFilteredPersonList().get(1).getTags().contains(tag));
     }
 
     @Test
     public void execute_tagNotAssigned_throwsCommandException() {
         Tag tag = new Tag("colleagues");
-        TagUnassignCommand command = new TagUnassignCommand(INDEX_FIRST_PERSON, tag);
+        TagUnassignCommand command = new TagUnassignCommand(List.of(INDEX_FIRST_PERSON), tag);
         assertThrows(CommandException.class,
-                TagUnassignCommand.MESSAGE_TAG_NOT_ASSIGNED, () -> command.execute(model));
+                String.format(TagUnassignCommand.MESSAGE_TAG_NOT_ASSIGNED, 1), () -> command.execute(model));
     }
 
     @Test
     public void execute_invalidIndex_throwsCommandException() {
         Tag tag = new Tag("friends");
         Index outOfBound = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        TagUnassignCommand command = new TagUnassignCommand(outOfBound, tag);
+        TagUnassignCommand command = new TagUnassignCommand(List.of(outOfBound), tag);
         assertThrows(CommandException.class, () -> command.execute(model));
     }
 
     @Test
     public void equals() {
         Tag tag = new Tag("friends");
-        TagUnassignCommand command1 = new TagUnassignCommand(INDEX_FIRST_PERSON, tag);
-        TagUnassignCommand command2 = new TagUnassignCommand(INDEX_FIRST_PERSON, tag);
-        TagUnassignCommand command3 = new TagUnassignCommand(INDEX_SECOND_PERSON, tag);
+        TagUnassignCommand command1 = new TagUnassignCommand(List.of(INDEX_FIRST_PERSON), tag);
+        TagUnassignCommand command2 = new TagUnassignCommand(List.of(INDEX_FIRST_PERSON), tag);
+        TagUnassignCommand command3 = new TagUnassignCommand(List.of(INDEX_SECOND_PERSON), tag);
 
         assertTrue(command1.equals(command2));
         assertTrue(command1.equals(command1));

@@ -1,21 +1,23 @@
 {
-  "persons" : [ {
-    "name" : "Alice Pauline",
-    "phone" : "94351253",
-    "email" : "alice@example.com",
-    "company" : "Google",
-    "address" : "123, Jurong West Ave 6, #08-111",
-    "link" : "https://linkedin.com/in/alicepauline",
+  "persons": [ {
+    "name": "Alice Pauline",
+    "phone": "94351253",
+    "email": "alice@example.com",
+    "company": "Google",
+    "address": "123, Jurong West Ave 6, #08-111",
+    "link": "https://linkedin.com/in/alicepauline",
+    "dateAdded": "20-03-2026",
     "tags" : [ {
       "tagName" : "friends",
       "tagColor" : "#3e7b91"
     } ]
   }, {
-    "name" : "Alice Pauline",
-    "phone" : "94351253",
-    "email" : "pauline@example.com",
-    "company" : "Shopee",
-    "address" : "4th street",
-    "link" : "https://linkedin.com/in/alicepauline2"
+    "name": "Alice Pauline",
+    "phone": "94351253",
+    "email": "pauline@example.com",
+    "company": "Shopee",
+    "address": "4th street",
+    "link": "https://linkedin.com/in/alicepauline2",
+    "dateAdded": "20-03-2026"
   } ]
 }
