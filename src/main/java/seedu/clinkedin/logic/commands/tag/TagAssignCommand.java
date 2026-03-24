@@ -80,7 +80,7 @@ public class TagAssignCommand extends TagCommand {
             // get current version from model in case earlier iterations updated it
             Person currentPerson = model.getFilteredPersonList().get(index.getZeroBased());
             Set<Tag> updatedTags = new HashSet<>(currentPerson.getTags());
-            updatedTags.add(tag);
+            updatedTags.add(getExistingTag(model, tag));
             Person editedPerson = new Person(
                     currentPerson.getName(),
                     currentPerson.getPhone(),
@@ -96,6 +96,19 @@ public class TagAssignCommand extends TagCommand {
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, indexes.size()));
+    }
+
+    /**
+     * Returns the existing tag from the model that matches the given tag name,
+     * preserving properties like color.
+     */
+    private Tag getExistingTag(Model model, Tag tag) {
+        for (Tag t : model.getCLinkedin().getTagList()) {
+            if (t.tagName.equalsIgnoreCase(tag.tagName)) {
+                return t;
+            }
+        }
+        return tag; // fallback to the parsed tag if not found
     }
 
     @Override
