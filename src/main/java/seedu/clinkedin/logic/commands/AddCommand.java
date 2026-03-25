@@ -10,6 +10,7 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -105,9 +106,10 @@ public class AddCommand extends Command {
                 person.getName(),
                 person.getPhone(),
                 person.getEmail(),
-                person.getCompany(),
+                Optional.ofNullable(person.getCompany()),
                 person.getAddress(),
-                java.util.Optional.ofNullable(person.getLink()),
+                Optional.ofNullable(person.getRemark()),
+                Optional.ofNullable(person.getLink()),
                 person.getDateAdded(),
                 existingTags
         );
