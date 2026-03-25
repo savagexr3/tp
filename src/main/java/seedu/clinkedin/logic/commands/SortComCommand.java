@@ -2,6 +2,8 @@ package seedu.clinkedin.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.logging.Logger;
+import seedu.clinkedin.commons.core.LogsCenter;
 import seedu.clinkedin.commons.util.ToStringBuilder;
 import seedu.clinkedin.model.Model;
 
@@ -10,6 +12,7 @@ import seedu.clinkedin.model.Model;
  */
 public class SortComCommand extends Command {
 
+    private static final Logger logger = LogsCenter.getLogger(SortComCommand.class);
     public static final String COMMAND_WORD = "sortcom";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts all displayed contacts by company name "
@@ -21,6 +24,7 @@ public class SortComCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        logger.info("Executing sortcom: sorting displayed contacts by company");
         model.sortFilteredPersonListByCompany();
         return new CommandResult(MESSAGE_SUCCESS);
     }
