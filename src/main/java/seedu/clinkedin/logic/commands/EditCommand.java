@@ -147,9 +147,10 @@ public class EditCommand extends Command {
                 person.getName(),
                 person.getPhone(),
                 person.getEmail(),
-                person.getCompany(),
+                Optional.ofNullable(person.getCompany()),
                 person.getAddress(),
-                java.util.Optional.ofNullable(person.getLink()),
+                Optional.ofNullable(person.getRemark()),
+                Optional.ofNullable(person.getLink()),
                 person.getDateAdded(),
                 existingTags
         );
