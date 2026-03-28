@@ -139,10 +139,80 @@ Format: `delete INDEX`
 * Deletes the contact at the specified `INDEX`.
 * The index refers to the index number shown in the displayed contact list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* Deleted contacts are not permanently removed immediately.
+* Deleted contacts are stored and can be viewed using the `deleted` command.
+* Contacts will be permanently removed after 7 days.
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd contact in CLinkedin.
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
+
+### Viewing deleted contacts : `deleted`
+
+Shows a list of recently deleted contacts.
+
+Format: `deleted`
+
+* Displays all contacts that were deleted within the last 7 days.
+* Each deleted contact includes the date and time it was deleted.
+* Contacts that exceed 7 days from deletion will no longer be shown.
+
+Examples:
+* `deleted`
+
+### Restoring a contact : `restore`
+
+Restores a contact from the deleted list.
+
+Format: `restore INDEX`
+
+* Restores the contact at the specified `INDEX` from the deleted contacts list.
+* The index refers to the index number shown in the `deleted` list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* The restored contact will be added back to CLinkedin.
+* If a tag associated with the contact has been removed or renamed before restoration, the contact will be restored without that tag.
+* If restoring the contact results in duplicate phone number or existing contact conflicts, the restore will fail.
+* Once restored, the contact will be removed from the deleted list.
+
+Examples:
+* `deleted` followed by `restore 1`
+
+### Creating a tag: `tag create`
+
+Creates a new tag with an optional color.
+
+Format: `tag create TAG_NAME [COLOR]`
+
+* Creates a tag with the specified `TAG_NAME`.
+* Tag names are **case-sensitive** (e.g. `friend` and `Friend` are treated as different tags).
+* Duplicate tag names are **not allowed**.
+* If `COLOR` is not provided, a default color will be assigned.
+
+<box type="tip" seamless>
+
+**Tip:** Valid color formats include plain names, hexadecimal, or rgb values.<br>
+Examples: `orange`, `#ff6688`, `rgb(255,102,136)`
+
+</box>
+
+Examples:
+* `tag create friend`
+* `tag create colleague blue`
+* `tag create vip #ff6688`
+
+### Deleting a tag: `tag delete`
+
+Deletes a tag and removes it from all contacts.
+
+Format: `tag delete TAG_NAME`
+
+* Deletes the tag with the specified `TAG_NAME`.
+* The tag will be removed from all contacts that currently have it.
+* Only the specified tag is removed; other tags on the contact remain unchanged.
+* If the tag does not exist, an error message will be shown.
+
+Examples:
+* `tag delete friend`
 
 ### Clearing all entries : `clear`
 
@@ -191,10 +261,14 @@ Furthermore, certain edits can cause CLinkedin to behave in unexpected ways (e.g
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
-**Help**   | `help`
+**Add**        | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Clear**      | `clear`
+**Delete**     | `delete INDEX`<br> e.g., `delete 3`
+**Edit**       | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Find**       | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**List**       | `list`
+**Deleted**    | `deleted`
+**Restore**    | `restore INDEX`<br> e.g., `restore 1`
+**Tag Create** | `tag create TAG_NAME [COLOR]`<br> e.g., `tag create friend blue`
+**Tag Delete** | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
+**Help**       | `help`
