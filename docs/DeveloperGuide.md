@@ -158,6 +158,30 @@ Classes used by multiple components are in the `seedu.clinkedin.commons` package
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Contact management
+#### Contact restoration
+
+The `restore` command allows users to restore a previously deleted contact from the deleted contacts list.
+
+Users can use the `deleted` command to view the list of deleted contacts and identify the correct index for restoration.
+
+Contacts can only be restored within 7 days of deletion.
+
+When the command is executed, the system first checks whether the provided index is valid in the deleted contacts list. If the index is invalid, the command fails and an error message is shown.
+
+If the index is valid, the system checks whether restoring the contact would cause a conflict, such as a duplicate phone number or an already existing contact. If such a conflict exists, the command fails.
+
+If restoration is allowed, the contact is added back to the main contact list and removed from the deleted contacts list. Tags whose names no longer exist will not be restored. Tags whose names still exist will be restored using their current tag definitions.
+
+The following activity diagram illustrates the decision flow of the `restore` command:
+
+<puml src="diagrams/RestoreActivityDiagram.puml" alt="RestoreActivityDiagram" />
+
+The following sequence diagram illustrates how the `restore` command is handled by the system components:
+
+<puml src="diagrams/RestoreSequenceDiagram.puml" alt="RestoreSequenceDiagram" />
+
+
 ### Tag management
 #### Tag creation
 
