@@ -51,6 +51,28 @@ public class RestoreCommandTest {
     }
 
     @Test
+    public void execute_restoreWithMissingTags_showsWarningMessage() {
+        // Remove tag so it is missing during restore
+        model.deleteTag(new Tag("friends"));
+
+        RestoreCommand restoreCommand = new RestoreCommand(Index.fromZeroBased(0));
+
+        Person expectedRestoredPerson = new PersonBuilder(ALICE)
+                .withTags()
+                .build();
+
+        String expectedMessage = String.format(RestoreCommand.MESSAGE_RESTORE_PERSON_SUCCESS,
+                Messages.format(expectedRestoredPerson))
+                + "\n" + RestoreCommand.MESSAGE_RESTORE_MISSING_TAGS;
+
+        Model expectedModel = new ModelManager(new CLinkedin(model.getCLinkedin()), new UserPrefs());
+        DeletedPersonRecord recordToRestore = expectedModel.getFilteredDeletedPersonRecordList().get(0);
+        expectedModel.restorePerson(recordToRestore);
+
+        assertCommandSuccess(restoreCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredDeletedPersonRecordList().size() + 1);
         RestoreCommand restoreCommand = new RestoreCommand(outOfBoundIndex);
