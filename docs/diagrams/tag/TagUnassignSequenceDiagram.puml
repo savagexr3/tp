@@ -1,0 +1,41 @@
+@startuml
+title Sequence Diagram: Tag Unassign
+
+actor User
+participant "CLI" as CLI
+participant "TagUnassignCommand" as Command
+participant "Model" as Model
+participant "FilteredPersonList" as List
+participant "Person" as Person
+
+User -> CLI : tag unassign INDEX[,INDEX] TAG_NAME
+CLI -> Command : create TagUnassignCommand(indexes, tag)
+
+Command -> Model : getFilteredPersonList()
+Model --> Command : lastShownList
+
+loop validate indexes
+    Command -> List : get(index)
+    alt invalid index
+        Command -> CLI : throw CommandException
+    end
+end
+
+loop check tag exists on persons
+    Command -> Person : getTags()
+    alt tag not assigned
+        Command -> CLI : throw CommandException
+    end
+end
+
+loop remove tag from persons
+    Command -> Person : removeTag(tag)
+    Command -> Model : setPerson(old, edited)
+end
+
+Command -> Model : updateFilteredPersonList(...)
+Command --> CLI : CommandResult(success message)
+
+CLI --> User : Display result
+
+@enduml
