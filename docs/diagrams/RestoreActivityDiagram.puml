@@ -1,22 +1,22 @@
 @startuml
+title Activity: Restore contact
+
 start
 
-:User executes `restore`;
+:Execute `restore`;
 
-:Check whether index is valid in deleted contacts list;
-if (Valid index?) then (no)
+if () then ([invalid index])
     :Show error message;
     stop
-else (yes)
+else ([else])
 endif
 
 :Retrieve deleted contact;
 
-:Check for restore conflict;
-if (Conflict with existing contact\nor duplicate phone?) then (yes)
+if () then ([conflict with existing contact or duplicate phone])
     :Show error message;
     stop
-else (no)
+else ([else])
 endif
 
 :Remove tags whose names no longer exist;
