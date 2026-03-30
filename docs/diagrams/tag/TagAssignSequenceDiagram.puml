@@ -1,0 +1,41 @@
+@startuml
+participant "LogicManager" as LogicManager
+participant "TagAssignCommand" as TagAssignCommand
+participant "Model" as Model
+
+-> LogicManager : execute("tag assign ...")
+activate LogicManager
+
+LogicManager -> TagAssignCommand : execute(model)
+activate TagAssignCommand
+
+TagAssignCommand -> Model : hasTag(tag)
+activate Model
+Model --> TagAssignCommand : true / false
+deactivate Model
+
+alt tag does not exist
+    TagAssignCommand --> LogicManager : CommandException
+else tag exists
+    TagAssignCommand -> Model : getFilteredPersonList()
+    activate Model
+    Model --> TagAssignCommand : personList
+    deactivate Model
+
+    TagAssignCommand -> Model : setPerson(personToEdit, editedPerson)
+    activate Model
+    Model --> TagAssignCommand
+    deactivate Model
+
+    TagAssignCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+    activate Model
+    Model --> TagAssignCommand
+    deactivate Model
+
+    TagAssignCommand --> LogicManager : CommandResult
+end
+
+deactivate TagAssignCommand
+<-- LogicManager
+deactivate LogicManager
+@enduml

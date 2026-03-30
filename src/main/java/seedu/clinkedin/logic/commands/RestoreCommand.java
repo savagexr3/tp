@@ -26,6 +26,8 @@ public class RestoreCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_RESTORE_PERSON_SUCCESS = "Restored Person: %1$s";
+    public static final String MESSAGE_RESTORE_MISSING_TAGS =
+            "Note: Some tags could not be restored as they were renamed and/or deleted.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
     public static final String MESSAGE_DUPLICATE_PHONE = "Duplicate phone number detected";
 
@@ -55,8 +57,17 @@ public class RestoreCommand extends Command {
         }
 
         Person cleanedPerson = model.restorePerson(recordToRestore);
-        return new CommandResult(String.format(MESSAGE_RESTORE_PERSON_SUCCESS,
-                Messages.format(cleanedPerson)));
+
+        int deletedRecordTagCount = recordToRestore.getPerson().getTags().size();
+        int restoredTagCount = cleanedPerson.getTags().size();
+
+        String message = String.format(MESSAGE_RESTORE_PERSON_SUCCESS, Messages.format(cleanedPerson));
+
+        if (restoredTagCount < deletedRecordTagCount) {
+            message += "\n" + MESSAGE_RESTORE_MISSING_TAGS;
+        }
+
+        return new CommandResult(message);
     }
 
     @Override

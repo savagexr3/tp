@@ -1,0 +1,43 @@
+@startuml
+participant "LogicManager" as LogicManager
+participant "TagRenameCommand" as TagRenameCommand
+participant "Model" as Model
+
+-> LogicManager : execute("tag rename ...")
+activate LogicManager
+
+LogicManager -> TagRenameCommand : execute(model)
+activate TagRenameCommand
+
+TagRenameCommand -> Model : hasTag(oldTag)
+activate Model
+Model --> TagRenameCommand : true / false
+deactivate Model
+
+alt old tag does not exist
+    TagRenameCommand --> LogicManager : CommandException
+else old tag exists
+    TagRenameCommand -> Model : setTags(updatedTagList)
+    activate Model
+    Model --> TagRenameCommand
+    deactivate Model
+
+    loop for each person with oldTag
+        TagRenameCommand -> Model : setPerson(personToEdit, editedPerson)
+        activate Model
+        Model --> TagRenameCommand
+        deactivate Model
+    end
+
+    TagRenameCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+    activate Model
+    Model --> TagRenameCommand
+    deactivate Model
+
+    TagRenameCommand --> LogicManager : CommandResult
+end
+
+deactivate TagRenameCommand
+<-- LogicManager
+deactivate LogicManager
+@enduml

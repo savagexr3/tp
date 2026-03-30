@@ -116,4 +116,19 @@ public class UniqueTagList implements Iterable<Tag> {
         }
         return true;
     }
+
+    /**
+     * Returns the tag in this list with the specified {@code tagName}.
+     *
+     * @param tagName The name of the tag to find.
+     * @return The {@code Tag} with the matching name, or {@code null} if no such tag exists.
+     * @throws NullPointerException if {@code tagName} is null.
+     */
+    public Tag findByName(String tagName) {
+        requireNonNull(tagName);
+        return internalList.stream()
+                .filter(tag -> tag.getTagName().equals(tagName))
+                .findFirst()
+                .orElse(null);
+    }
 }

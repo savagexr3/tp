@@ -1,0 +1,18 @@
+@startuml
+start
+:User executes `tag assign`;
+
+if () then ([else])
+    :Show error message;
+    stop
+else ([tag exists])
+    if () then ([else])
+        :Show error message;
+        stop
+    else ([all indices are valid])
+        :Assign tag to specified contacts;
+        :Show success message;
+endif
+
+stop
+@enduml

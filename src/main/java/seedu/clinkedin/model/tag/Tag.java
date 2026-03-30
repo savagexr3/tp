@@ -95,6 +95,10 @@ public class Tag {
         return getTagNameValidationError(test) == null;
     }
 
+    public String getTagName() {
+        return tagName;
+    }
+
     /**
      * Returns error message if the color is invalid, otherwise null.
      */

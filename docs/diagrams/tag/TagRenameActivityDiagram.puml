@@ -1,0 +1,17 @@
+@startuml
+start
+:User executes `tag rename`;
+
+if () then ([else])
+    :Show error message;
+    stop
+else ([old tag exists])
+    :Create new tag in tag list;
+    :Find all contacts currently with old tag;
+    :Add new tag to these contacts;
+    :Delete old tag;
+    :Show success message;
+endif
+
+stop
+@enduml

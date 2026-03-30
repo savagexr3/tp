@@ -1,0 +1,37 @@
+@startuml
+
+actor User
+participant "LogicManager" as Logic
+participant "RestoreCommand" as Command
+participant "Model" as Model
+
+User -> Logic : execute("restore ...")
+Logic -> Command : execute(model)
+
+Command -> Model : getFilteredDeletedPersonRecordList()
+Model --> Command : deleted list
+
+Command -> Command : validate index
+
+alt invalid index
+    Command --> Logic : CommandException
+    Logic --> User : error message
+else valid index
+    Command -> Model : hasPerson(contact)
+    Model --> Command : true / false
+
+
+    alt restore conflict
+        Command --> Logic : CommandException
+        Logic --> User : error message
+    else no conflict
+        Command -> Command : reconcile tags with current tag list
+        Command -> Model : addPerson(restoredContact)
+        Command -> Model : deleteDeletedPersonRecord(record)
+        Model --> Command : success
+        Command --> Logic : CommandResult
+        Logic --> User : success message
+    end
+end
+
+@enduml
