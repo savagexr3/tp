@@ -137,8 +137,9 @@ public class CLinkedin implements ReadOnlyCLinkedin {
 
         Person originalPerson = record.getPerson();
 
-        Set<Tag> existingTags = originalPerson.getTags().stream()
-                .filter(tags::contains)
+        Set<Tag> updatedTags = originalPerson.getTags().stream()
+                .map(tag -> tags.findByName(tag.getTagName()))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
         Person cleanedPerson = new Person(
@@ -150,7 +151,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
                 Optional.ofNullable(originalPerson.getRemark()),
                 Optional.ofNullable(originalPerson.getLink()),
                 originalPerson.getDateAdded(),
-                existingTags
+                updatedTags
         );
 
         persons.add(cleanedPerson);
