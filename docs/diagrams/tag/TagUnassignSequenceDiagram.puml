@@ -1,13 +1,13 @@
 @startuml
 actor User
-participant "LogicManager" as LogicManager
+participant "LogicManager" as Logic
 participant "TagUnassignCommand" as TagUnassignCommand
 participant "Model" as Model
 
--> LogicManager : execute("tag unassign ...")
-activate LogicManager
+User -> Logic : execute("tag unassign ...")
+activate Logic
 
-LogicManager -> TagUnassignCommand : execute(model)
+Logic -> TagUnassignCommand : execute(model)
 activate TagUnassignCommand
 
 TagUnassignCommand -> Model : getFilteredPersonList()
@@ -22,7 +22,7 @@ loop validate indexes
     deactivate Model
 
     alt invalid index
-        TagUnassignCommand --> LogicManager : CommandException
+        TagUnassignCommand --> Logic : CommandException
     end
 end
 
@@ -33,7 +33,7 @@ loop check tag assigned
     deactivate Model
 
     alt tag not assigned
-        TagUnassignCommand --> LogicManager : CommandException
+        TagUnassignCommand --> Logic : CommandException
     end
 end
 
@@ -49,9 +49,9 @@ activate Model
 Model --> TagUnassignCommand
 deactivate Model
 
-TagUnassignCommand --> LogicManager : CommandResult
+TagUnassignCommand --> Logic : CommandResult
 
 deactivate TagUnassignCommand
-<-- LogicManager
-deactivate LogicManager
+User <-- Logic
+deactivate Logic
 @enduml
