@@ -7,16 +7,16 @@ start
 
 :Retrieve filtered person list;
 
-if () then ([any index invalid])
+if () then ([else])
     :Show invalid index error;
     stop
 else ([all indexes valid])
 endif
 
-if () then ([any person does not have tag])
+if () then ([else])
     :Show tag not assigned error;
     stop
-else ([all persons have tag])
+else ([all selected persons have tag])
 endif
 
 :Remove tag from all specified persons;
