@@ -28,7 +28,7 @@ public class Tag {
             "Tag must contain only letters and numbers.";
 
     public static final String MESSAGE_INVALID_COLOR_NAME =
-            "Invalid color name. Valid formats are in plain name, or hexadecimal values.\n"
+            "Invalid color name. Valid formats are in case-insensitive plain name, or hexadecimal values.\n"
                     + "Example: #ff6688, orange";
 
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
