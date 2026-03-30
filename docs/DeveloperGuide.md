@@ -159,6 +159,37 @@ Classes used by multiple components are in the `seedu.clinkedin.commons` package
 This section describes some noteworthy details on how certain features are implemented.
 
 ### Contact management
+
+#### Finding contacts by company
+
+The `findcom` command allows users to find contacts whose company matches one or more keywords.
+
+When the command is executed, the system first checks whether any company keyword was provided. If the input is empty, the command fails and an error message is shown.
+
+If input is provided, the system splits the keywords using `;` as the separator. Each keyword is trimmed, and empty keywords are ignored. The system then creates a `CompanyContainsKeywordsPredicate` and updates the filtered contact list to show contacts whose company matches any of the given keywords, case-insensitively.
+
+The following activity diagram illustrates the decision flow of the `findcom` command:
+
+<puml src="diagrams/company/FindComActivityDiagram.puml" alt="FindComActivityDiagram" />
+
+The following sequence diagram illustrates how the `findcom` command is handled by the system components:
+
+<puml src="diagrams/company/FindComSequenceDiagram.puml" alt="company/FindComSequenceDiagram" />
+
+#### Sorting contacts by company
+
+The `sortcom` command allows users to sort the currently displayed contact list alphabetically by company name.
+
+When the command is executed, the system sorts the filtered contact list by company name in a case-insensitive manner. Contacts without a company are treated as having an empty value and will appear at the top of the displayed list. The sorted list is then shown to the user together with a success message.
+
+The following activity diagram illustrates the flow of the `sortcom` command:
+
+<puml src="diagrams/company/SortComActivityDiagram.puml" alt="SortComActivityDiagram" />
+
+The following sequence diagram illustrates how the `sortcom` command is handled by the system components:
+
+<puml src="diagrams/company/SortComSequenceDiagram.puml" alt="SortComSequenceDiagram" />
+
 #### Contact restoration
 
 The `restore` command allows users to restore a previously deleted contact from the deleted contacts list.
@@ -613,32 +644,105 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1a3. CLinkedin displays a success message.
 
       Use case ends.
+---
+### **Use Case: Find contacts by company**
+
+**Preconditions:**
+
+* The application is running.
+* The contact list is not empty.
+
+**Guarantees:**
+
+* If successful, a filtered list of contacts matching the company keywords is displayed.
+* If unsuccessful, the contact list remains unchanged.
+
+#### **MSS**
+
+1. User requests to find contacts by entering the `findcom` command with one or more company keywords.
+2. CLinkedin parses the input keywords.
+3. CLinkedin filters the contact list to include contacts whose company matches any of the keywords.
+4. CLinkedin displays the filtered list of contacts along with a summary message.
+
+   Use case ends.
+
+#### **Extensions**
+
+* 1a. The user provides no keywords.
+
+    * 1a1. CLinkedin shows an error message that the command format is invalid.
+
+      Use case resumes at step 1.
+
+* 2a. The input format is invalid.
+
+    * 2a1. CLinkedin shows an error message that the command format is invalid.
+
+      Use case resumes at step 1.
+
+* 3a. No contacts match the given keywords.
+
+    * 3a1. CLinkedin displays an empty list with a summary message indicating 0 contacts found.
+
+      Use case ends.
+
+---
+
+### **Use Case: Sort contacts by company**
+
+**Preconditions:**
+
+* The application is running.
+* The contact list is not empty.
+
+**Guarantees:**
+
+* If successful, the currently displayed contact list is sorted by company name.
+* If unsuccessful, the contact list remains unchanged.
+
+#### **MSS**
+
+1. User requests to sort contacts by entering the `sortcom` command.
+2. CLinkedin sorts the currently displayed contact list alphabetically by company name (case-insensitive).
+3. CLinkedin displays the sorted contact list.
+4. CLinkedin displays a success message.
+
+   Use case ends.
+
+#### **Extensions**
+
+* 1a. The user provides an invalid command format.
+
+    * 1a1. CLinkedin shows an error message that the command format is invalid.
+
+      Use case resumes at step 1.
 
 ---
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. Should work on any _mainstream OS_ as long as it has Java 17 or above installed.
+2. The application should respond within 1 second for common commands (add, edit, delete, find, sort) when handling up to 1000 contacts.
+3. A user with average typing speed should be able to complete common tasks (e.g., add, edit, find) within 10 seconds using commands.
 4. Should automatically save all changes to the local data file after each successful command.
-5. Should not crash when the user enters invalid input, and should display clear error messages instead.
-6. Should store all data locally in a human-editable text file.
+5. The application should handle invalid inputs gracefully without crashing and provide clear error messages.
+6. Data should be stored locally in a human-editable format (e.g., JSON).
 7. Should not require an internet connection or any remote server to function.
 8. Should be packaged into a single JAR file and should not require installation.
-9. Should remain responsive (within 1 second) for common commands such as add, edit, delete, and find under typical usage.
-10. Should follow object-oriented design principles to ensure maintainability and extensibility.
-11. Should work properly on screen resolutions of 1920×1080 and above without layout issues.
+9. The application should display correctly on screen resolutions of 1920×1080 and above.
+10. The application should not lose data during normal operation.
+11. Commands should produce consistent results for the same input.
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
-* **Contact**: A stored entry representing a person, consisting of fields such as name, phone, email, address/context, and tags.
-* **Command**: A single-line instruction typed into the command box that triggers an action (e.g., add, edit, find).
-* **Tag**: A short label used to categorise contacts (e.g., recruiter, careerfair2026, fintech).
-* **Context (Meeting context)**: The user-entered text describing where/how the contact was met (e.g., “NUS Career Fair 2026”).
-* **Duplicate contact**: Two contacts considered the same entry based on the app’s duplicate rule (define your chosen rule here, e.g., same name + phone).
+* **Contact**: A stored entry representing a person, consisting of fields such as name, phone, email, address, company, remark, and tags.
+* **Command**: A text-based instruction entered by the user to perform an action (e.g., add, edit, find).
+* **Tag**: A short label used to categorise contacts (e.g., recruiter, fintech).
+* **Company**: The organisation or company that a contact is associated with.
+* **Remark**: Additional notes or comments about a contact.
+* **Filtered contact list**: The subset of contacts currently displayed after applying a command.
+* **Duplicate contact**: Two contacts with the same phone number.
 
 --------------------------------------------------------------------------------------------------------------------
 

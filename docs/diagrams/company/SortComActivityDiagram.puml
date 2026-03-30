@@ -1,0 +1,19 @@
+@startuml
+title Activity Diagram: sortcom
+
+start
+
+:User executes `sortcom`;
+
+if () then ([list is empty])
+    :Show message that there are no contacts to sort;
+    stop
+else ([list not empty])
+endif
+
+:Sort currently displayed contacts by company name;
+:Update displayed contact list;
+:Show success message;
+
+stop
+@enduml
