@@ -90,6 +90,14 @@ public class AddCommandTest {
     }
 
     @Test
+    public void messageUsage_optionalFieldsShownInSquareBrackets() {
+        assertTrue(AddCommand.MESSAGE_USAGE.contains("[c/COMPANY]"));
+        assertTrue(AddCommand.MESSAGE_USAGE.contains("[r/REMARK]"));
+        assertTrue(AddCommand.MESSAGE_USAGE.contains("[l/LINK]"));
+        assertTrue(AddCommand.MESSAGE_USAGE.contains("[t/TAG]..."));
+    }
+
+    @Test
     public void equals() {
         Person alice = new PersonBuilder().withName("Alice").build();
         Person bob = new PersonBuilder().withName("Bob").build();
