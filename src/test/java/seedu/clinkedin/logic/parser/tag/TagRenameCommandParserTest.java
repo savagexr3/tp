@@ -27,6 +27,11 @@ public class TagRenameCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagRenameCommand.MESSAGE_USAGE);
         assertParseFailure(parser, "friends", expectedMessage);
         assertParseFailure(parser, " ", expectedMessage);
-        assertParseFailure(parser, "friends colleagues family", expectedMessage);
+    }
+
+    @Test
+    public void parse_tagNameWithSpaces_throwsParseException() {
+        String expectedMessage = String.format(TagRenameCommand.MESSAGE_SPACE_IN_TAG, TagRenameCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "friends close friends", expectedMessage);
     }
 }
