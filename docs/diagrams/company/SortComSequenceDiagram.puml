@@ -1,0 +1,20 @@
+@startuml
+title Sequence Diagram: sortcom
+
+actor User
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant "c:SortComCommand" as Command
+participant "m:Model" as Model
+
+User -> Logic : execute("sortcom")
+Logic -> ABParser : parseCommand("sortcom")
+ABParser --> Logic : SortComCommand
+
+Logic -> Command : execute(model)
+Command -> Model : sortFilteredPersonListByCompany()
+Model --> Command
+Command --> Logic : CommandResult
+Logic --> User : CommandResult
+
+@enduml

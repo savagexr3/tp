@@ -1,0 +1,26 @@
+@startuml
+title Activity Diagram: findcom
+
+start
+
+:User executes `findcom`;
+
+if (Input is empty?) then (yes)
+    :Show invalid command format error;
+    stop
+else (no)
+endif
+
+:Split input by `;`;
+:Trim and remove empty keywords;
+:Create company keyword predicate;
+:Filter displayed contact list;
+
+if (Any matching contacts found?) then (yes)
+    :Show matching contacts and summary message;
+else (no)
+    :Show empty list and summary message;
+endif
+
+stop
+@enduml
