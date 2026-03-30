@@ -79,7 +79,7 @@ Format: `help`
 
 Adds a contact to CLinkedin.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
 
 <box type="tip" seamless>
 
@@ -88,7 +88,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Pasir Ris Drive p/1234567 t/teacher`
 
 ### Listing all contacts : `list`
 
@@ -127,8 +127,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find alex david` returns `Alex Yeoh`, `David Li`
 
 ### Deleting a contact : `delete`
 
@@ -200,6 +199,22 @@ Examples:
 * `tag create colleague blue`
 * `tag create vip #ff6688`
 
+### Assigning/Unassigning a tag: `tag assign`, `tag unassign`
+
+Assign/remove a tag to/from 1 or multiple contacts at once.
+
+Format: `tag assign INDEX[,INDEX]... TAG_NAME`, `tag unassign INDEX[,INDEX]... TAG_NAME`
+
+* Assigns/remove `TAG_NAME` tag to/from multiple contacts.
+* If the index provided is **out of range** or **negative** or **zero**, an error message will be shown.
+* If the tag does not exist, an error message will be shown.
+
+Examples:
+* `tag assign 1 friend`
+* `tag assign 1,4,6 friend`
+* `tag unassign 1 friend`
+* `tag unassign 1,4,6 friend`
+
 ### Deleting a tag: `tag delete`
 
 Deletes a tag and removes it from all contacts.
@@ -259,16 +274,18 @@ Furthermore, certain edits can cause CLinkedin to behave in unexpected ways (e.g
 
 ## Command summary
 
-Action     | Format, Examples
------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**        | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**      | `clear`
-**Delete**     | `delete INDEX`<br> e.g., `delete 3`
-**Edit**       | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**       | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**       | `list`
-**Deleted**    | `deleted`
-**Restore**    | `restore INDEX`<br> e.g., `restore 1`
-**Tag Create** | `tag create TAG_NAME [COLOR]`<br> e.g., `tag create friend blue`
-**Tag Delete** | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
-**Help**       | `help`
+Action              | Format, Examples
+--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+**Add**             | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123 Clementi Rd t/friend t/colleague`
+**Clear**           | `clear`
+**Delete**          | `delete INDEX`<br> e.g., `delete 3`
+**Edit**            | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
+**Find**            | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**List**            | `list`
+**Deleted**         | `deleted`
+**Restore**         | `restore INDEX`<br> e.g., `restore 1`
+**Tag Create**      | `tag create TAG_NAME [COLOR]`<br> e.g., `tag create friend blue`
+**Tag Assign**      | `tag assign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag assign 1,4,6 friend`
+**Tag Unassign**    | `tag unassign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag unassign 1,4,6 friend`
+**Tag Delete**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
+**Help**            | `help`
