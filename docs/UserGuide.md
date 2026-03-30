@@ -116,18 +116,18 @@ Examples:
 
 Finds contacts whose names contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find KEYWORD [;MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* The order of the keywords matter. e.g. `Hans Bo` will not match `Bo Hans`
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Contacts matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Partial words will be matched e.g. `Han` will match `Hans`
+* Contacts containing the entire keyword will be returned (i.e. `.contains()` search).
+  e.g. `Hans Bo` will return `Hans Bobber`, but not `Hans Lim`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`
+* `find alex david` returns `Alex David` only
 
 ### Deleting a contact : `delete`
 
@@ -228,6 +228,36 @@ Format: `tag delete TAG_NAME`
 
 Examples:
 * `tag delete friend`
+
+### Adding color to a tag: `tag color`
+
+Adds a color to a tag.
+
+Format: `tag color TAG_NAME [COLOR]`
+
+* Adds a valid color to the specified `TAG_NAME`.
+* A valid color is any plain text, rgb value, or hex value as specified in the JavaFX documentation of `Color.web(String colorString)`.
+* If the tag does not exist, an error message will be shown.
+* If the color is invalid, an error message will be shown.
+
+Examples:
+* `tag color friends blue`
+* `tag color enemy rgb(255,0,0)`
+* `tag color coworker #343434`
+
+### Filter contacts by tag: `tag show`
+
+Show contacts that have a specific tag.
+
+Format: `tag show TAG_NAME`
+
+* The list will be filtered to show contacts that have `TAG_NAME`.
+* Filters based on a single tag only.
+* If the tag does not exist, an error message will be shown.
+
+Examples:
+* `tag show friends`
+* `tag show coworkers`
 
 ### Clearing all entries : `clear`
 
