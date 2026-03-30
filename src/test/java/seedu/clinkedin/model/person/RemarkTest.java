@@ -16,71 +16,57 @@ public class RemarkTest {
 
     @Test
     public void constructor_invalidRemark_throwsIllegalArgumentException() {
-        // empty string
         assertThrows(IllegalArgumentException.class, () -> new Remark(""));
-
-        // too long
+        assertThrows(IllegalArgumentException.class, () -> new Remark("hello/world"));
         assertThrows(IllegalArgumentException.class, () -> new Remark("a".repeat(201)));
     }
 
     @Test
-    public void constructor_validRemark_success() {
-        Remark remark = new Remark("Met during internship");
-        assertEquals("Met during internship", remark.value);
-    }
-
-    @Test
-    public void getRemarkValidationError() {
-        // null
-        assertEquals(Remark.MESSAGE_NULL,
-                Remark.getRemarkValidationError(null));
-
-        // empty
-        assertEquals(Remark.MESSAGE_EMPTY,
-                Remark.getRemarkValidationError(""));
-
-        // too long
-        assertEquals(Remark.MESSAGE_TOO_LONG,
-                Remark.getRemarkValidationError("a".repeat(201)));
-
-        // valid
-        assertEquals(null,
-                Remark.getRemarkValidationError("Hello"));
-        assertEquals(null,
-                Remark.getRemarkValidationError("Follow up with recruiter"));
+    public void getRemarkValidationError_invalidRemark_returnsCorrectMessage() {
+        assertEquals(Remark.MESSAGE_NULL, Remark.getRemarkValidationError(null));
+        assertEquals(Remark.MESSAGE_EMPTY, Remark.getRemarkValidationError(""));
+        assertEquals("Remark cannot contain '/'.",
+                Remark.getRemarkValidationError("hello/world"));
+        assertEquals(Remark.MESSAGE_TOO_LONG, Remark.getRemarkValidationError("a".repeat(201)));
     }
 
     @Test
     public void isValidRemark() {
-        // null
-        assertThrows(NullPointerException.class, () -> Remark.isValidRemark(null));
-
         // invalid
         assertFalse(Remark.isValidRemark(""));
+        assertFalse(Remark.isValidRemark("hello/world"));
         assertFalse(Remark.isValidRemark("a".repeat(201)));
 
         // valid
-        assertTrue(Remark.isValidRemark("Met at career fair"));
+        assertTrue(Remark.isValidRemark("Enjoys networking"));
         assertTrue(Remark.isValidRemark("Follow up next week"));
+        assertTrue(Remark.isValidRemark("A".repeat(200)));
     }
 
     @Test
     public void equals() {
-        Remark remark = new Remark("Valid Remark");
+        Remark firstRemark = new Remark("Enjoys networking");
+        Remark secondRemark = new Remark("Enjoys networking");
+        Remark thirdRemark = new Remark("Follow up next week");
 
-        // same values -> true
-        assertTrue(remark.equals(new Remark("Valid Remark")));
+        assertTrue(firstRemark.equals(firstRemark));
+        assertTrue(firstRemark.equals(secondRemark));
+        assertFalse(firstRemark.equals(thirdRemark));
+        assertFalse(firstRemark.equals(1));
+        assertFalse(firstRemark.equals(null));
+    }
 
-        // same object -> true
-        assertTrue(remark.equals(remark));
+    @Test
+    public void toStringMethod() {
+        Remark remark = new Remark("Enjoys networking");
+        assertEquals("Enjoys networking", remark.toString());
+    }
 
-        // null -> false
-        assertFalse(remark.equals(null));
+    @Test
+    public void hashCodeMethod() {
+        Remark firstRemark = new Remark("Enjoys networking");
+        Remark secondRemark = new Remark("Enjoys networking");
 
-        // different type -> false
-        assertFalse(remark.equals(5));
-
-        // different value -> false
-        assertFalse(remark.equals(new Remark("Other Remark")));
+        assertEquals(firstRemark.hashCode(), secondRemark.hashCode());
     }
 }

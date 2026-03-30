@@ -16,71 +16,67 @@ public class AddressTest {
 
     @Test
     public void constructor_invalidAddress_throwsIllegalArgumentException() {
-        String invalidAddress = "";
-        assertThrows(IllegalArgumentException.class, () -> new Address(invalidAddress));
+        assertThrows(IllegalArgumentException.class, () -> new Address(""));
+        assertThrows(IllegalArgumentException.class, () -> new Address("   "));
+        assertThrows(IllegalArgumentException.class, () -> new Address("Pasir  Ris"));
+        assertThrows(IllegalArgumentException.class, () -> new Address("Pasir/Ris"));
+        assertThrows(IllegalArgumentException.class, () -> new Address("Pasir Ris@"));
+        assertThrows(IllegalArgumentException.class, () -> new Address("a".repeat(101)));
     }
+
     @Test
-    public void getAddressValidationError() {
-
-        // empty
-        assertEquals(Address.MESSAGE_EMPTY,
-                Address.getAddressValidationError(""));
-
-        // spaces only
-        assertEquals(Address.MESSAGE_EMPTY,
-                Address.getAddressValidationError("   "));
-
-        // too long
-        assertEquals(Address.MESSAGE_TOO_LONG,
-                Address.getAddressValidationError("a".repeat(101)));
-
-        // multiple spaces
-        assertEquals(Address.MESSAGE_MULTIPLE_SPACES,
-                Address.getAddressValidationError("123  Main Street"));
-
-        // valid addresses
-        assertEquals(null,
-                Address.getAddressValidationError("123 Main Street"));
-
-        assertEquals(null,
-                Address.getAddressValidationError("NUS Computing 13 Computing Drive"));
-
-        assertEquals(null,
-                Address.getAddressValidationError("Blk 30 Geylang Street 29 #06-40"));
+    public void getAddressValidationError_invalidAddress_returnsCorrectMessage() {
+        assertEquals(Address.MESSAGE_EMPTY, Address.getAddressValidationError(""));
+        assertEquals(Address.MESSAGE_EMPTY, Address.getAddressValidationError("   "));
+        assertEquals(Address.MESSAGE_MULTIPLE_SPACES, Address.getAddressValidationError("Pasir  Ris"));
+        assertEquals(Address.ADDRESS_CONTAINS_INVALID_CHARACTERS,
+                Address.getAddressValidationError("Pasir/Ris"));
+        assertEquals(Address.ADDRESS_CONTAINS_INVALID_CHARACTERS,
+                Address.getAddressValidationError("Pasir Ris@"));
+        assertEquals(Address.MESSAGE_TOO_LONG, Address.getAddressValidationError("a".repeat(101)));
     }
 
     @Test
     public void isValidAddress() {
-        // null address
-        assertThrows(NullPointerException.class, () -> Address.isValidAddress(null));
+        // invalid
+        assertFalse(Address.isValidAddress(""));
+        assertFalse(Address.isValidAddress("   "));
+        assertFalse(Address.isValidAddress("Pasir  Ris"));
+        assertFalse(Address.isValidAddress("Pasir/Ris"));
+        assertFalse(Address.isValidAddress("Pasir Ris@"));
+        assertFalse(Address.isValidAddress("a".repeat(101)));
 
-        // invalid addresses
-        assertFalse(Address.isValidAddress("")); // empty string
-        assertFalse(Address.isValidAddress(" ")); // spaces only
-
-        // valid addresses
-        assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));
-        assertTrue(Address.isValidAddress("-")); // one character
-        assertTrue(Address.isValidAddress("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
+        // valid
+        assertTrue(Address.isValidAddress("Pasir Ris Drive 12"));
+        assertTrue(Address.isValidAddress("311, Clementi Ave 2, #02-25"));
+        assertTrue(Address.isValidAddress("Blk 123 Tampines Street 11"));
+        assertTrue(Address.isValidAddress("A".repeat(100)));
     }
 
     @Test
     public void equals() {
-        Address address = new Address("Valid Address");
+        Address firstAddress = new Address("Pasir Ris Drive 12");
+        Address secondAddress = new Address("Pasir Ris Drive 12");
+        Address thirdAddress = new Address("Jurong West Ave 1");
 
-        // same values -> returns true
-        assertTrue(address.equals(new Address("Valid Address")));
+        assertTrue(firstAddress.equals(firstAddress));
+        assertTrue(firstAddress.equals(secondAddress));
+        assertFalse(firstAddress.equals(thirdAddress));
+        assertFalse(firstAddress.equals(1));
+        assertFalse(firstAddress.equals(null));
+    }
 
-        // same object -> returns true
-        assertTrue(address.equals(address));
+    @Test
+    public void toStringMethod() {
+        Address address = new Address("Pasir Ris Drive 12");
+        assertEquals("Pasir Ris Drive 12", address.toString());
+    }
 
-        // null -> returns false
-        assertFalse(address.equals(null));
+    @Test
+    public void hashCodeMethod() {
+        Address firstAddress = new Address("Pasir Ris Drive 12");
+        Address secondAddress = new Address("Pasir Ris Drive 12");
 
-        // different types -> returns false
-        assertFalse(address.equals(5.0f));
-
-        // different values -> returns false
-        assertFalse(address.equals(new Address("Other Valid Address")));
+        assertEquals(firstAddress.hashCode(), secondAddress.hashCode());
     }
 }

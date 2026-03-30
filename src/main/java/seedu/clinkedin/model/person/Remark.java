@@ -20,6 +20,9 @@ public class Remark {
     public static final String MESSAGE_TOO_LONG =
             "Remark cannot exceed 200 characters.";
 
+    public static final String REMARK_CONTAINS_INVALID_CHARACTERS =
+            "Remark contains invalid characters (/).";
+
     public final String value;
 
     /**
@@ -48,6 +51,10 @@ public class Remark {
 
         if (test.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
+        }
+
+        if (test.contains("/")) {
+            return REMARK_CONTAINS_INVALID_CHARACTERS;
         }
 
         return null; // any characters allowed
