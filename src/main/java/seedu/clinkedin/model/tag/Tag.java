@@ -105,10 +105,17 @@ public class Tag {
     public static String getColorNameValidationError(String color) {
         try {
             Color.web(color);
+            checkIfValidColorFormat(color);
         } catch (IllegalArgumentException e) {
             return MESSAGE_INVALID_COLOR_NAME;
         }
         return null;
+    }
+
+    private static void checkIfValidColorFormat(String color) throws IllegalArgumentException {
+        if (!color.startsWith("#") && !color.matches("^[a-zA-Z]*$")) {
+            throw new IllegalArgumentException(MESSAGE_INVALID_COLOR_NAME);
+        }
     }
 
     /**
