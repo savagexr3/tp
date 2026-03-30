@@ -1,0 +1,25 @@
+@startuml
+
+actor User
+participant "LogicManager" as Logic
+participant "TagDeleteCommand" as Command
+participant "Model" as Model
+
+User -> Logic : execute("tag delete ...")
+Logic -> Command : execute(model)
+
+Command -> Model : hasTag(tagName)
+Model --> Command : true / false
+
+alt tag does not exist
+    Command --> Logic : CommandException
+    Logic --> User : error message
+else tag exists
+    Command -> Model : deleteTag(tagName)
+    Command -> Model : removeTagFromContacts(tagName)
+    Model --> Command : success
+    Command --> Logic : CommandResult
+    Logic --> User : success message
+end
+
+@enduml

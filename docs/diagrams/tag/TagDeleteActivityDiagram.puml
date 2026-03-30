@@ -1,0 +1,18 @@
+@startuml
+title Activity: Delete tag
+
+start
+
+:Execute `tag delete`;
+
+if () then ([tag does not exist])
+    :Show error message;
+    stop
+else ([else])
+endif
+
+:Remove tag from tag list;
+:Remove tag from all contacts using it;
+
+stop
+@enduml

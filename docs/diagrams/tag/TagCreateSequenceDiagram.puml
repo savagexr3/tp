@@ -1,0 +1,24 @@
+@startuml
+
+actor User
+participant "LogicManager" as Logic
+participant "TagCreateCommand" as Command
+participant "Model" as Model
+
+User -> Logic : execute("tag create ...")
+Logic -> Command : execute(model)
+
+Command -> Model : hasTag(tagName)
+Model --> Command : true / false
+
+alt duplicate tag
+    Command --> Logic : CommandException
+    Logic --> User : error message
+else valid tag
+    Command -> Model : addTag(tag)
+    Model --> Command : success
+    Command --> Logic : CommandResult
+    Logic --> User : success message
+end
+
+@enduml
