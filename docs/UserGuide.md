@@ -298,6 +298,27 @@ Format: `tag delete TAG_NAME`
 Examples:
 * `tag delete friend`
 
+### Listing all tags: `tag list`
+
+Shows a list of all tags in CLinkedin.
+
+Format: `tag list`
+
+### Renaming a tag: `tag rename`
+
+Renames an existing tag and updates all respective contacts with it.
+
+Format: `tag rename OLD_TAG_NAME NEW_TAG_NAME`
+
+* Renames the tag specified by OLD_TAG_NAME to the NEW_TAG_NAME. 
+* The tag will be updated for all contacts that currently have it assigned. 
+* Note: Tag names cannot contain spaces.
+* The old and new tag names cannot be the same. 
+* If the OLD_TAG_NAME does not exist, an error message will be shown.
+
+Examples:
+* `tag rename friends closefriends`
+* `tag rename colleagues coworkers`
 ### Adding color to a tag: `tag color`
 
 Adds a color to a tag.
@@ -384,6 +405,8 @@ Action              | Format, Examples
 **Restore**         | `restore INDEX`<br> e.g., `restore 1`
 **Tag Create**      | `tag create TAG_NAME [COLOR]`<br> e.g., `tag create friend blue`
 **Tag Assign**      | `tag assign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag assign 1,4,6 friend`
+**Tag List**        | `tag list`
+**Tag Rename**      | `tag rename OLD_TAG_NAME NEW_TAG_NAME`<br> e.g., `tag rename friends closefriends`
 **Tag Unassign**    | `tag unassign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag unassign 1,4,6 friend`
 **Tag Delete**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
 **Help**            | `help`
