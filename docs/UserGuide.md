@@ -61,7 +61,7 @@ CLinkedin is a **desktop app for managing contacts, optimized for use via a Comm
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit`, `sortcom` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -80,7 +80,28 @@ Format: `help`
 Adds a contact to CLinkedin.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
+<box type="warning" seamless>
 
+**Input constraints:**
+- **Name**
+    - Contains only letters, spaces, apostrophes (`'`) and hyphens (`-`)
+    - Maximum 100 characters
+- **Company**
+    - Contains only letters, numbers, spaces, `. , & -`
+    - Maximum 50 characters
+- **Address**
+    - Must not contain `/` or `@`
+    - Must not contain multiple consecutive spaces
+    - Maximum 100 characters
+- **Remark**
+    - Must not contain `/`
+    - Maximum 200 characters
+- **Tag**
+    - Must be alphanumeric (letters and numbers only)
+    - Maximum 20 characters
+    - Case-sensitive
+
+</box>
 <box type="tip" seamless>
 
 **Tip:** A contact can have any number of tags (including 0)
@@ -88,7 +109,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REM
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Pasir Ris Drive p/1234567 t/teacher`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Pasir Ris Drive c/Google r/Follow up next week p/1234567 t/teacher`
 
 ### Listing all contacts : `list`
 
@@ -100,34 +121,82 @@ Format: `list`
 
 Edits an existing contact in CLinkedin.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
 
 * Edits the contact at the specified `INDEX`. The index refers to the index number shown in the displayed contact list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the contact will be removed i.e adding of tags is not cumulative.
 * You can remove all the contact’s tags by typing `t/` without specifying any tags after it.
+* You can clear the company or remark field by typing `c/` or `r/` without specifying any value.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
+*  `edit 1 p/91234567 e/johndoe@example.com`:Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
+* `edit 3 c/ r/` Clears both the company and remark fields of the 3rd contact.
 
 ### Locating contacts by name: `find`
 
 Finds contacts whose names contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find KEYWORD [;MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* The order of the keywords matter. e.g. `Hans Bo` will not match `Bo Hans`
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Contacts matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Partial words will be matched e.g. `Han` will match `Hans`
+* Contacts containing the entire keyword will be returned (i.e. `.contains()` search).
+  e.g. `Hans Bo` will return `Hans Bobber`, but not `Hans Lim`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`
+* `find alex david` returns `Alex David` only
+* `find alex; yu` returns `Alex Yeoh` and `Bernice Yu`
+
+### **Finding contacts by company: `findcom`**
+
+Finds all contacts whose company name matches any of the given keywords.
+
+Format:
+`findcom KEYWORD [; KEYWORD]…​`
+
+* The search is **case-insensitive**.
+  e.g. `google`, `Google`, `GOOGLE` are treated the same.
+* A contact will be shown if its company contains **any of the given keywords**.
+* Multiple keywords can be provided by separating them with `;`.
+
+Examples:
+
+* `findcom Google`
+  Returns all contacts whose company contains “Google”.
+
+* `findcom Google; Amazon`
+  Returns all contacts whose company contains either “Google” or “Amazon”.
+
+* `findcom fintech; bank`
+  Returns all contacts whose company contains either “fintech” or “bank”.
+
+### **Sorting contacts by company: `sortcom`**
+
+Sorts the currently displayed contact list alphabetically by company name.
+
+Format:
+`sortcom`
+
+* Sorting is **case-insensitive**.
+  e.g. `apple`, `Apple`, `APPLE` are treated the same.
+* Only the **currently displayed list** is sorted (e.g. after `findcom` or `tag show`).
+* Contacts without a company are treated as having an empty value and will appear at the **top of the list**.
+* The sorting does **not permanently change** the original order of contacts.
+
+Examples:
+
+* `sortcom`
+  Sorts all currently displayed contacts by company name in alphabetical order.
+
+* `findcom Google`
+  `sortcom`
+  First filters contacts by company “Google”, then sorts the filtered results alphabetically.
 
 ### Deleting a contact : `delete`
 
@@ -189,8 +258,8 @@ Format: `tag create TAG_NAME [COLOR]`
 
 <box type="tip" seamless>
 
-**Tip:** Valid color formats include plain names, hexadecimal, or rgb values.<br>
-Examples: `orange`, `#ff6688`, `rgb(255,102,136)`
+**Tip:** Valid color formats include case-insensitive plain names, or hexadecimal values.<br>
+Examples: `orange`, `#ff6688`
 
 </box>
 
@@ -250,6 +319,34 @@ Format: `tag rename OLD_TAG_NAME NEW_TAG_NAME`
 Examples:
 * `tag rename friends closefriends`
 * `tag rename colleagues coworkers`
+### Adding color to a tag: `tag color`
+
+Adds a color to a tag.
+
+Format: `tag color TAG_NAME [COLOR]`
+
+* Adds a valid color to the specified `TAG_NAME`.
+* A valid color is any case-insensitive plain name, or hexadecimal value.
+* If the tag does not exist, an error message will be shown.
+* If the color is invalid, an error message will be shown.
+
+Examples:
+* `tag color friends blue`
+* `tag color coworker #343434`
+
+### Filter contacts by tag: `tag show`
+
+Show contacts that have a specific tag.
+
+Format: `tag show TAG_NAME`
+
+* The list will be filtered to show contacts that have `TAG_NAME`.
+* Filters based on a single tag only.
+* If the tag does not exist, an error message will be shown.
+
+Examples:
+* `tag show friends`
+* `tag show coworkers`
 
 ### Clearing all entries : `clear`
 

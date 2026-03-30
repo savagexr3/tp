@@ -23,6 +23,9 @@ public class Address {
     public static final String MESSAGE_MULTIPLE_SPACES =
             "Address can only contain single spaces between words.";
 
+    public static final String ADDRESS_CONTAINS_INVALID_CHARACTERS =
+            "Address contains invalid characters (/ @).";
+
     public final String value;
 
     /**
@@ -51,6 +54,10 @@ public class Address {
 
         if (test.contains("  ")) {
             return MESSAGE_MULTIPLE_SPACES;
+        }
+
+        if (test.contains("/") || test.contains("@")) {
+            return ADDRESS_CONTAINS_INVALID_CHARACTERS;
         }
 
         return null;

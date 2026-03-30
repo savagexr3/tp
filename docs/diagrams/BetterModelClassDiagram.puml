@@ -18,4 +18,6 @@ Person *--> Name
 Person *--> Phone
 Person *--> Email
 Person *--> Address
+Person *--> "0..1"Company
+Person *--> "0..1"Remark
 @enduml

@@ -1,0 +1,23 @@
+@startuml
+title Sequence Diagram: findcom
+
+actor User
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant ":FindComCommandParser" as Parser
+participant "f:FindComCommand" as Command
+participant "m:Model" as Model
+
+User -> Logic : execute("findcom ...")
+Logic -> ABParser : parseCommand("findcom ...")
+ABParser -> Parser : parse("...")
+Parser --> ABParser : FindComCommand
+ABParser --> Logic : FindComCommand
+
+Logic -> Command : execute(model)
+Command -> Model : updateFilteredPersonList(predicate)
+Model --> Command
+Command --> Logic : CommandResult
+Logic --> User : CommandResult
+
+@enduml

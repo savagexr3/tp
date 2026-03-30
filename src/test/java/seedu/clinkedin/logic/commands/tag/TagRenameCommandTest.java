@@ -100,6 +100,16 @@ public class TagRenameCommandTest {
     }
 
     @Test
+    public void execute_sameOldAndNewTagName_throwsCommandException() {
+        Model model = new ModelManager(new CLinkedin(), new UserPrefs());
+        Tag oldTag = new Tag("friends");
+        Tag newTag = new Tag("friends");
+
+        TagRenameCommand renameCommand = new TagRenameCommand(oldTag, newTag);
+        assertCommandFailure(renameCommand, model, TagRenameCommand.MESSAGE_SAME_TAG);
+    }
+
+    @Test
     public void equals() {
         Tag oldTag1 = new Tag("friends");
         Tag newTag1 = new Tag("colleagues");
