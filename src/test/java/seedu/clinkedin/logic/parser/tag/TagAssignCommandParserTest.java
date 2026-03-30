@@ -74,4 +74,16 @@ public class TagAssignCommandParserTest {
         assertParseFailure(parser, "1 2 3 friends",
                 "Indexes must be comma-separated (e.g. 1,2,3).");
     }
+
+    @Test
+    public void parse_leadingComma_throwsParseException() {
+        assertParseFailure(parser, ",1,2 friends",
+                "Indexes should not start with a comma.");
+    }
+
+    @Test
+    public void parse_trailingComma_throwsParseException() {
+        assertParseFailure(parser, "1,2, friends",
+                "Indexes should not end with a comma.");
+    }
 }
