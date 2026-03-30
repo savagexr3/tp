@@ -5,10 +5,10 @@ start
 
 :User executes `sortcom`;
 
-if (Displayed contact list is empty?) then (yes)
+if () then ([list is empty])
     :Show message that there are no contacts to sort;
     stop
-else (no)
+else ([list not empty])
 endif
 
 :Sort currently displayed contacts by company name;

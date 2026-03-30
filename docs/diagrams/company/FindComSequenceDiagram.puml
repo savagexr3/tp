@@ -8,9 +8,9 @@ participant ":FindComCommandParser" as Parser
 participant "f:FindComCommand" as Command
 participant "m:Model" as Model
 
-User -> Logic : execute("findcom Google; Amazon")
-Logic -> ABParser : parseCommand("findcom Google; Amazon")
-ABParser -> Parser : parse("Google; Amazon")
+User -> Logic : execute("findcom ...")
+Logic -> ABParser : parseCommand("findcom ...")
+ABParser -> Parser : parse("...")
 Parser --> ABParser : FindComCommand
 ABParser --> Logic : FindComCommand
 

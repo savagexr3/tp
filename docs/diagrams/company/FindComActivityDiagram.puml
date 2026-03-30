@@ -5,20 +5,17 @@ start
 
 :User executes `findcom`;
 
-if (Input is empty?) then (yes)
+if () then ([input is empty])
     :Show invalid command format error;
     stop
-else (no)
+else ([input provided])
 endif
 
-:Split input by `;`;
-:Trim and remove empty keywords;
-:Create company keyword predicate;
 :Filter displayed contact list;
 
-if (Any matching contacts found?) then (yes)
+if () then ([matches found])
     :Show matching contacts and summary message;
-else (no)
+else ([no matches])
     :Show empty list and summary message;
 endif
 
