@@ -128,6 +128,7 @@ Format: `find KEYWORD [;MORE_KEYWORDS]`
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex David` only
+* `find alex; yu` returns `Alex Yeoh` and `Bernice Yu`
 
 ### Deleting a contact : `delete`
 
