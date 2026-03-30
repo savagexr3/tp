@@ -20,40 +20,61 @@ public class TagUnassignCommandParser implements Parser<TagUnassignCommand> {
     @Override
     public TagUnassignCommand parse(String args) throws ParseException {
         String trimmed = args.trim();
-        String[] parts = trimmed.split("\\s+", 2);
 
-        if (parts.length < 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
+        String[] tokens = trimmed.split("\\s+");
+        if (tokens.length < 2) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagUnassignCommand.MESSAGE_USAGE));
         }
 
-        // parse comma-separated indexes
-        String[] indexStrings = parts[0].split(",");
-        if (indexStrings.length == 0) {
+        // last token is the tag name, everything before is the index list
+        String tagName = tokens[tokens.length - 1];
+        String indexPart = trimmed.substring(0, trimmed.lastIndexOf(tagName)).trim();
+
+        // check if indexes appear to be space-separated instead of comma-separated
+        // allow spaces around commas (e.g. "1 , 2") but not pure space separation (e.g. "1 2 3")
+        if (indexPart.matches(".*\\d+\\s+\\d+.*") && !indexPart.contains(",")) {
+            throw new ParseException("Indexes must be comma-separated (e.g. 1,2,3).");
+        }
+
+        // remove all spaces to handle "1 , 2 , 3" and "1, 2, 3"
+        indexPart = indexPart.replaceAll("\\s+", "");
+
+        if (indexPart.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagUnassignCommand.MESSAGE_USAGE));
         }
 
+        // check for leading comma
+        if (indexPart.startsWith(",")) {
+            throw new ParseException("Indexes should not start with a comma.");
+        }
+
+        // check for trailing comma
+        if (indexPart.endsWith(",")) {
+            throw new ParseException("Indexes should not end with a comma.");
+        }
+
+        // use -1 limit to keep trailing empty strings from consecutive/trailing commas
+        String[] indexStrings = indexPart.split(",", -1);
         List<Index> indexes = new ArrayList<>();
         for (String indexString : indexStrings) {
-            String trimmedIndex = indexString.trim();
-            if (trimmedIndex.isEmpty()) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagUnassignCommand.MESSAGE_USAGE));
+            if (indexString.isEmpty()) {
+                throw new ParseException("Indexes should not contain consecutive commas.");
             }
             try {
-                indexes.add(ParserUtil.parseIndex(trimmedIndex));
+                indexes.add(ParserUtil.parseIndex(indexString));
             } catch (ParseException pe) {
                 throw new ParseException(pe.getMessage(), pe);
             }
         }
 
-        String tagNameError = Tag.getTagNameValidationError(parts[1].trim());
+        String tagNameError = Tag.getTagNameValidationError(tagName);
         if (tagNameError != null) {
             throw new ParseException(tagNameError);
         }
 
-        Tag tag = new Tag(parts[1].trim());
+        Tag tag = new Tag(tagName);
         return new TagUnassignCommand(indexes, tag);
     }
 }

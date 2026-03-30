@@ -68,4 +68,10 @@ public class TagUnassignCommandParserTest {
     public void parse_invalidTagName_throwsParseException() {
         assertParseFailure(parser, "1 #invalid", Tag.MESSAGE_INVALID_CHARACTERS);
     }
+
+    @Test
+    public void parse_spaceSeparatedIndexes_throwsParseException() {
+        assertParseFailure(parser, "1 2 3 friends",
+                "Indexes must be comma-separated (e.g. 1,2,3).");
+    }
 }
