@@ -1,0 +1,29 @@
+@startuml
+title Activity: Tag Unassign
+
+start
+
+:Execute `tag unassign`;
+
+:Retrieve filtered person list;
+
+if () then ([else])
+    :Show invalid index error;
+    stop
+else ([all indexes valid])
+endif
+
+if () then ([else])
+    :Show tag not assigned error;
+    stop
+else ([all selected persons have tag])
+endif
+
+:Remove tag from all specified persons;
+
+:Update filtered person list;
+
+:Show success message;
+
+stop
+@enduml

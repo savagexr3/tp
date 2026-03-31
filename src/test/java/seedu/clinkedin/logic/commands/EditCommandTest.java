@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.logic.commands.AddCommand.MESSAGE_TAGS_DO_NOT_EXIST;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.DESC_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_LINK_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.clinkedin.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
@@ -44,11 +47,28 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Person editedPerson = new PersonBuilder()
-                .withLink("https://linkedin.com/in/amybee")
-                .withDateAdded("20-03-2026")
+        // Add husband tag to clinkedin
+        model.setTags(List.of(new Tag("husband")));
+
+        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withTags(VALID_TAG_HUSBAND)
+                .withLink(VALID_LINK_BOB)
                 .build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+
+        EditCommand.EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withTags(VALID_TAG_HUSBAND)
+                .withLink(VALID_LINK_BOB)
+                .build();
+
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
@@ -266,4 +286,25 @@ public class EditCommandTest {
         assertThrows(CommandException.class, errorMessage, () -> editCommand.execute(model));
     }
 
+    public void execute_clearLink_success() {
+        // Add friends tag to clinkedin
+        model.setTags(List.of(new Tag("friends")));
+
+        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.clearLink();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withoutLink()
+                .build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new CLinkedin(model.getCLinkedin()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
 }

@@ -154,6 +154,7 @@ public class PersonBuilder {
         this.remark = null;
         return this;
     }
+
     /**
      * Builds and returns a {@code Person} with the current state of this builder.
      */
@@ -162,4 +163,11 @@ public class PersonBuilder {
                 Optional.ofNullable(remark), Optional.ofNullable(link), dateAdded, tags);
     }
 
+    /**
+     * Removes the {@code link} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withoutLink() {
+        this.link = null;
+        return this;
+    }
 }
