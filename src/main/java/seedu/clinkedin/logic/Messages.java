@@ -1,5 +1,6 @@
 package seedu.clinkedin.logic;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +23,8 @@ public class Messages {
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_INVALID_DELETED_PERSON_RECORD_DISPLAYED_INDEX =
             "The deleted person record index provided is invalid";
+    public static final String MESSAGE_TAG_SHOW_SINGLE_TAG_ONLY =
+            "This command only accepts 1 tag as parameter and has to be alphanumeric!";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
@@ -59,8 +62,11 @@ public class Messages {
             builder.append("; Link: ")
                     .append(person.getLink());
         }
-        builder.append("; Tags: ");
-        person.getTags().forEach(builder::append);
+        if (!person.getTags().isEmpty()) {
+            builder.append("; Tags: ");
+            List<String> tagList = person.getTags().stream().map(x -> x.toString()).collect(Collectors.toList());
+            builder.append(String.join(", ", tagList));
+        }
         return builder.toString();
     }
 

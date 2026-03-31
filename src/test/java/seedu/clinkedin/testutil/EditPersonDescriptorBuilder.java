@@ -31,17 +31,25 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Returns an {@code EditPersonDescriptor} with fields containing {@code person}'s details
+     * Returns an {@code EditPersonDescriptor} with fields containing {@code person}'s details.
+     * Only sets optional fields (company, remark, link) if they are non-null,
+     * to avoid accidentally marking them as edited/cleared.
      */
     public EditPersonDescriptorBuilder(Person person) {
         descriptor = new EditPersonDescriptor();
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
-        descriptor.setCompany(person.getCompany());
+        if (person.getCompany() != null) {
+            descriptor.setCompany(person.getCompany());
+        }
         descriptor.setAddress(person.getAddress());
-        descriptor.setRemark(person.getRemark());
-        descriptor.setLink(person.getLink());
+        if (person.getRemark() != null) {
+            descriptor.setRemark(person.getRemark());
+        }
+        if (person.getLink() != null) {
+            descriptor.setLink(person.getLink());
+        }
         descriptor.setTags(person.getTags());
     }
 
@@ -70,7 +78,7 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Email} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code Company} of the {@code EditPersonDescriptor} that we are building.
      */
     public EditPersonDescriptorBuilder withCompany(String company) {
         descriptor.setCompany(new Company(company));

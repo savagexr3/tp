@@ -11,6 +11,7 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,7 +86,8 @@ public class AddCommand extends Command {
         }
 
         if (!nonExistentTags.isEmpty()) {
-            throw new CommandException(MESSAGE_TAGS_DO_NOT_EXIST + nonExistentTags.toString());
+            List<String> tagList = nonExistentTags.stream().map(x -> x.toString()).collect(Collectors.toList());
+            throw new CommandException(MESSAGE_TAGS_DO_NOT_EXIST + String.join(", ", tagList));
         }
 
         Person toAddWithExistingTags = getPersonWithTags(toAdd, model);

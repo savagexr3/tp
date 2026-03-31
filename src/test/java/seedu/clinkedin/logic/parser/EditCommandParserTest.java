@@ -209,4 +209,16 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + REMARK_DESC_AMY + REMARK_DESC_AMY,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
     }
+
+    @Test
+    public void parse_clearLink_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + " l/";
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        descriptor.clearLink();
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
 }

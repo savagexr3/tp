@@ -83,8 +83,13 @@ public class EditCommandParser implements Parser<EditCommand> {
             }
         }
         if (argMultimap.getValue(PREFIX_LINK).isPresent()) {
-            Optional<Link> parsedLink = ParserUtil.parseLink(argMultimap.getValue(PREFIX_LINK));
-            parsedLink.ifPresent(editPersonDescriptor::setLink);
+            String linkValue = argMultimap.getValue(PREFIX_LINK).get().trim();
+            if (linkValue.isEmpty()) {
+                editPersonDescriptor.clearLink();
+            } else {
+                Optional<Link> parsedLink = ParserUtil.parseLink(argMultimap.getValue(PREFIX_LINK));
+                parsedLink.ifPresent(editPersonDescriptor::setLink);
+            }
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 

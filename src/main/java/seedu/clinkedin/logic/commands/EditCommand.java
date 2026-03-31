@@ -1,6 +1,7 @@
 package seedu.clinkedin.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.clinkedin.logic.commands.AddCommand.MESSAGE_TAGS_DO_NOT_EXIST;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COMPANY;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -11,6 +12,7 @@ import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.clinkedin.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -96,15 +98,29 @@ public class EditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        if (!personToEdit.getPhone().equals(editedPerson.getPhone()) && model.hasPhoneNumber(editedPerson.getPhone())) {
+        if (!personToEdit.getPhone().equals(editedPerson.getPhone())
+                && model.hasPhoneNumber(editedPerson.getPhone())) {
             throw new CommandException(MESSAGE_DUPLICATE_PHONE);
+        }
+
+        // Checks if tag exist
+        ArrayList<Tag> nonExistentTags = new ArrayList<>();
+        for (Tag tag : editedPerson.getTags()) {
+            if (!model.hasTag(tag)) {
+                nonExistentTags.add(tag);
+            }
+        }
+
+        if (!nonExistentTags.isEmpty()) {
+            throw new CommandException(MESSAGE_TAGS_DO_NOT_EXIST + nonExistentTags.toString());
         }
 
         Person editedPersonWithTags = getPersonWithTags(editedPerson, model);
 
         model.setPerson(personToEdit, editedPersonWithTags);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPersonWithTags)));
+        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(editedPersonWithTags)));
     }
 
     /**
@@ -124,8 +140,9 @@ public class EditCommand extends Command {
                 ? editPersonDescriptor.getRemark()
                 : Optional.ofNullable(personToEdit.getRemark());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Optional<Link> updatedLink = editPersonDescriptor.getLink()
-                .or(() -> Optional.ofNullable(personToEdit.getLink()));
+        Optional<Link> updatedLink = editPersonDescriptor.isLinkEdited()
+                ? editPersonDescriptor.getLink()
+                : Optional.ofNullable(personToEdit.getLink());
         DateAdded dateAdded = personToEdit.getDateAdded();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
@@ -141,7 +158,6 @@ public class EditCommand extends Command {
                 .stream()
                 .filter(x -> person.getTags().contains(x))
                 .collect(Collectors.toSet());
-
 
         return new Person(
                 person.getName(),
@@ -162,7 +178,6 @@ public class EditCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof EditCommand)) {
             return false;
         }
@@ -194,6 +209,7 @@ public class EditCommand extends Command {
         private Remark remark;
         private boolean isRemarkEdited;
         private Link link;
+        private boolean isLinkEdited;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -211,7 +227,8 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             this.remark = toCopy.remark;
             this.isRemarkEdited = toCopy.isRemarkEdited;
-            setLink(toCopy.link);
+            this.link = toCopy.link;
+            this.isLinkEdited = toCopy.isLinkEdited;
             setTags(toCopy.tags);
         }
 
@@ -220,7 +237,7 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, company, address, remark, link, tags)
-                    || isRemarkEdited || isCompanyEdited;
+                    || isRemarkEdited || isCompanyEdited || isLinkEdited;
         }
 
         public void setName(Name name) {
@@ -278,8 +295,6 @@ public class EditCommand extends Command {
 
         /**
          * Sets the remark to be edited.
-         *
-         * @param remark The new remark to set.
          */
         public void setRemark(Remark remark) {
             this.remark = remark;
@@ -294,30 +309,36 @@ public class EditCommand extends Command {
             this.isRemarkEdited = true;
         }
 
-        /**
-         * Returns the edited remark if present.
-         *
-         * @return An {@code Optional} containing the remark if it has been set, otherwise empty.
-         */
         public Optional<Remark> getRemark() {
             return Optional.ofNullable(remark);
         }
 
-        /**
-         * Returns true if the remark field has been edited.
-         *
-         * @return True if remark was set or cleared, false otherwise.
-         */
         public boolean isRemarkEdited() {
             return isRemarkEdited;
         }
 
+        /**
+         * Sets the link to be edited.
+         */
         public void setLink(Link link) {
             this.link = link;
+            this.isLinkEdited = true;
+        }
+
+        /**
+         * Clears the link (i.e., removes any existing link).
+         */
+        public void clearLink() {
+            this.link = null;
+            this.isLinkEdited = true;
         }
 
         public Optional<Link> getLink() {
             return Optional.ofNullable(link);
+        }
+
+        public boolean isLinkEdited() {
+            return isLinkEdited;
         }
 
         /**
@@ -343,7 +364,6 @@ public class EditCommand extends Command {
                 return true;
             }
 
-            // instanceof handles nulls
             if (!(other instanceof EditPersonDescriptor)) {
                 return false;
             }
@@ -356,6 +376,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(link, otherEditPersonDescriptor.link)
+                    && isLinkEdited == otherEditPersonDescriptor.isLinkEdited
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 

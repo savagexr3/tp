@@ -88,4 +88,27 @@ public class TagAssignCommandTest {
         assertFalse(command1.equals(command3));
         assertFalse(command1.equals(new TagListCommand()));
     }
+
+    @Test
+    public void execute_duplicateIndexes_throwsCommandException() {
+        Tag tag = new Tag("colleagues");
+        model.addTag(tag);
+        // index 1 appears twice
+        TagAssignCommand command = new TagAssignCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON), tag);
+        assertThrows(CommandException.class,
+                String.format(TagAssignCommand.MESSAGE_DUPLICATE_INDEX, "1"), () -> command.execute(model));
+    }
+
+    @Test
+    public void execute_multipleDuplicateIndexes_throwsCommandException() {
+        Tag tag = new Tag("colleagues");
+        model.addTag(tag);
+        // indexes 1 and 2 both appear twice
+        TagAssignCommand command = new TagAssignCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON,
+                        INDEX_FIRST_PERSON, INDEX_SECOND_PERSON), tag);
+        assertThrows(CommandException.class,
+                String.format(TagAssignCommand.MESSAGE_DUPLICATE_INDEX, "1, 2"), () -> command.execute(model));
+    }
 }

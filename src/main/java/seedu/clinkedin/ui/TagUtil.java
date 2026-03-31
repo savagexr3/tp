@@ -14,6 +14,9 @@ public class TagUtil {
     public static Label tagLabel(String tagName, String tagColor) {
         Label tag = new Label(tagName);
         String color = String.format("-fx-background-color: %s;", tagColorToHexString(tagColor));
+        if (colorIsTooBright(tagColor)) {
+            color += "-fx-text-fill: black;";
+        }
         tag.setStyle(color);
         return tag;
     }
@@ -35,5 +38,17 @@ public class TagUtil {
                         + format(value.getBlue())
                         + format(value.getOpacity()))
                 .toUpperCase();
+    }
+
+    /**
+     * Returns a brightness value
+     */
+    public static boolean colorIsTooBright(String color) {
+        double brightness = Color.web(color).getBrightness();
+        double threshold = 0.7;
+        if (brightness >= threshold) {
+            return true;
+        }
+        return false;
     }
 }

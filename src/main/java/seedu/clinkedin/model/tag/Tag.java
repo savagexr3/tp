@@ -28,8 +28,9 @@ public class Tag {
             "Tag must contain only letters and numbers.";
 
     public static final String MESSAGE_INVALID_COLOR_NAME =
-            "Invalid color name. Valid formats are in plain name, hexadecimal, or rgb() values.\n"
-                    + "Example: #ff6688, orange, rgb(255,102,136)";
+            "Invalid color name.\n"
+                    + "Valid formats are in case-insensitive plain name, or hexadecimal and it's shorthand values.\n"
+                    + "Example: #123, #ff6688, orange";
 
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
 
@@ -105,10 +106,19 @@ public class Tag {
     public static String getColorNameValidationError(String color) {
         try {
             Color.web(color);
+            checkIfValidColorFormat(color);
         } catch (IllegalArgumentException e) {
             return MESSAGE_INVALID_COLOR_NAME;
         }
         return null;
+    }
+
+    private static void checkIfValidColorFormat(String color) throws IllegalArgumentException {
+        boolean notHexadecimalColor = !color.startsWith("#");
+        boolean notPlainNameColor = !color.matches("^[a-zA-Z]*$");
+        if (notHexadecimalColor && notPlainNameColor) {
+            throw new IllegalArgumentException(MESSAGE_INVALID_COLOR_NAME);
+        }
     }
 
     /**

@@ -38,4 +38,11 @@ public class FindCommandParserTest {
                 new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList("Bernice Yu")));
         assertParseSuccess(parser, "Bernice Yu", expectedFindCommand);
     }
+
+    @Test
+    public void parse_oneValidNameOneEmptyName_throwsParseException() {
+        assertParseFailure(parser,
+                "irfan;   ;",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
 }

@@ -1,0 +1,57 @@
+@startuml
+actor User
+participant "LogicManager" as Logic
+participant "TagUnassignCommand" as TagUnassignCommand
+participant "Model" as Model
+
+User -> Logic : execute("tag unassign ...")
+activate Logic
+
+Logic -> TagUnassignCommand : execute(model)
+activate TagUnassignCommand
+
+TagUnassignCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> TagUnassignCommand : personList
+deactivate Model
+
+loop validate indexes
+    TagUnassignCommand -> Model : getFilteredPersonList()
+    activate Model
+    Model --> TagUnassignCommand : personList
+    deactivate Model
+
+    alt invalid index
+        TagUnassignCommand --> Logic : CommandException
+    end
+end
+
+loop check tag assigned
+    TagUnassignCommand -> Model : getFilteredPersonList()
+    activate Model
+    Model --> TagUnassignCommand : personList
+    deactivate Model
+
+    alt tag not assigned
+        TagUnassignCommand --> Logic : CommandException
+    end
+end
+
+loop remove tag from persons
+    TagUnassignCommand -> Model : setPerson(personToEdit, editedPerson)
+    activate Model
+    Model --> TagUnassignCommand
+    deactivate Model
+end
+
+TagUnassignCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+Model --> TagUnassignCommand
+deactivate Model
+
+TagUnassignCommand --> Logic : CommandResult
+
+deactivate TagUnassignCommand
+User <-- Logic
+deactivate Logic
+@enduml

@@ -26,6 +26,13 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         String[] nameKeywords = trimmedArgs.split(";");
+        for (String keywords : nameKeywords) {
+            if (keywords.trim().isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+        }
+
         nameKeywords = Arrays.stream(nameKeywords).map(x -> x.trim()).toArray(String[]::new);
 
         return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));

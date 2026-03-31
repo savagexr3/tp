@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.logic.commands.CommandResult;
@@ -29,8 +30,9 @@ public class TagAssignCommand extends TagCommand {
 
     public static final String MESSAGE_SUCCESS = "Tag assigned successfully to %d contact(s).";
     public static final String MESSAGE_TAG_NOT_FOUND = "Tag does not exist.";
-    public static final String MESSAGE_TAG_ALREADY_ASSIGNED = "Tag already assigned to contact at index %d.";
+    public static final String MESSAGE_TAG_ALREADY_ASSIGNED = "Tag already assigned to contacts at index(es): %s.";
     public static final String MESSAGE_INVALID_INDEX = "Invalid index: %d.";
+    public static final String MESSAGE_DUPLICATE_INDEX = "Duplicate indexes provided: %s.";
 
     private final List<Index> indexes;
     private final Tag tag;
@@ -46,16 +48,43 @@ public class TagAssignCommand extends TagCommand {
         this.tag = tag;
     }
 
+    /**
+     * Returns the existing tag from the model that matches the given tag name,
+     * preserving properties like color.
+     */
+    private Tag getExistingTag(Model model, Tag tag) {
+        for (Tag t : model.getCLinkedin().getTagList()) {
+            if (t.tagName.equals(tag.tagName)) {
+                return t;
+            }
+        }
+        return tag;
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (!model.hasTag(tag)) {
-            throw new CommandException(MESSAGE_TAG_NOT_FOUND);
+        // check for duplicate indexes
+        Set<Integer> seen = new HashSet<>();
+        List<Integer> duplicates = new ArrayList<>();
+        for (Index index : indexes) {
+            if (!seen.add(index.getZeroBased())) {
+                if (!duplicates.contains(index.getOneBased())) {
+                    duplicates.add(index.getOneBased());
+                }
+            }
+        }
+        if (!duplicates.isEmpty()) {
+            String duplicateList = duplicates.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", "));
+            throw new CommandException(
+                    String.format(MESSAGE_DUPLICATE_INDEX, duplicateList));
         }
 
-        // validate all indexes first
+        // validate all indexes
         for (Index index : indexes) {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(
@@ -63,24 +92,36 @@ public class TagAssignCommand extends TagCommand {
             }
         }
 
-        // check for already assigned tags
+        // resolve tag with color preserved (case-insensitive)
+        Tag resolvedTag = getExistingTag(model, tag);
+
+        if (!model.hasTag(resolvedTag)) {
+            throw new CommandException(MESSAGE_TAG_NOT_FOUND);
+        }
+
+        // check for already assigned tags — collect all indexes
+        List<Integer> alreadyAssignedIndexes = new ArrayList<>();
         for (Index index : indexes) {
             Person person = lastShownList.get(index.getZeroBased());
-            if (person.getTags().contains(tag)) {
-                throw new CommandException(
-                        String.format(MESSAGE_TAG_ALREADY_ASSIGNED, index.getOneBased()));
+            if (person.getTags().contains(resolvedTag)) {
+                alreadyAssignedIndexes.add(index.getOneBased());
             }
+        }
+        if (!alreadyAssignedIndexes.isEmpty()) {
+            String assignedList = alreadyAssignedIndexes.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", "));
+            throw new CommandException(
+                    String.format(MESSAGE_TAG_ALREADY_ASSIGNED, assignedList));
         }
 
         // apply tag to all persons
-        // use a snapshot to avoid concurrent modification
         List<Person> snapshot = new ArrayList<>(lastShownList);
         for (Index index : indexes) {
             Person personToEdit = snapshot.get(index.getZeroBased());
-            // get current version from model in case earlier iterations updated it
             Person currentPerson = model.getFilteredPersonList().get(index.getZeroBased());
             Set<Tag> updatedTags = new HashSet<>(currentPerson.getTags());
-            updatedTags.add(getExistingTag(model, tag));
+            updatedTags.add(resolvedTag);
             Person editedPerson = new Person(
                     currentPerson.getName(),
                     currentPerson.getPhone(),
@@ -97,19 +138,6 @@ public class TagAssignCommand extends TagCommand {
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, indexes.size()));
-    }
-
-    /**
-     * Returns the existing tag from the model that matches the given tag name,
-     * preserving properties like color.
-     */
-    private Tag getExistingTag(Model model, Tag tag) {
-        for (Tag t : model.getCLinkedin().getTagList()) {
-            if (t.tagName.equalsIgnoreCase(tag.tagName)) {
-                return t;
-            }
-        }
-        return tag; // fallback to the parsed tag if not found
     }
 
     @Override

@@ -1,6 +1,7 @@
 package seedu.clinkedin.logic.parser.tag;
 
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.clinkedin.logic.Messages.MESSAGE_TAG_SHOW_SINGLE_TAG_ONLY;
 
 import seedu.clinkedin.logic.commands.tag.TagShowCommand;
 import seedu.clinkedin.logic.parser.Parser;
@@ -25,6 +26,10 @@ public class TagShowCommandParser implements Parser<TagShowCommand> {
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagShowCommand.MESSAGE_USAGE));
+        }
+
+        if (!trimmedArgs.matches("\\p{Alnum}+")) {
+            throw new ParseException(MESSAGE_TAG_SHOW_SINGLE_TAG_ONLY);
         }
 
         Tag tag = ParserUtil.parseTag(trimmedArgs);

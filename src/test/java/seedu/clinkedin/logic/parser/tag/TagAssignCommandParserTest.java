@@ -60,13 +60,30 @@ public class TagAssignCommandParserTest {
 
     @Test
     public void parse_malformedIndexList_throwsParseException() {
-        // empty segment between commas
         assertParseFailure(parser, "1,,2 friends",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagAssignCommand.MESSAGE_USAGE));
+                "Indexes should not contain consecutive commas.");
     }
 
     @Test
     public void parse_invalidTagName_throwsParseException() {
         assertParseFailure(parser, "1 #invalid", Tag.MESSAGE_INVALID_CHARACTERS);
+    }
+
+    @Test
+    public void parse_spaceSeparatedIndexes_throwsParseException() {
+        assertParseFailure(parser, "1 2 3 friends",
+                "Indexes must be comma-separated (e.g. 1,2,3).");
+    }
+
+    @Test
+    public void parse_leadingComma_throwsParseException() {
+        assertParseFailure(parser, ",1,2 friends",
+                "Indexes should not start with a comma.");
+    }
+
+    @Test
+    public void parse_trailingComma_throwsParseException() {
+        assertParseFailure(parser, "1,2, friends",
+                "Indexes should not end with a comma.");
     }
 }

@@ -1,6 +1,7 @@
 package seedu.clinkedin.logic.parser.tag;
 
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.clinkedin.logic.Messages.MESSAGE_TAG_SHOW_SINGLE_TAG_ONLY;
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.clinkedin.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -24,5 +25,11 @@ public class TagShowCommandParserTest {
         TagShowCommand expectedCommand =
                 new TagShowCommand(new TagContainsKeywordPredicate(tag), tag);
         assertParseSuccess(parser, "friends", expectedCommand);
+    }
+
+    @Test
+    public void parse_invalidArgWithSpaces_throwsParseException() {
+        String errorMessage = MESSAGE_TAG_SHOW_SINGLE_TAG_ONLY;
+        assertParseFailure(parser, "close friends", errorMessage);
     }
 }

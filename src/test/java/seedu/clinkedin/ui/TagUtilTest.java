@@ -11,4 +11,16 @@ public class TagUtilTest {
         String blueHex = TagUtil.tagColorToHexString("blue");
         assertEquals("#0000FFFF", blueHex);
     }
+
+    @Test
+    public void tagUtil_yellowColorTooBright_isTrue() {
+        boolean isTooBright = TagUtil.colorIsTooBright("yellow");
+        assertEquals(true, isTooBright);
+    }
+
+    @Test
+    public void tagUtil_blackColorTooBright_isFalse() {
+        boolean isTooBright = TagUtil.colorIsTooBright("black");
+        assertEquals(false, isTooBright);
+    }
 }
