@@ -14,7 +14,7 @@ import seedu.clinkedin.model.tag.TagContainsKeywordPredicate;
 public class TagShowCommand extends TagCommand {
     public static final String COMMAND_WORD = "show";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows contacts with specified tag(s).\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows contacts belonging to a singular tag.\n"
             + "Parameters: TAG_NAME\n"
             + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " friends";
     public static final String MESSAGE_TAG_NOT_FOUND = "Tag not found: ";

@@ -27,6 +27,10 @@ public class TagShowCommandParser implements Parser<TagShowCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagShowCommand.MESSAGE_USAGE));
         }
 
+        if (!trimmedArgs.matches("\\p{Alnum}+")) {
+            throw new ParseException("This command only accepts 1 tag as parameter and has to be alphanumeric!");
+        }
+
         Tag tag = ParserUtil.parseTag(trimmedArgs);
 
         return new TagShowCommand(new TagContainsKeywordPredicate(tag), tag);

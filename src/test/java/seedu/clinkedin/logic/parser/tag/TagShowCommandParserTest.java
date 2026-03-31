@@ -25,4 +25,10 @@ public class TagShowCommandParserTest {
                 new TagShowCommand(new TagContainsKeywordPredicate(tag), tag);
         assertParseSuccess(parser, "friends", expectedCommand);
     }
+
+    @Test
+    public void parse_invalidArgWithSpaces_throwsParseException() {
+        String errorMessage = "This command only accepts 1 tag as parameter and has to be alphanumeric!";
+        assertParseFailure(parser, "close friends", errorMessage);
+    }
 }
