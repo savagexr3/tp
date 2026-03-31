@@ -54,7 +54,7 @@ public class TagAssignCommand extends TagCommand {
      */
     private Tag getExistingTag(Model model, Tag tag) {
         for (Tag t : model.getCLinkedin().getTagList()) {
-            if (t.tagName.equalsIgnoreCase(tag.tagName)) {
+            if (t.tagName.equals(tag.tagName)) {
                 return t;
             }
         }
