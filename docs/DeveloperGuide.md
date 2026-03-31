@@ -166,7 +166,7 @@ The `findcom` command allows users to find contacts whose company matches one or
 
 When the command is executed, the system first checks whether any company keyword was provided. If the input is empty, the command fails and an error message is shown.
 
-If input is provided, the system splits the keywords using `;` as the separator. Each keyword is trimmed, and empty keywords are ignored. The system then creates a `CompanyContainsKeywordsPredicate` and updates the filtered contact list to show contacts whose company matches any of the given keywords, case-insensitively.
+If input is provided, the system updates the filtered contact list to show contacts whose company matches any of the given keywords, case-insensitively.
 
 The following activity diagram illustrates the decision flow of the `findcom` command:
 
@@ -179,6 +179,12 @@ The following sequence diagram illustrates how the `findcom` command is handled 
 #### Sorting contacts by company
 
 The `sortcom` command allows users to sort the currently displayed contact list alphabetically by company name.
+
+<box type="info" seamless>
+
+**Note:** The sorting operation is applied only to the **filtered contact list** (i.e., the currently displayed contacts), not the entire dataset.
+
+</box>
 
 When the command is executed, the system sorts the filtered contact list by company name in a case-insensitive manner. Contacts without a company are treated as having an empty value and will appear at the top of the displayed list. The sorted list is then shown to the user together with a success message.
 

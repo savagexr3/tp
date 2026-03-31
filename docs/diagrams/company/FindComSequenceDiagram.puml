@@ -1,23 +1,71 @@
 @startuml
-title Sequence Diagram: findcom
+title Sequence Diagram for the `findcom` command
 
 actor User
+
+box Logic #E6E6FA
 participant ":LogicManager" as Logic
 participant ":AddressBookParser" as ABParser
 participant ":FindComCommandParser" as Parser
 participant "f:FindComCommand" as Command
+participant "r:CommandResult" as Result
+end box
+
+box Model #FFE4E1
 participant "m:Model" as Model
+end box
 
 User -> Logic : execute("findcom ...")
-Logic -> ABParser : parseCommand("findcom ...")
-ABParser -> Parser : parse("...")
-Parser --> ABParser : FindComCommand
-ABParser --> Logic : FindComCommand
+activate Logic
 
-Logic -> Command : execute(model)
+Logic -> ABParser : parseCommand("findcom ...")
+activate ABParser
+
+create Parser
+ABParser -> Parser
+activate Parser
+
+ABParser <-- Parser
+deactivate Parser
+
+ABParser -> Parser : parse("...")
+activate Parser
+
+create Command
+Parser -> Command
+activate Command
+
+Parser <-- Command
+deactivate Command
+
+ABParser <-- Parser : f
+deactivate Parser
+
+destroy Parser
+
+Logic <-- ABParser : f
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
+
 Command -> Model : updateFilteredPersonList(predicate)
+activate Model
 Model --> Command
-Command --> Logic : CommandResult
-Logic --> User : CommandResult
+deactivate Model
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command : r
+deactivate Command
+
+destroy Command
+
+User <-- Logic : r
+deactivate Logic
 
 @enduml

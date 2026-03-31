@@ -1,20 +1,55 @@
 @startuml
-title Sequence Diagram: sortcom
+title Sequence Diagram for the `sortcom` command
 
 actor User
+
+box Logic #E6E6FA
 participant ":LogicManager" as Logic
 participant ":AddressBookParser" as ABParser
 participant "c:SortComCommand" as Command
+participant "r:CommandResult" as Result
+end box
+
+box Model #FFE4E1
 participant "m:Model" as Model
+end box
 
 User -> Logic : execute("sortcom")
-Logic -> ABParser : parseCommand("sortcom")
-ABParser --> Logic : SortComCommand
+activate Logic
 
-Logic -> Command : execute(model)
-Command -> Model : sortFilteredPersonListByCompany()
+Logic -> ABParser : parseCommand("sortcom")
+activate ABParser
+
+create Command
+ABParser -> Command
+activate Command
+
+ABParser <-- Command
+deactivate Command
+
+Logic <-- ABParser : c
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
+
+Command -> Model : sort displayed contacts by company
+activate Model
 Model --> Command
-Command --> Logic : CommandResult
-Logic --> User : CommandResult
+deactivate Model
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command : r
+deactivate Command
+
+destroy Command
+
+User <-- Logic : r
+deactivate Logic
 
 @enduml

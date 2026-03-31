@@ -8,7 +8,7 @@ start
 if () then ([list is empty])
     :Show message that there are no contacts to sort;
     stop
-else ([list not empty])
+else ([else])
 endif
 
 :Sort currently displayed contacts by company name;
