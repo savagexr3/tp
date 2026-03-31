@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -73,7 +74,8 @@ public class AddCommandTest {
         Person invalidTagsPerson = new PersonBuilder().withTags("Ferrari", "Mercedes").build();
         AddCommand addCommand = new AddCommand(invalidTagsPerson);
         ModelStubWithPersonFriendsTag modelStub = new ModelStubWithPersonFriendsTag(invalidTagsPerson);
-        String errorMessage = AddCommand.MESSAGE_TAGS_DO_NOT_EXIST + invalidTagsPerson.getTags();
+        List<String> tagList = invalidTagsPerson.getTags().stream().map(x -> x.toString()).collect(Collectors.toList());
+        String errorMessage = AddCommand.MESSAGE_TAGS_DO_NOT_EXIST + String.join(", ", tagList);
 
         assertThrows(CommandException.class, errorMessage, () -> addCommand.execute(modelStub));
     }
