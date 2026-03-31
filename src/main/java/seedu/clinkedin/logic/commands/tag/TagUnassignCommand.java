@@ -4,7 +4,11 @@ import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.logic.commands.CommandResult;
@@ -25,8 +29,9 @@ public class TagUnassignCommand extends TagCommand {
             + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " 1,2,3 friends";
 
     public static final String MESSAGE_SUCCESS = "Tag removed successfully from %d contact(s).";
-    public static final String MESSAGE_TAG_NOT_ASSIGNED = "Tag not found for contact at index %d.";
+    public static final String MESSAGE_TAG_NOT_ASSIGNED = "Tag not found for contacts at index(es): %s.";
     public static final String MESSAGE_INVALID_INDEX = "Invalid index: %d.";
+    public static final String MESSAGE_DUPLICATE_INDEX = "Duplicate indexes provided: %s.";
 
     private final List<Index> indexes;
     private final Tag tag;
@@ -47,7 +52,25 @@ public class TagUnassignCommand extends TagCommand {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        // validate all indexes first
+        // check for duplicate indexes
+        Set<Integer> seen = new HashSet<>();
+        List<Integer> duplicates = new ArrayList<>();
+        for (Index index : indexes) {
+            if (!seen.add(index.getZeroBased())) {
+                if (!duplicates.contains(index.getOneBased())) {
+                    duplicates.add(index.getOneBased());
+                }
+            }
+        }
+        if (!duplicates.isEmpty()) {
+            String duplicateList = duplicates.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", "));
+            throw new CommandException(
+                    String.format(MESSAGE_DUPLICATE_INDEX, duplicateList));
+        }
+
+        // validate all indexes
         for (Index index : indexes) {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(
@@ -55,13 +78,20 @@ public class TagUnassignCommand extends TagCommand {
             }
         }
 
-        // check all persons have the tag
+        // check all persons have the tag — collect all missing indexes
+        List<Integer> missingTagIndexes = new ArrayList<>();
         for (Index index : indexes) {
             Person person = lastShownList.get(index.getZeroBased());
             if (!person.getTags().contains(tag)) {
-                throw new CommandException(
-                        String.format(MESSAGE_TAG_NOT_ASSIGNED, index.getOneBased()));
+                missingTagIndexes.add(index.getOneBased());
             }
+        }
+        if (!missingTagIndexes.isEmpty()) {
+            String missingList = missingTagIndexes.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", "));
+            throw new CommandException(
+                    String.format(MESSAGE_TAG_NOT_ASSIGNED, missingList));
         }
 
         // remove tag from all persons
@@ -69,7 +99,19 @@ public class TagUnassignCommand extends TagCommand {
         for (Index index : indexes) {
             Person personToEdit = snapshot.get(index.getZeroBased());
             Person currentPerson = model.getFilteredPersonList().get(index.getZeroBased());
-            Person editedPerson = currentPerson.removeTag(tag);
+            Person editedPerson = new Person(
+                    currentPerson.getName(),
+                    currentPerson.getPhone(),
+                    currentPerson.getEmail(),
+                    Optional.ofNullable(currentPerson.getCompany()),
+                    currentPerson.getAddress(),
+                    Optional.ofNullable(currentPerson.getRemark()),
+                    Optional.ofNullable(currentPerson.getLink()),
+                    currentPerson.getDateAdded(),
+                    currentPerson.getTags().stream()
+                            .filter(t -> !t.equals(tag))
+                            .collect(Collectors.toSet())
+            );
             model.setPerson(personToEdit, editedPerson);
         }
 
