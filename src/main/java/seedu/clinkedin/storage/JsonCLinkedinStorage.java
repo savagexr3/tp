@@ -15,7 +15,7 @@ import seedu.clinkedin.commons.util.JsonUtil;
 import seedu.clinkedin.model.ReadOnlyCLinkedin;
 
 /**
- * A class to access AddressBook data stored as a json file on the hard disk.
+ * A class to access Clinkedin data stored as a json file on the hard disk.
  */
 public class JsonCLinkedinStorage implements CLinkedinStorage {
 

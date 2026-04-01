@@ -12,7 +12,7 @@ import seedu.clinkedin.model.ReadOnlyUserPrefs;
 import seedu.clinkedin.model.UserPrefs;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of CLinkedin data in local storage.
  */
 public class StorageManager implements Storage {
 
@@ -21,7 +21,7 @@ public class StorageManager implements Storage {
     private UserPrefsStorage userPrefsStorage;
 
     /**
-     * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
+     * Creates a {@code StorageManager} with the given {@code CLinkedinStorage} and {@code UserPrefStorage}.
      */
     public StorageManager(CLinkedinStorage cLinkedinStorage, UserPrefsStorage userPrefsStorage) {
         this.cLinkedinStorage = cLinkedinStorage;
@@ -46,7 +46,7 @@ public class StorageManager implements Storage {
     }
 
 
-    // ================ AddressBook methods ==============================
+    // ================ CLinkedin methods ==============================
 
     @Override
     public Path getCLinkedinFilePath() {
@@ -65,14 +65,14 @@ public class StorageManager implements Storage {
     }
 
     @Override
-    public void saveCLinkedin(ReadOnlyCLinkedin addressBook) throws IOException {
-        saveCLinkedin(addressBook, cLinkedinStorage.getCLinkedinFilePath());
+    public void saveCLinkedin(ReadOnlyCLinkedin cLinkedin) throws IOException {
+        saveCLinkedin(cLinkedin, cLinkedinStorage.getCLinkedinFilePath());
     }
 
     @Override
-    public void saveCLinkedin(ReadOnlyCLinkedin addressBook, Path filePath) throws IOException {
+    public void saveCLinkedin(ReadOnlyCLinkedin cLinkedin, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        cLinkedinStorage.saveCLinkedin(addressBook, filePath);
+        cLinkedinStorage.saveCLinkedin(cLinkedin, filePath);
     }
 
 }

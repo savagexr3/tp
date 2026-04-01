@@ -47,7 +47,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     }
 
     /**
-     * Creates an AddressBook using the Persons in the {@code toBeCopied}
+     * Creates a CLinkedin address book using the Persons in the {@code toBeCopied}
      */
     public CLinkedin(ReadOnlyCLinkedin toBeCopied) {
         this();
@@ -65,7 +65,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
     }
 
     /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     * Resets the existing data of this {@code CLinkedin} with {@code newData}.
      */
     public void resetData(ReadOnlyCLinkedin newData) {
         requireNonNull(newData);
