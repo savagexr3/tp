@@ -1,6 +1,7 @@
 package seedu.clinkedin.logic.commands.tag;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COLOR;
 
 import seedu.clinkedin.logic.commands.CommandResult;
 import seedu.clinkedin.logic.commands.exceptions.CommandException;
@@ -14,8 +15,8 @@ public class TagCreateCommand extends TagCommand {
     public static final String COMMAND_WORD = "create";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Creates a new tag.\n"
-            + "Parameters: TAG_NAME\n"
-            + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " friends";
+            + "Parameters: TAG_NAME [" + PREFIX_COLOR + "COLOR]" + "\n"
+            + "Example: " + TagCommand.COMMAND_WORD + " " + COMMAND_WORD + " friends " + PREFIX_COLOR + "blue";
 
     public static final String MESSAGE_SUCCESS = "New tag added: %1$s";
     public static final String MESSAGE_DUPLICATE_TAG = "This tag already exists in the address book";

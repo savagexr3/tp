@@ -40,4 +40,10 @@ public class TagCreateCommandParserTest {
         assertParseFailure(parser, "friends!",
                 Tag.MESSAGE_INVALID_CHARACTERS);
     }
+
+    @Test
+    public void parse_validTagValidColor_success() {
+        Tag expectedTag = new Tag("friends", "gold");
+        assertParseSuccess(parser, "friends color/ gold", new TagCreateCommand(expectedTag));
+    }
 }

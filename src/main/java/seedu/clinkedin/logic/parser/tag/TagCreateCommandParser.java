@@ -1,8 +1,11 @@
 package seedu.clinkedin.logic.parser.tag;
 
 import static seedu.clinkedin.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.clinkedin.logic.parser.CliSyntax.PREFIX_COLOR;
 
 import seedu.clinkedin.logic.commands.tag.TagCreateCommand;
+import seedu.clinkedin.logic.parser.ArgumentMultimap;
+import seedu.clinkedin.logic.parser.ArgumentTokenizer;
 import seedu.clinkedin.logic.parser.Parser;
 import seedu.clinkedin.logic.parser.ParserUtil;
 import seedu.clinkedin.logic.parser.exceptions.ParseException;
@@ -20,15 +23,18 @@ public class TagCreateCommandParser implements Parser<TagCreateCommand> {
      * @throws ParseException if the user input does not conform to the expected format
      */
     public TagCreateCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        String[] parts = trimmedArgs.split("\\s+", 2);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_COLOR);
+        String trimmedArgs = argMultimap.getPreamble().trim();
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCreateCommand.MESSAGE_USAGE));
         }
 
-        if (parts.length == 2) {
-            return new TagCreateCommand(ParserUtil.parseTag(parts[0], parts[1]));
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COLOR);
+
+        if (!argMultimap.getValue(PREFIX_COLOR).isEmpty()) {
+            return new TagCreateCommand(
+                    ParserUtil.parseTag(trimmedArgs, argMultimap.getValue(PREFIX_COLOR).orElse("")));
         }
 
         Tag tag = ParserUtil.parseTag(trimmedArgs);
