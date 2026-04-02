@@ -310,29 +310,31 @@ The sequence diagram below illustrates the execution:
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                     | I want to …​                                        | So that I can…​                                             |
-|----------|--------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------|
-| `* * *`  | new user                                   | add a new contact with name, phone number and email | store and connect with them                                 |
-| `* * *`  | new user                                   | click on a contact link                             | view their social media page or company website             |
-| `* * *`  | new user                                   | edit contact details                                | update information without deleting and recreating contacts |
-| `* * *`  | new user                                   | receive clear error messages                        | correct mistakes when I input invalid commands              |
-| `* * *`  | new user                                   | search a contact by name                            | find the person I’m connecting with quickly                 |
-| `* * *`  | new user                                   | view command instructions                           | quickly recall available commands and their valid formats   |
-| `* * *`  | organised user                             | add a tag to a contact                              | categorise a group of people together                       |
-| `* * *`  | organised user                             | create and delete my own tags                       | categorise contacts the way I like                          |
-| `* * *`  | organised user                             | list all contacts under a specific tag              | quickly see related connections and contacts                |
-| `* * *`  | organised user                             | remove a tag from a contact                         | re-categorise people                                        |
-| `* * *`  | organised user                             | rename a tag                                        | keep my tagging system consistent                           |
-| `* * *`  | organised user                             | sort contacts by company                            | view grouped workplace connections                          |
-| `* * *`  | organised user                             | view all existing tags                              | know how contacts are categorised                           |
-| `* *`    | new user                                   | add remarks to contacts                             | store more personal information (like hobbies/interests)    |
-| `* *`    | organised user                             | colour code my tags                                 | visually distinguish categories                             |
-| `* *`    | expert user                                | search using partial keywords                       | avoid remembering exact spelling                            |
-| `* *`    | expert user                                | see date when contact was added                     | recall when I met someone                                   |
-| `* *`    | networking-focused user                    | add meaningful remarks about a contact              | recall conversations for networking purpose                 |
-| `*`      | user with many persons in the address book | find contacts by name                               | locate a person easily                                      |
-| `*`      | expert user                                | recover deleted contacts                            | restore accidentally removed contacts                       |
-| `*`      | expert user                                | tag multiple contacts at once                       | group people fast and efficiently                           |
+| Priority | As a …​                                    | I want to …​                                        | So that I can…​                                                                   |
+|----------|--------------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------------------------|
+| `* * *`  | new user                                   | add a new contact with name, phone number and email | store and connect with them                                                       |
+| `* * *`  | new user                                   | click on a contact link                             | view their social media page or company website                                   |
+| `* * *`  | new user                                   | edit contact details                                | update information without deleting and recreating contacts                       |
+| `* * *`  | new user                                   | receive clear error messages                        | correct mistakes when I input invalid commands                                    |
+| `* * *`  | new user                                   | search a contact by name                            | find the person I’m connecting with quickly                                       |
+| `* * *`  | new user                                   | view command instructions                           | quickly recall available commands and their valid formats                         |
+| `* * *`  | organised user                             | add a tag to a contact                              | categorise a group of people together                                             |
+| `* * *`  | organised user                             | create and delete my own tags                       | categorise contacts the way I like                                                |
+| `* * *`  | organised user                             | list all contacts under a specific tag              | quickly see related connections and contacts                                      |
+| `* * *`  | organised user                             | remove a tag from a contact                         | re-categorise people                                                              |
+| `* * *`  | organised user                             | rename a tag                                        | keep my tagging system consistent                                                 |
+| `* * *`  | organised user                             | sort contacts by company                            | view grouped workplace connections                                                |
+| `* * *`  | organised user                             | view all existing tags                              | know how contacts are categorised                                                 |
+| `* * *`  | networking-focused user                    | search for contacts in a specified company          | quickly find all my connections working at the company                            |
+| `* *`    | new user                                   | add remarks to contacts                             | store more personal information (like hobbies/interests)                          |
+| `* *`    | organised user                             | colour code my tags                                 | visually distinguish categories                                                   |
+| `* *`    | expert user                                | search using partial keywords                       | avoid remembering exact spelling                                                  |
+| `* *`    | expert user                                | see date when contact was added                     | recall when I met someone                                                         |
+| `* *`    | expert user                                | search for contacts in multiple specified companies | view a combined list of connections from specified companies fast and efficiently |
+| `* *`    | networking-focused user                    | add meaningful remarks about a contact              | recall conversations for networking purpose                                       |
+| `*`      | user with many persons in the address book | find contacts by name                               | locate a person easily                                                            |
+| `*`      | expert user                                | recover deleted contacts                            | restore accidentally removed contacts                                             |
+| `*`      | expert user                                | tag multiple contacts at once                       | group people fast and efficiently                                                 |
 
 ### Use cases
 
