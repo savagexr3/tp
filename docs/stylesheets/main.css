@@ -165,8 +165,10 @@ mark {
       font-size: 0.65rem !important;
   }
   img {
-      zoom: 0.8;  /* might not work on some browsers */
-  }
+      max-width: 100% !important;
+      height: auto !important;
+      zoom: 0.8;
+    }
 }
 
 h2,
