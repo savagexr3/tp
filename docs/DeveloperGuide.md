@@ -757,3 +757,44 @@ testers are expected to do more *exploratory* testing.
     1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+## **Appendix: Effort**
+
+This project builds on AddressBook-Level3 (AB3) as a reference point, but introduces additional complexity through enhanced data modeling and features.
+
+### **Overall Difficulty**
+
+Compared to AB3, which manages a single entity type, our project is more complex due to the introduction of a structured tag system and additional state management (e.g., deleted records and restoration).
+
+### **Key Challenges**
+
+- Redesigning the **tag system** from simple strings into **entities** with attributes (e.g., color) and validation rules
+- Ensuring **data consistency** across all persons referencing the same tag
+- Updating existing logic to support tag creation, deletion, assignment, and renaming
+- Implementing **deleted person tracking and restoration**, including synchronising restored data with current tag definitions
+- Handling edge cases where tags are renamed or deleted after a person is removed
+- Enhancing **input validation**, particularly for email and link fields
+- Introducing **clickable links** to improve usability
+- Standardising **color input formats** (hex, named colors) and enforcing strict validation to prevent unintended inputs
+
+### **Effort Required**
+
+Effort was mainly spent on:
+- Refactoring the model to support tag entities
+- Updating commands and parsers for new behaviours
+- Handling edge cases in restoration logic
+- Strengthening validation and improving user experience
+
+### **Reuse of Existing Code**
+
+We reused AB3’s core architecture (commands, parser, model), which reduced setup effort. However, adapting it to support the new tag system and restoration features required significant modifications.
+
+### **Achievements**
+
+- Transformed tags into fully managed entities
+- Implemented deleted-person tracking and restoration
+- Improved validation and usability (e.g., clickable links and standardized color input)  
+
+## **Appendix: Planned Enhancements**
+These enhancements are planned for future iterations:
+- Improve tag restoration behaviour: when restoring a deleted contact, tags that were renamed will be correctly mapped to their updated names instead of being removed.
