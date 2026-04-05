@@ -5,18 +5,18 @@ start
 
 :Execute `restore`;
 
-if () then ([invalid index])
+if () then ([valid index])
+else ([else])
     :Show error message;
     stop
-else ([else])
 endif
 
 :Retrieve deleted contact;
 
-if () then ([conflict with existing contact or duplicate phone])
+if () then ([not a duplicate contact])
+else ([else])
     :Show error message;
     stop
-else ([else])
 endif
 
 :Remove tags whose names no longer exist;
