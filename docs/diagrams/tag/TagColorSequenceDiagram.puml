@@ -1,0 +1,74 @@
+@startuml
+title Sequence Diagram for the `tag color` command
+
+actor User
+
+box Logic #E6E6FA
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant ":TagColorCommandParser" as Parser
+participant "cmd:TagColorCommand" as Command
+participant "result:CommandResult" as Result
+end box
+
+box Model #FFE4E1
+participant "m:Model" as Model
+end box
+
+User -> Logic : execute("tag color ...")
+activate Logic
+
+Logic -> ABParser : parseCommand("tag color ...")
+activate ABParser
+
+create Parser
+ABParser -> Parser
+activate Parser
+
+ABParser <-- Parser
+deactivate Parser
+
+ABParser -> Parser : parse("...")
+activate Parser
+
+create Command
+Parser -> Command
+activate Command
+
+Parser <-- Command
+deactivate Command
+
+ABParser <-- Parser : cmd
+deactivate Parser
+
+Logic <-- ABParser : cmd
+destroy Parser
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
+
+Command -> Model : update model with new tag
+activate Model
+Model --> Command
+deactivate Model
+
+loop for each person with specified tag
+Command -> Model : edit person with updated color tag
+Model --> Command
+end
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command : result
+deactivate Command
+
+User <-- Logic : result
+destroy Command
+deactivate Logic
+
+@enduml

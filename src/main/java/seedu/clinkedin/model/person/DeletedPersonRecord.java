@@ -3,6 +3,7 @@ package seedu.clinkedin.model.person;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+//@@author rxlee04
 /**
  * Represents a record of a deleted {@code Person}, together with the time of deletion.
  * Guarantees: person and deletion time are present and not null.

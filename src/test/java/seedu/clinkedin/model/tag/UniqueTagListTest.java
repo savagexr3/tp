@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import seedu.clinkedin.model.tag.exceptions.DuplicateTagException;
 import seedu.clinkedin.model.tag.exceptions.TagNotFoundException;
 
+//@@author rxlee04
 public class UniqueTagListTest {
     private final UniqueTagList uniqueTagList = new UniqueTagList();
 

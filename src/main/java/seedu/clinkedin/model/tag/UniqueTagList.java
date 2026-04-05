@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import seedu.clinkedin.model.tag.exceptions.DuplicateTagException;
 import seedu.clinkedin.model.tag.exceptions.TagNotFoundException;
 
+//@@author rxlee04
 /**
  * A list of tags that enforces uniqueness between its elements and does not allow nulls.
  * A tag is considered unique based on {@code Tag#equals(Object)}.

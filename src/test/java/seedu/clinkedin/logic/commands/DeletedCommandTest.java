@@ -11,6 +11,7 @@ import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.UserPrefs;
 import seedu.clinkedin.model.person.Person;
 
+//@@author rxlee04
 public class DeletedCommandTest {
     private Model model;
 

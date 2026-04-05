@@ -46,6 +46,7 @@ public class JsonSerializableCLinkedinTest {
                 dataFromFile::toModelType);
     }
 
+    //@@author rxlee04
     @Test
     public void toModelType_withDeletedPersonRecords_success() throws Exception {
         CLinkedin cLinkedin = new CLinkedin();

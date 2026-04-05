@@ -5,10 +5,10 @@ start
 
 :Execute `tag delete`;
 
-if () then ([tag does not exist])
+if () then ([tag exist])
+else ([else])
     :Show error message;
     stop
-else ([else])
 endif
 
 :Remove tag from tag list;

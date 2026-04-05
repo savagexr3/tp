@@ -98,6 +98,7 @@ public class ModelManagerTest {
     }
 
     // ================= DELETED PERSON RECORD TESTS =================
+    //@@author rxlee04
     @Test
     public void deletePerson_personInCLinkedin_removesPersonAndAddsDeletedRecord() {
         modelManager.addPerson(ALICE);
@@ -220,6 +221,7 @@ public class ModelManagerTest {
         assertFalse(modelManager.getCLinkedin().getPersonList().get(0).getTags().contains(friends));
     }
 
+    //@@author
     @Test
     public void equals() {
         CLinkedin cLinkedin = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();

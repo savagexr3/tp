@@ -46,6 +46,7 @@ public class CLinkedinTest {
         assertEquals(newData, cLinkedin);
     }
 
+    //@@author rxlee04
     @Test
     public void resetData_withValidReadOnlyCLinkedinWithTags_replacesTagData() {
         CLinkedin newData = new CLinkedin();
@@ -70,6 +71,7 @@ public class CLinkedinTest {
                 cLinkedin.getDeletedPersonRecords());
     }
 
+    //@@author
     @Test
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
         // Two persons with the same identity fields
@@ -106,6 +108,7 @@ public class CLinkedinTest {
     }
 
     // ================= DELETED PERSON RECORD TESTS =================
+    //@@author rxlee04
     @Test
     public void removePerson_personInCLinkedin_removesPersonAndAddsDeletedRecord() {
         cLinkedin.addPerson(ALICE);
@@ -267,6 +270,7 @@ public class CLinkedinTest {
         assertFalse(cLinkedin.getPersonList().get(0).getTags().contains(friends));
     }
 
+    //@@author
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> cLinkedin.getPersonList().remove(0));

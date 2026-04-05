@@ -113,6 +113,7 @@ public class ModelManager implements Model {
         cLinkedin.removePerson(target);
     }
 
+    //@@author rxlee04
     @Override
     public Person restorePerson(DeletedPersonRecord deletedPersonRecord) {
         requireNonNull(deletedPersonRecord);
@@ -122,6 +123,7 @@ public class ModelManager implements Model {
         return cleanedPerson;
     }
 
+    //@@author
     @Override
     public void addPerson(Person person) {
         cLinkedin.addPerson(person);
@@ -135,6 +137,7 @@ public class ModelManager implements Model {
         cLinkedin.setPerson(target, editedPerson);
     }
 
+    //@@author rxlee04
     @Override
     public boolean hasTag(Tag tag) {
         requireNonNull(tag);
@@ -153,6 +156,7 @@ public class ModelManager implements Model {
         cLinkedin.removeTag(tag);
     }
 
+    //@@author
     @Override
     public void setTags(List<Tag> tags) {
         requireNonNull(tags);
@@ -177,6 +181,7 @@ public class ModelManager implements Model {
 
     //=========== Filtered Deleted Person List Accessors =============================================================
 
+    //@@author rxlee04
     @Override
     public ObservableList<DeletedPersonRecord> getFilteredDeletedPersonRecordList() {
         return filteredDeletedPersonRecords;
@@ -188,6 +193,7 @@ public class ModelManager implements Model {
         filteredDeletedPersonRecords.setPredicate(predicate);
     }
 
+    //@@author
     @Override
     public void sortFilteredPersonListByCompany() {
         sortedPersons.setComparator((p1, p2) -> {

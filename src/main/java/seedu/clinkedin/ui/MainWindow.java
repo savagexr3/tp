@@ -204,6 +204,7 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    //@@author rxlee04
     private void showPersonListPanel() {
         personListPanelPlaceholder.getChildren().clear();
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
