@@ -1,37 +1,89 @@
 @startuml
+title Sequence Diagram for the `restore` command
 
 actor User
-participant "LogicManager" as Logic
-participant "RestoreCommand" as Command
-participant "Model" as Model
+
+box Logic #E6E6FA
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant ":RestoreCommandParser" as Parser
+participant "cmd:RestoreCommand" as Command
+participant "result:CommandResult" as Result
+end box
+
+box Model #FFE4E1
+participant "m:Model" as Model
+end box
 
 User -> Logic : execute("restore ...")
-Logic -> Command : execute(model)
+activate Logic
+
+Logic -> ABParser : parseCommand("restore ...")
+activate ABParser
+
+create Parser
+ABParser -> Parser
+activate Parser
+
+ABParser <-- Parser
+deactivate Parser
+
+ABParser -> Parser : parse("...")
+activate Parser
+
+create Command
+Parser -> Command
+activate Command
+
+Parser <-- Command
+deactivate Command
+
+ABParser <-- Parser
+deactivate Parser
+
+Logic <-- ABParser
+destroy Parser
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
 
 Command -> Model : getFilteredDeletedPersonRecordList()
-Model --> Command : deleted list
+activate Model
+Model --> Command
+deactivate Model
 
-Command -> Command : validate index
+Command -> Model : hasPerson(contact)
+activate Model
+Model --> Command
+deactivate Model
 
-alt invalid index
-    Command --> Logic : CommandException
-    Logic --> User : error message
-else valid index
-    Command -> Model : hasPerson(contact)
-    Model --> Command : true / false
+Command -> Command : reconcile tags
+activate Command
+Command --> Command
+deactivate Command
 
+Command -> Model : addPerson(restoredContact)
+activate Model
+Model --> Command
+deactivate Model
 
-    alt restore conflict
-        Command --> Logic : CommandException
-        Logic --> User : error message
-    else no conflict
-        Command -> Command : reconcile tags with current tag list
-        Command -> Model : addPerson(restoredContact)
-        Command -> Model : deleteDeletedPersonRecord(record)
-        Model --> Command : success
-        Command --> Logic : CommandResult
-        Logic --> User : success message
-    end
-end
+Command -> Model : deleteDeletedPersonRecord(record)
+activate Model
+Model --> Command
+deactivate Model
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command
+deactivate Command
+
+User <-- Logic
+destroy Command
+deactivate Logic
 
 @enduml
