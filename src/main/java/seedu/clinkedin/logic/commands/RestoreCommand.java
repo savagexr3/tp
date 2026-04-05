@@ -3,7 +3,9 @@ package seedu.clinkedin.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.clinkedin.commons.core.LogsCenter;
 import seedu.clinkedin.commons.core.index.Index;
 import seedu.clinkedin.commons.util.ToStringBuilder;
 import seedu.clinkedin.logic.Messages;
@@ -12,6 +14,7 @@ import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 
+//@@author rxlee04
 /**
  * Restores a deleted person identified using its displayed index from the deleted person list.
  */
@@ -31,6 +34,8 @@ public class RestoreCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
     public static final String MESSAGE_DUPLICATE_PHONE = "Duplicate phone number detected";
 
+    private static final Logger logger = LogsCenter.getLogger(RestoreCommand.class);
+
     private final Index targetIndex;
 
     public RestoreCommand(Index targetIndex) {
@@ -40,19 +45,23 @@ public class RestoreCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        logger.info("Executing RestoreCommand with index: " + targetIndex.getOneBased());
         List<DeletedPersonRecord> lastShownList = model.getFilteredDeletedPersonRecordList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            logger.warning("Invalid restore index: " + targetIndex);
             throw new CommandException(Messages.MESSAGE_INVALID_DELETED_PERSON_RECORD_DISPLAYED_INDEX);
         }
 
         DeletedPersonRecord recordToRestore = lastShownList.get(targetIndex.getZeroBased());
 
         if (model.hasPerson(recordToRestore.getPerson())) {
+            logger.warning("Attempted to restore duplicate person: " + Messages.format(recordToRestore.getPerson()));
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
         if (model.hasPhoneNumber(recordToRestore.getPerson().getPhone())) {
+            logger.warning("Duplicate phone number during restore: " + recordToRestore.getPerson().getPhone());
             throw new CommandException(MESSAGE_DUPLICATE_PHONE);
         }
 

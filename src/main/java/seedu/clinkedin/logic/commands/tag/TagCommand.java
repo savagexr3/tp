@@ -2,6 +2,7 @@ package seedu.clinkedin.logic.commands.tag;
 
 import seedu.clinkedin.logic.commands.Command;
 
+//@@author rxlee04
 /**
  * Represents a tag command with hidden internal logic and the ability to be executed.
  */

@@ -1,0 +1,23 @@
+@startuml
+title Activity: Filter contacts by tag
+
+start
+
+:User executes `tag show`;
+
+if () then ([else])
+    :Show invalid tag error;
+    stop
+else ([tag exists])
+endif
+
+:Filter contact list by tag;
+
+if () then ([matches found])
+    :Show matching contacts and summary message;
+else ([else])
+    :Show empty list and summary message;
+endif
+
+stop
+@enduml

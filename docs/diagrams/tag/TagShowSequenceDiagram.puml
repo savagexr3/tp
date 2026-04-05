@@ -1,0 +1,69 @@
+@startuml
+title Sequence Diagram for the `tag show` command
+
+actor User
+
+box Logic #E6E6FA
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant ":TagShowCommandParser" as Parser
+participant "cmd:TagShowCommand" as Command
+participant "result:CommandResult" as Result
+end box
+
+box Model #FFE4E1
+participant "m:Model" as Model
+end box
+
+User -> Logic : execute("tag show ...")
+activate Logic
+
+Logic -> ABParser : parseCommand("tag show ...")
+activate ABParser
+
+create Parser
+ABParser -> Parser
+activate Parser
+
+ABParser <-- Parser
+deactivate Parser
+
+ABParser -> Parser : parse("...")
+activate Parser
+
+create Command
+Parser -> Command
+activate Command
+
+Parser <-- Command
+deactivate Command
+
+ABParser <-- Parser : cmd
+deactivate Parser
+
+Logic <-- ABParser : cmd
+destroy Parser
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
+
+Command -> Model : find contacts by tag
+activate Model
+Model --> Command
+deactivate Model
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command : result
+deactivate Command
+
+User <-- Logic : result
+destroy Command
+deactivate Logic
+
+@enduml

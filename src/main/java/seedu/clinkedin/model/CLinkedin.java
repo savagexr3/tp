@@ -123,6 +123,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         deletedPersonRecords.add(new DeletedPersonRecord(key));
     }
 
+    //@@author rxlee04
     /**
      * Restores a deleted person record back into the address book.
      * The associated person is re-added to the main person list after
@@ -219,6 +220,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
             }
         }
     }
+    //@@author
 
     /// / util methods
 
@@ -235,6 +237,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         return persons.asUnmodifiableObservableList();
     }
 
+    //@@author rxlee04
     @Override
     public ObservableList<DeletedPersonRecord> getDeletedPersonRecords() {
         return FXCollections.unmodifiableObservableList(deletedPersonRecords);
@@ -245,6 +248,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         return tags.asUnmodifiableObservableList();
     }
 
+    //@@author
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -267,6 +271,7 @@ public class CLinkedin implements ReadOnlyCLinkedin {
         return Objects.hash(persons, deletedPersonRecords, tags);
     }
 
+    //@@author rxlee04
     /**
      * Removes all deleted person records that are older than 7 days
      * from the current date and time.

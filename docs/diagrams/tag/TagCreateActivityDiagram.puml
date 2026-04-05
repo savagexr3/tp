@@ -5,10 +5,10 @@ start
 
 :Execute `tag create`;
 
-if () then ([tag already exists])
+if () then ([tag name does not exist])
+else ([else])
     :Show duplicate tag error;
     stop
-else ([else])
 endif
 
 if () then ([colour provided])

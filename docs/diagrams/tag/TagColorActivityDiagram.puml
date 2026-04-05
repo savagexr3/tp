@@ -1,0 +1,23 @@
+@startuml
+title Activity: Add color to tag
+
+start
+
+:User executes `tag color`;
+
+if () then ([else])
+    :Show invalid color error;
+    stop
+else ([valid color])
+endif
+
+if () then ([else])
+    :Show invalid tag error;
+    stop
+else ([valid tag])
+endif
+
+:Add color to tag;
+:Show contact list with updated tags and success message;
+stop
+@enduml

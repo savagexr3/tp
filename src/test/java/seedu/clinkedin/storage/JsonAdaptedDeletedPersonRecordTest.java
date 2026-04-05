@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
 
+//@@author rxlee04
 public class JsonAdaptedDeletedPersonRecordTest {
 
     @Test

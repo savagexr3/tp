@@ -12,6 +12,7 @@ import seedu.clinkedin.model.tag.Tag;
 public class TagCreateCommandParserTest {
     private final TagCreateCommandParser parser = new TagCreateCommandParser();
 
+    //@@author rxlee04
     @Test
     public void parse_validArgs_success() {
         Tag expectedTag = new Tag("friends");
@@ -41,6 +42,7 @@ public class TagCreateCommandParserTest {
                 Tag.MESSAGE_INVALID_CHARACTERS);
     }
 
+    //@@author
     @Test
     public void parse_validTagValidColor_success() {
         Tag expectedTag = new Tag("friends", "gold");

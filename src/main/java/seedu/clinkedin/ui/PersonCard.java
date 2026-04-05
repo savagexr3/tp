@@ -94,6 +94,7 @@ public class PersonCard extends UiPart<Region> {
         deletedDateTime.setManaged(false);
     }
 
+    //@@author rxlee04
     /**
      * Creates a {@code PersonCard} for a deleted person record.
      */
@@ -105,6 +106,7 @@ public class PersonCard extends UiPart<Region> {
         deletedDateTime.setManaged(true);
     }
 
+    //@@author
     /**
      * Returns true if the person has a link.
      * Package-private for testing.
@@ -136,6 +138,7 @@ public class PersonCard extends UiPart<Region> {
         }
     }
 
+    //@@author rxlee04
     private String formatDeletedDateTime(LocalDateTime deletedTime) {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(deletedTime, now);

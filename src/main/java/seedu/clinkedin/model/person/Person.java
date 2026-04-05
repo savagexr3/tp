@@ -109,7 +109,8 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException} if modification is attempted.
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
@@ -128,6 +129,7 @@ public class Person {
                 && otherPerson.getName().equals(getName());
     }
 
+    //@@author rxlee04
     /**
      * Returns a new {@code Person} with the specified tag removed.
      * The original person remains unchanged.
@@ -145,6 +147,11 @@ public class Person {
                 Optional.ofNullable(link), dateAdded, updatedTags);
     }
 
+    //@@author
+    /**
+     * Returns true if both persons have the same identity and data fields.
+     * This defines a stronger notion of equality between two persons.
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -169,6 +176,7 @@ public class Person {
 
     @Override
     public int hashCode() {
+        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, company, address, remark, link, dateAdded, tags);
     }
 
@@ -186,4 +194,5 @@ public class Person {
                 .add("tags", tags)
                 .toString();
     }
+
 }

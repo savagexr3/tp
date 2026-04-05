@@ -218,6 +218,25 @@ The following sequence diagram illustrates how the `restore` command is handled 
 
 <puml src="diagrams/RestoreSequenceDiagram.puml" alt="RestoreSequenceDiagram" />
 
+#### Finding contacts by tag
+
+The `tag show` command allows users to find contacts that have a specific tag.
+
+Users can input a single tag to filter the list of contacts.
+
+When the command is executed, the system first checks whether any tag keyword was provided. If the input is empty, the command fails and an error message is shown.
+
+If input is provided, the system checks if the tag exists. If it doesn’t, the command fails and an error message is shown.
+
+If the tag exists, the system creates a TagContainsKeywordPredicate and updates the contact list to show contacts who have that specific tag.
+
+The following activity diagram illustrates the decision flow of the tag show command:
+
+<puml src="diagrams/tag/TagShowActivityDiagram.puml" alt="TagShowActivityDiagram" />
+
+The following sequence diagram illustrates how the tag show command is handled by the system components:
+
+<puml src="diagrams/tag/TagShowSequenceDiagram.puml" alt="TagShowSequenceDiagram" />
 
 ### Tag management
 #### Tag creation
@@ -287,6 +306,24 @@ The following activity diagram illustrates the decision flow:
 
 The sequence diagram below illustrates the execution:
 <puml src="diagrams/tag/TagRenameSequenceDiagram.puml" alt="TagRenameSequenceDiagram" />
+
+#### Tag color
+
+The `tag color` command allows users to add a color to an existing tag.
+
+When the command is executed, the system first checks whether the color is valid. If the color is not valid, the command fails and an error message is shown.
+
+If the color is valid, the system then checks if the tag exists. If the tag does not exist, the command fails and an error message is shown.
+
+If both the tag and color is valid, the color is then added to the tag and the model is updated.
+
+The following activity diagram illustrates the decision flow:
+
+<puml src="diagrams/tag/TagColorActivityDiagram.puml" alt="TagColorActivityDiagram" />
+
+The sequence diagram below illustrates the execution:
+
+<puml src="diagrams/tag/TagColorSequenceDiagram.puml" alt="TagColorSequenceDiagram" />
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -668,6 +705,34 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Adding a person
+1. Adding a person to the contact list
+
+    1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/clementi`<br>
+       Expected: Contact is added to the end of the list. Details of contact shown in status message. Timestamp added to contact detail.
+
+    1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/clementi r/met on internship`<br>
+      Expected: Contact with optional remark field is added to the end of the list. Details of contact shown in status message. Timestamp added to contact detail.
+
+    1. Test case: `add n/John Doe p/98765432`<br>
+      Expected: Contact is not added. Error message given as required fields `EMAIL` and `ADDRESS` are missing.
+
+    1. Other incorrect add commands to try `add`, `add n/john`, `...`<br>
+       Expected: Similar to previous
+
+### Editing a person
+1. Editing a person while all persons are being shown
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    1. Test case: `edit 1 n/Johnny`<br>
+       Expected: First contact's name is updated to `Johnny`. Details of contact shown in status message.
+   
+    1. Test case: `edit 0 n/Johnny`<br>
+       Expected: No person is edited. Error details shown in the status message.
+
+    1. Other incorrect edit commands to try: `edit`, `edit x`, `...` (where x is large than the list size)<br>
+       Expected: Similar to previous.
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -692,3 +757,44 @@ testers are expected to do more *exploratory* testing.
     1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+## **Appendix: Effort**
+
+This project builds on AddressBook-Level3 (AB3) as a reference point, but introduces additional complexity through enhanced data modeling and features.
+
+### **Overall Difficulty**
+
+Compared to AB3, which manages a single entity type, our project is more complex due to the introduction of a structured tag system and additional state management (e.g., deleted records and restoration).
+
+### **Key Challenges**
+
+- Redesigning the **tag system** from simple strings into **entities** with attributes (e.g., color) and validation rules
+- Ensuring **data consistency** across all persons referencing the same tag
+- Updating existing logic to support tag creation, deletion, assignment, and renaming
+- Implementing **deleted person tracking and restoration**, including synchronising restored data with current tag definitions
+- Handling edge cases where tags are renamed or deleted after a person is removed
+- Enhancing **input validation**, particularly for email and link fields
+- Introducing **clickable links** to improve usability
+- Standardising **color input formats** (hex, named colors) and enforcing strict validation to prevent unintended inputs
+
+### **Effort Required**
+
+Effort was mainly spent on:
+- Refactoring the model to support tag entities
+- Updating commands and parsers for new behaviours
+- Handling edge cases in restoration logic
+- Strengthening validation and improving user experience
+
+### **Reuse of Existing Code**
+
+We reused AB3’s core architecture (commands, parser, model), which reduced setup effort. However, adapting it to support the new tag system and restoration features required significant modifications.
+
+### **Achievements**
+
+- Transformed tags into fully managed entities
+- Implemented deleted-person tracking and restoration
+- Improved validation and usability (e.g., clickable links and standardized color input)  
+
+## **Appendix: Planned Enhancements**
+These enhancements are planned for future iterations:
+- Improve tag restoration behaviour: when restoring a deleted contact, tags that were renamed will be correctly mapped to their updated names instead of being removed.
