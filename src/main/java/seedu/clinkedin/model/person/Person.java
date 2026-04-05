@@ -102,6 +102,8 @@ public class Person {
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
     }
+
+    //@@author rxlee04
     /**
      * Returns a new {@code Person} with the specified tag removed.
      * The original person remains unchanged.
@@ -119,6 +121,7 @@ public class Person {
                 Optional.ofNullable(link), dateAdded, updatedTags);
     }
 
+    //@@author
     /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.

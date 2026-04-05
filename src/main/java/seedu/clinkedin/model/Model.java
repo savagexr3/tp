@@ -95,6 +95,7 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
 
+    //@@author rxlee04
     /**
      * Restores the given deleted person record.
      * The person in the record is re-added to the address book with only
@@ -106,6 +107,7 @@ public interface Model {
      */
     Person restorePerson(DeletedPersonRecord deletedPersonRecord);
 
+    //@@author
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.
      *
@@ -113,6 +115,7 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    //@@author rxlee04
     /**
      * Returns an unmodifiable view of the filtered deleted person record list.
      */
@@ -125,12 +128,32 @@ public interface Model {
      */
     void updateFilteredDeletedPersonRecordList(Predicate<DeletedPersonRecord> predicate);
 
+    /**
+     * Checks if the given tag exists in the system.
+     *
+     * @param tag The tag to check.
+     * @return {@code true} if the tag exists, {@code false} otherwise.
+     * @throws NullPointerException if {@code tag} is null.
+     */
     boolean hasTag(Tag tag);
 
+    /**
+     * Adds a new tag to the system.
+     *
+     * @param tag The tag to add.
+     * @throws NullPointerException if {@code tag} is null.
+     */
     void addTag(Tag tag);
 
+    /**
+     * Deletes the given tag from the system.
+     *
+     * @param tag The tag to delete.
+     * @throws NullPointerException if {@code tag} is null.
+     */
     void deleteTag(Tag tag);
 
+    //@@author
     void setTags(List<Tag> tags);
 
     /**

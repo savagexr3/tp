@@ -10,6 +10,7 @@ import javafx.scene.layout.Region;
 import seedu.clinkedin.commons.core.LogsCenter;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
 
+//@@author rxlee04
 /**
  * Panel containing the list of deleted person records.
  */

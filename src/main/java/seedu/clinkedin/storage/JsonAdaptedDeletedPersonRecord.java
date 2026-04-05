@@ -9,6 +9,7 @@ import seedu.clinkedin.commons.exceptions.IllegalValueException;
 import seedu.clinkedin.model.person.DeletedPersonRecord;
 import seedu.clinkedin.model.person.Person;
 
+//@@author rxlee04
 /**
  * Jackson-friendly version of {@link DeletedPersonRecord}.
  */

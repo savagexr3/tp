@@ -25,6 +25,7 @@ import seedu.clinkedin.model.person.Person;
 import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 
+//@@author rxlee04
 public class TagCreateCommandTest {
     @Test
     public void constructor_nullTag_throwsNullPointerException() {
@@ -78,6 +79,7 @@ public class TagCreateCommandTest {
         assertFalse(createFriendsCommand.equals(createColleaguesCommand));
     }
 
+    //@@author
     /**
      * A default model stub that have all of the methods failing.
      */

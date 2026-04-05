@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+//@@author rxlee04
 public class DeletedPersonRecordTest {
 
     @Test

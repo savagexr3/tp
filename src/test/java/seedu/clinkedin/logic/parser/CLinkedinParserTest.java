@@ -92,6 +92,7 @@ public class CLinkedinParserTest {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
     }
 
+    //@@author rxlee04
     @Test
     public void parseCommand_deleted() throws Exception {
         assertTrue(parser.parseCommand(DeletedCommand.COMMAND_WORD) instanceof DeletedCommand);
@@ -105,6 +106,7 @@ public class CLinkedinParserTest {
         assertEquals(new RestoreCommand(INDEX_FIRST_PERSON), command);
     }
 
+    //@@author
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()

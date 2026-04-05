@@ -16,6 +16,7 @@ public interface ReadOnlyCLinkedin {
      */
     ObservableList<Person> getPersonList();
 
+    //@@author rxlee04
     /**
      * Returns an unmodifiable view of the deleted person records list.
      */
