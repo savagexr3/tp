@@ -486,3 +486,4 @@ Action              | Format, Examples
 **Tag Color**       | `tag color TAG_NAME COLOR`<br> e.g.,`tag color friends red`
 **Tag Delete**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
 **Help**            | `help`
+**Exit**            | `exit`
