@@ -4,22 +4,16 @@ import static java.util.Objects.requireNonNull;
 import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's name in the address book.
+ * Represents a Person's company in the address book.
  * Guarantees: immutable; valid according to {@link #getCompanyNameValidationError(String)}.
  */
 public class Company {
 
+    public static final int MAX_LENGTH = 50;
+
     public static final String MESSAGE_CONSTRAINTS =
             "Company name must be 1-50 characters long, contain only letters, numbers, spaces, "
-                    + "period (.), comma (,), ampersand (&) and hyphens (-), "
-                    + "and use only single spaces between words.";
-
-    /**
-     * Company name must have a maximum length of 50 characters,
-     * use only letters, numbers, spaces, period (.), comma (,), ampersand (&) and hyphens (-),
-     * and contain only single spaces between words.
-     */
-    public static final int MAX_LENGTH = 50;
+                    + "period (.), comma (,), ampersand (&) and hyphens (-), and use only single spaces between words.";
 
     public static final String MESSAGE_NULL =
             "Company cannot be null.";
@@ -31,49 +25,51 @@ public class Company {
             "Company name cannot exceed 50 characters.";
 
     public static final String MESSAGE_INVALID_CHARACTERS =
-            "Company name can only contain letters, numbers, spaces, period (.), "
-                    + "comma (,), ampersand (&) and hyphens (-).";
+            "Company name can only contain letters, numbers, spaces, period (.), comma (,),"
+                    + " ampersand (&) and hyphens (-).";
 
-    public static final String MESSAGE_MULTIPLE_SPACES =
-            "Company name can only contain single spaces between words.";
+    public static final String MESSAGE_INVALID_SPACING =
+            "Company name can only contain single spaces between words and cannot start or end with spaces.";
 
     private static final String VALIDATION_REGEX = "[\\p{Alnum} .,&-]+";
 
-    public final String companyName;
+    public final String value;
 
     /**
-     * Constructs a {@code Company name}.
+     * Constructs a {@code Company}.
      *
-     * @param name A valid name.
+     * @param companyName A valid company name.
+     * @throws NullPointerException If {@code companyName} is null.
+     * @throws IllegalArgumentException If {@code companyName} is invalid.
      */
-    public Company(String name) {
-        requireNonNull(name);
-        String error = getCompanyNameValidationError(name);
+    public Company(String companyName) {
+        requireNonNull(companyName);
+        String error = getCompanyNameValidationError(companyName);
         checkArgument(error == null, error);
-        companyName = name;
+        value = companyName;
     }
 
     /**
-     * Returns the error message if the company name is invalid, otherwise null.
+     * Returns the validation error message if the company name is invalid, or {@code null} otherwise.
      */
-    public static String getCompanyNameValidationError(String test) {
-        if (test == null) {
+    public static String getCompanyNameValidationError(String companyName) {
+        if (companyName == null) {
             return MESSAGE_NULL;
         }
 
-        if (test.isEmpty()) {
+        if (companyName.isEmpty() || companyName.trim().isEmpty()) {
             return MESSAGE_EMPTY;
         }
 
-        if (test.length() > MAX_LENGTH) {
+        if (companyName.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
         }
 
-        if (test.startsWith(" ") || test.endsWith(" ") || test.contains("  ")) {
-            return MESSAGE_MULTIPLE_SPACES;
+        if (companyName.startsWith(" ") || companyName.endsWith(" ") || companyName.contains("  ")) {
+            return MESSAGE_INVALID_SPACING;
         }
 
-        if (!test.matches(VALIDATION_REGEX)) {
+        if (!companyName.matches(VALIDATION_REGEX)) {
             return MESSAGE_INVALID_CHARACTERS;
         }
 
@@ -82,15 +78,17 @@ public class Company {
 
     /**
      * Returns true if a given string is a valid company name.
+     *
+     * @throws NullPointerException If {@code companyName} is null.
      */
-    public static boolean isValidCompanyName(String test) {
-        requireNonNull(test);
-        return getCompanyNameValidationError(test) == null;
+    public static boolean isValidCompanyName(String companyName) {
+        requireNonNull(companyName);
+        return getCompanyNameValidationError(companyName) == null;
     }
 
     @Override
     public String toString() {
-        return companyName;
+        return value;
     }
 
     @Override
@@ -99,19 +97,16 @@ public class Company {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Company)) {
             return false;
         }
 
         Company otherName = (Company) other;
-        return companyName.equals(otherName.companyName);
+        return value.equals(otherName.value);
     }
 
     @Override
     public int hashCode() {
-        return companyName.hashCode();
+        return value.hashCode();
     }
-
 }
-

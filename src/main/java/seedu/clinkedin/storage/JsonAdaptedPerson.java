@@ -63,12 +63,14 @@ class JsonAdaptedPerson {
 
     /**
      * Converts a given {@code Person} into this class for Jackson use.
+     *
+     * @throws NullPointerException if {@code source} is null.
      */
     public JsonAdaptedPerson(Person source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
-        company = source.getCompany() != null ? source.getCompany().companyName : null;
+        company = source.getCompany() != null ? source.getCompany().value : null;
         address = source.getAddress().value;
         remark = source.getRemark() != null ? source.getRemark().value : null;
         link = source.getLink() != null ? source.getLink().value : null;
@@ -84,42 +86,55 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
+
+        // Convert all tags from JSON-adapted form to model type
         final List<Tag> personTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
         }
 
+        // ---------- Name ----------
         if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
+        // validate name constraints (length, characters, spacing)
         String nameError = Name.getNameValidationError(name);
         if (nameError != null) {
             throw new IllegalValueException(nameError);
         }
         final Name modelName = new Name(name);
 
+        // ---------- Phone ----------
         if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
+        // validate phone constraints (digits only, valid length)
         String phoneError = Phone.getPhoneValidationError(phone);
         if (phoneError != null) {
             throw new IllegalValueException(phoneError);
         }
         final Phone modelPhone = new Phone(phone);
 
+        // ---------- Email ----------
         if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
+        // validate email format (must contain '@' and domain)
         String emailError = Email.getEmailValidationError(email);
         if (emailError != null) {
             throw new IllegalValueException(emailError);
         }
         final Email modelEmail = new Email(email);
 
+        // ---------- Company (Optional Field) ----------
         Optional<Company> modelCompany;
         if (company == null) {
             modelCompany = Optional.empty();
         } else {
+            // validate company constraints (allowed characters, length)
             String companyError = Company.getCompanyNameValidationError(company);
             if (companyError != null) {
                 throw new IllegalValueException(companyError);
@@ -127,20 +142,24 @@ class JsonAdaptedPerson {
             modelCompany = Optional.of(new Company(company));
         }
 
+        // ---------- Address ----------
         if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
-
+        // validate address constraints (non-empty, length limit)
         String addressError = Address.getAddressValidationError(address);
         if (addressError != null) {
             throw new IllegalValueException(addressError);
         }
         final Address modelAddress = new Address(address);
 
+        // ---------- Remark (Optional Field) ----------
         Optional<Remark> modelRemark;
         if (remark == null) {
             modelRemark = Optional.empty();
         } else {
+            // validate remark constraints
             String remarkError = Remark.getRemarkValidationError(remark);
             if (remarkError != null) {
                 throw new IllegalValueException(remarkError);
@@ -148,19 +167,27 @@ class JsonAdaptedPerson {
             modelRemark = Optional.of(new Remark(remark));
         }
 
-        Optional<Link> modelLink = (link == null) ? Optional.empty() : Optional.of(new Link(link));
+        // ---------- Link (Optional Field) ----------
+        Optional<Link> modelLink = (link == null)
+                ? Optional.empty()
+                : Optional.of(new Link(link));
 
+        // ---------- DateAdded ----------
         if (dateAdded == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    DateAdded.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, DateAdded.class.getSimpleName()));
         }
+
         if (!DateAdded.isValidDate(dateAdded)) {
             throw new IllegalValueException(DateAdded.MESSAGE_CONSTRAINTS);
         }
         final DateAdded modelDateAdded = new DateAdded(dateAdded);
 
+        // Convert list of tags to set (ensures uniqueness)
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelCompany, modelAddress, modelRemark,
+
+        return new Person(modelName, modelPhone, modelEmail,
+                modelCompany, modelAddress, modelRemark,
                 modelLink, modelDateAdded, modelTags);
     }
 

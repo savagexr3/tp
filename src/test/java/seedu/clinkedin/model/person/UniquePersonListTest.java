@@ -11,6 +11,7 @@ import static seedu.clinkedin.testutil.TypicalPersons.BOB;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -171,5 +172,44 @@ public class UniquePersonListTest {
     @Test
     public void toStringMethod() {
         assertEquals(uniquePersonList.asUnmodifiableObservableList().toString(), uniquePersonList.toString());
+    }
+
+    @Test
+    public void sort_nullComparator_throwsNullPointerException() {
+        // EP: required comparator input is null
+        assertThrows(NullPointerException.class, () -> uniquePersonList.sort(null));
+    }
+
+    @Test
+    public void sort_emptyList_noChange() {
+        // EP: valid comparator applied to empty list
+        uniquePersonList.sort(Comparator.comparing(person -> person.getName().fullName));
+
+        UniquePersonList expectedUniquePersonList = new UniquePersonList();
+        assertEquals(expectedUniquePersonList, uniquePersonList);
+    }
+
+    @Test
+    public void sort_singlePerson_noChange() {
+        // EP: valid comparator applied to single-element list
+        uniquePersonList.add(ALICE);
+
+        uniquePersonList.sort(Comparator.comparing(person -> person.getName().fullName));
+
+        UniquePersonList expectedUniquePersonList = new UniquePersonList();
+        expectedUniquePersonList.add(ALICE);
+        assertEquals(expectedUniquePersonList, uniquePersonList);
+    }
+
+    @Test
+    public void sort_multiplePersons_sortedByName() {
+        // Integration: verifies sort correctly reorders the internal list using the given comparator
+        uniquePersonList.add(BOB);
+        uniquePersonList.add(ALICE);
+
+        uniquePersonList.sort(Comparator.comparing(person -> person.getName().fullName));
+
+        assertEquals(ALICE, uniquePersonList.asUnmodifiableObservableList().get(0));
+        assertEquals(BOB, uniquePersonList.asUnmodifiableObservableList().get(1));
     }
 }

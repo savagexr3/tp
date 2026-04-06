@@ -20,19 +20,21 @@ import seedu.clinkedin.model.person.Remark;
 import seedu.clinkedin.model.tag.Tag;
 
 /**
- * Contains utility methods used for parsing strings in the various *Parser classes.
+ * Contains utility methods used for parsing strings in the various parser classes.
  */
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index must be a positive non-zero integer.";
 
-
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
      * Leading and trailing whitespaces will be trimmed.
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     *
+     * @throws NullPointerException if {@code oneBasedIndex} is null.
+     * @throws ParseException if the specified index is invalid (not a non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
+        requireNonNull(oneBasedIndex);
         String trimmedIndex = oneBasedIndex.trim();
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
@@ -44,6 +46,7 @@ public class ParserUtil {
      * Parses a {@code String name} into a {@code Name}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code name} is null.
      * @throws ParseException if the given {@code name} is invalid.
      */
     public static Name parseName(String name) throws ParseException {
@@ -60,6 +63,7 @@ public class ParserUtil {
      * Parses a {@code String phone} into a {@code Phone}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code phone} is null.
      * @throws ParseException if the given {@code phone} is invalid.
      */
     public static Phone parsePhone(String phone) throws ParseException {
@@ -75,7 +79,9 @@ public class ParserUtil {
     /**
      * Parses a {@code String company} into a {@code Company}.
      * Leading and trailing whitespaces will be trimmed.
+     * Blank input is treated as an absent optional company.
      *
+     * @throws NullPointerException if {@code company} is null.
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static Optional<Company> parseCompany(Optional<String> company) throws ParseException {
@@ -100,6 +106,7 @@ public class ParserUtil {
      * Parses a {@code String address} into an {@code Address}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code address} is null.
      * @throws ParseException if the given {@code address} is invalid.
      */
     public static Address parseAddress(String address) throws ParseException {
@@ -113,9 +120,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String remark} into a {@code Remark} when adding contact.
+     * Parses a {@code String remark} into a {@code Remark} when adding a contact.
      * Leading and trailing whitespaces will be trimmed.
+     * Blank input is invalid for add because it does not represent an actual remark value.
      *
+     * @throws NullPointerException if {@code remark} is null.
      * @throws ParseException if the given {@code remark} is invalid.
      */
     public static Optional<Remark> parseRemarkForAdd(Optional<String> remark) throws ParseException {
@@ -139,9 +148,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String remark} into a {@code Remark} when editing contact.
+     * Parses a {@code String remark} into a {@code Remark} when editing a contact.
      * Leading and trailing whitespaces will be trimmed.
+     * Blank input is treated as clearing the existing remark.
      *
+     * @throws NullPointerException if {@code remark} is null.
      * @throws ParseException if the given {@code remark} is invalid.
      */
     public static Optional<Remark> parseRemarkForEdit(Optional<String> remark) throws ParseException {
@@ -165,9 +176,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String company} into a {@code Company} when adding contact.
+     * Parses a {@code String company} into a {@code Company} when adding a contact.
      * Leading and trailing whitespaces will be trimmed.
+     * Blank input is invalid for add because it does not represent an actual company value.
      *
+     * @throws NullPointerException if {@code company} is null.
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static Optional<Company> parseCompanyForAdd(Optional<String> company) throws ParseException {
@@ -191,9 +204,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String company} into a {@code Company} when editing contact.
+     * Parses a {@code String company} into a {@code Company} when editing a contact.
      * Leading and trailing whitespaces will be trimmed.
+     * Blank input is treated as clearing the existing company.
      *
+     * @throws NullPointerException if {@code company} is null.
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static Optional<Company> parseCompanyForEdit(Optional<String> company) throws ParseException {
@@ -220,6 +235,7 @@ public class ParserUtil {
      * Parses a {@code String email} into an {@code Email}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code email} is null.
      * @throws ParseException if the given {@code email} is invalid.
      */
     public static Email parseEmail(String email) throws ParseException {
@@ -236,6 +252,7 @@ public class ParserUtil {
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code tag} is null.
      * @throws ParseException if the given {@code tag} is invalid.
      */
     public static Tag parseTag(String tag) throws ParseException {
@@ -249,10 +266,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
+     * Parses a tag name and color into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code tag} is invalid.
+     * @throws NullPointerException if {@code tag} or {@code color} is null.
+     * @throws ParseException if the given {@code tag} or {@code color} is invalid.
      */
     public static Tag parseTag(String tag, String color) throws ParseException {
         requireNonNull(tag);
@@ -274,6 +292,7 @@ public class ParserUtil {
      * Parses a {@code String link} into a {@code Link}.
      * Leading and trailing whitespaces will be trimmed.
      *
+     * @throws NullPointerException if {@code link} is null.
      * @throws ParseException if the given {@code link} is invalid.
      */
     public static Optional<Link> parseLink(Optional<String> link) throws ParseException {
@@ -291,6 +310,9 @@ public class ParserUtil {
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
+     *
+     * @throws NullPointerException if {@code tags} is null.
+     * @throws ParseException if any tag is invalid.
      */
     public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
         requireNonNull(tags);

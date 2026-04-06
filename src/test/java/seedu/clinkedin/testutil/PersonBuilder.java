@@ -45,7 +45,7 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        company = new Company(DEFAULT_COMPANY);
+        company = null;
         address = new Address(DEFAULT_ADDRESS);
         remark = null;
         link = null;

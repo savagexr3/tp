@@ -11,78 +11,104 @@ public class PhoneTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
+        // EP: required input is null
         assertThrows(NullPointerException.class, () -> new Phone(null));
     }
 
     @Test
     public void constructor_invalidPhone_throwsIllegalArgumentException() {
+        // EP: empty string
         String invalidPhone = "";
         assertThrows(IllegalArgumentException.class, () -> new Phone(invalidPhone));
     }
 
     @Test
     public void getPhoneValidationError() {
-
-        // null
+        // EP: null input
         assertEquals(Phone.MESSAGE_NULL, Phone.getPhoneValidationError(null));
 
-        // empty
+        // EP: empty string
         assertEquals(Phone.MESSAGE_EMPTY, Phone.getPhoneValidationError(""));
 
-        // non digit
+        // EP: non-digit alphabetic input
         assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("phone"));
+
+        // EP: alphanumeric input
         assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("9011p041"));
+
+        // EP: spaces within number
         assertEquals(Phone.MESSAGE_NON_DIGIT, Phone.getPhoneValidationError("9312 1534"));
 
-        // too short
+        // BVA: length = 7, just below minimum valid length 8
         assertEquals(Phone.MESSAGE_TOO_SHORT, Phone.getPhoneValidationError("1234567"));
 
-        // too long
+        // BVA: length = 16, just above maximum valid length 15
         assertEquals(Phone.MESSAGE_TOO_LONG,
                 Phone.getPhoneValidationError("1234567890123456"));
 
-        // valid numbers
+        // BVA: length = 8, minimum valid length
         assertEquals(null, Phone.getPhoneValidationError("12345678"));
+
+        // EP: valid typical phone number
         assertEquals(null, Phone.getPhoneValidationError("93121534"));
+
+        // BVA: length = 15, maximum valid length
         assertEquals(null, Phone.getPhoneValidationError("123456789012345"));
     }
 
     @Test
     public void isValidPhone() {
-        // null phone number
+        // EP: null input
         assertThrows(NullPointerException.class, () -> Phone.isValidPhone(null));
 
-        // invalid phone numbers
-        assertFalse(Phone.isValidPhone("")); // empty string
-        assertFalse(Phone.isValidPhone(" ")); // spaces only
-        assertFalse(Phone.isValidPhone("91")); // less than 3 numbers
-        assertFalse(Phone.isValidPhone("phone")); // non-numeric
-        assertFalse(Phone.isValidPhone("9011p041")); // alphabets within digits
-        assertFalse(Phone.isValidPhone("9312 1534")); // spaces within digits
+        // EP: empty string
+        assertFalse(Phone.isValidPhone(""));
 
-        // valid phone numbers
-        assertTrue(Phone.isValidPhone("91112356")); // exactly 9 numbers
+        // EP: whitespace-only input
+        assertFalse(Phone.isValidPhone(" "));
+
+        // BVA: length = 7, just below minimum valid length 8
+        assertFalse(Phone.isValidPhone("1234567"));
+
+        // EP: alphabetic input
+        assertFalse(Phone.isValidPhone("phone"));
+
+        // EP: alphanumeric input
+        assertFalse(Phone.isValidPhone("9011p041"));
+
+        // EP: spaces within number
+        assertFalse(Phone.isValidPhone("9312 1534"));
+
+        // BVA: length = 16, just above maximum valid length 15
+        assertFalse(Phone.isValidPhone("1234567890123456"));
+
+        // BVA: length = 8, minimum valid length
+        assertTrue(Phone.isValidPhone("91112356"));
+
+        // EP: valid typical 8-digit number
         assertTrue(Phone.isValidPhone("93121534"));
-        assertTrue(Phone.isValidPhone("124293842033123")); // long phone numbers
+
+        // BVA: length = 15, maximum valid length
+        assertTrue(Phone.isValidPhone("124293842033123"));
     }
 
     @Test
     public void equals() {
         Phone phone = new Phone("91829354");
 
-        // same values -> returns true
+        // Same values
         assertTrue(phone.equals(new Phone("91829354")));
 
-        // same object -> returns true
+        // Same object
         assertTrue(phone.equals(phone));
 
-        // null -> returns false
+        // Null comparison
         assertFalse(phone.equals(null));
 
-        // different types -> returns false
+        // Different type
         assertFalse(phone.equals(5.0f));
 
-        // different values -> returns false
+        // Different value
         assertFalse(phone.equals(new Phone("99574534")));
     }
 }

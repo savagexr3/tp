@@ -11,17 +11,10 @@ public class Remark {
 
     public static final int MAX_LENGTH = 200;
 
-    public static final String MESSAGE_NULL =
-            "Remark cannot be null.";
-
-    public static final String MESSAGE_EMPTY =
-            "Remark cannot be empty.";
-
-    public static final String MESSAGE_TOO_LONG =
-            "Remark cannot exceed 200 characters.";
-
-    public static final String REMARK_CONTAINS_INVALID_CHARACTERS =
-            "Remark contains invalid characters (/).";
+    public static final String MESSAGE_NULL = "Remark cannot be null.";
+    public static final String MESSAGE_EMPTY = "Remark cannot be empty.";
+    public static final String MESSAGE_TOO_LONG = "Remark cannot exceed 200 characters.";
+    public static final String MESSAGE_INVALID_CHARACTERS = "Remark contains invalid characters (/).";
 
     public final String value;
 
@@ -29,6 +22,8 @@ public class Remark {
      * Constructs a {@code Remark}.
      *
      * @param remark A valid remark.
+     * @throws NullPointerException If {@code remark} is null.
+     * @throws IllegalArgumentException If {@code remark} is invalid.
      */
     public Remark(String remark) {
         requireNonNull(remark);
@@ -38,34 +33,36 @@ public class Remark {
     }
 
     /**
-     * Returns the error message if the remark is invalid, otherwise null.
+     * Returns the validation error message if the remark is invalid, or {@code null} otherwise.
      */
-    public static String getRemarkValidationError(String test) {
-        if (test == null) {
+    public static String getRemarkValidationError(String remark) {
+        if (remark == null) {
             return MESSAGE_NULL;
         }
 
-        if (test.isEmpty()) {
+        if (remark.isEmpty()) {
             return MESSAGE_EMPTY;
         }
 
-        if (test.length() > MAX_LENGTH) {
+        if (remark.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
         }
 
-        if (test.contains("/")) {
-            return REMARK_CONTAINS_INVALID_CHARACTERS;
+        if (remark.contains("/")) {
+            return MESSAGE_INVALID_CHARACTERS;
         }
 
-        return null; // any characters allowed
+        return null;
     }
 
     /**
      * Returns true if a given string is a valid remark.
+     *
+     * @throws NullPointerException If {@code remark} is null.
      */
-    public static boolean isValidRemark(String test) {
-        requireNonNull(test);
-        return getRemarkValidationError(test) == null;
+    public static boolean isValidRemark(String remark) {
+        requireNonNull(remark);
+        return getRemarkValidationError(remark) == null;
     }
 
     @Override

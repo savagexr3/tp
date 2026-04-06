@@ -25,24 +25,26 @@ import seedu.clinkedin.model.person.Link;
 import seedu.clinkedin.model.person.Remark;
 import seedu.clinkedin.model.tag.Tag;
 
-
 /**
- * Parses input arguments and creates a new EditCommand object
+ * Parses input arguments and creates a new {@code EditCommand} object.
  */
 public class EditCommandParser implements Parser<EditCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the EditCommand
-     * and returns an EditCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * Parses the given {@code args} in the context of the {@code EditCommand}
+     * and returns an {@code EditCommand} object for execution.
+     *
+     * @throws NullPointerException if {@code args} is null.
+     * @throws ParseException if the user input does not conform to the expected format.
      */
+    @Override
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
                 PREFIX_COMPANY, PREFIX_ADDRESS, PREFIX_REMARK, PREFIX_LINK, PREFIX_TAG);
 
         Index index;
-
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
@@ -91,6 +93,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 parsedLink.ifPresent(editPersonDescriptor::setLink);
             }
         }
+
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
@@ -101,18 +104,21 @@ public class EditCommandParser implements Parser<EditCommand> {
     }
 
     /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * Parses {@code tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
+     * If {@code tags} contains only one element which is an empty string, it will be parsed into a
      * {@code Set<Tag>} containing zero tags.
+     *
+     * @throws NullPointerException if {@code tags} is null.
+     * @throws ParseException if any tag is invalid.
      */
     private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+        requireNonNull(tags);
 
         if (tags.isEmpty()) {
             return Optional.empty();
         }
+
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
         return Optional.of(ParserUtil.parseTags(tagSet));
     }
-
 }

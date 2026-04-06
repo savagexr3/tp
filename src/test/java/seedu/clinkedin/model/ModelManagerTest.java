@@ -267,6 +267,7 @@ public class ModelManagerTest {
 
     @Test
     public void sortFilteredPersonListByCompany_sortsDisplayedListOnly() {
+        // Integration: displayed list is sorted while underlying address book order stays unchanged
         Person shopeePerson = new PersonBuilder(BENSON).build();
         Person googlePerson = new PersonBuilder(ALICE).build();
 
@@ -276,23 +277,21 @@ public class ModelManagerTest {
                 .build();
         ModelManager sortedModelManager = new ModelManager(cLinkedin, new UserPrefs());
 
-        // Before sorting: underlying order should follow insertion order
         assertEquals(shopeePerson, sortedModelManager.getCLinkedin().getPersonList().get(0));
         assertEquals(googlePerson, sortedModelManager.getCLinkedin().getPersonList().get(1));
 
         sortedModelManager.sortFilteredPersonListByCompany();
 
-        // Displayed list is sorted by company name
         assertEquals(googlePerson, sortedModelManager.getFilteredPersonList().get(0));
         assertEquals(shopeePerson, sortedModelManager.getFilteredPersonList().get(1));
 
-        // Underlying list remains unchanged
         assertEquals(shopeePerson, sortedModelManager.getCLinkedin().getPersonList().get(0));
         assertEquals(googlePerson, sortedModelManager.getCLinkedin().getPersonList().get(1));
     }
 
     @Test
     public void sortFilteredPersonListByCompany_filteredListRemainsFiltered() {
+        // Integration: sorting respects the current filter predicate
         Person shopeePerson = new PersonBuilder(BENSON).build();
         Person googlePerson = new PersonBuilder(ALICE).build();
 
@@ -311,6 +310,7 @@ public class ModelManagerTest {
 
     @Test
     public void equals_differentSortedPersons_returnsFalse() {
+        // EP: sorted view differs between two otherwise equal model managers
         CLinkedin cLinkedin = new AddressBookBuilder().withPerson(BENSON).withPerson(ALICE).build();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -324,6 +324,7 @@ public class ModelManagerTest {
 
     @Test
     public void resetFilteredPersonListSorting_restoresOriginalOrder() {
+        // Integration: resetting sorting restores original filtered order
         Person shopeePerson = new PersonBuilder(BENSON).build();
         Person googlePerson = new PersonBuilder(ALICE).build();
 

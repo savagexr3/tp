@@ -11,74 +11,109 @@ public class NameTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
+        // EP: required input is null
         assertThrows(NullPointerException.class, () -> new Name(null));
     }
 
     @Test
     public void constructor_invalidName_throwsIllegalArgumentException() {
+        // EP: empty string
         String invalidName = "";
         assertThrows(IllegalArgumentException.class, () -> new Name(invalidName));
     }
 
     @Test
     public void getNameValidationError() {
-        //null
+        // EP: null input
         assertEquals(Name.MESSAGE_NULL, Name.getNameValidationError(null));
 
-        // empty
+        // EP: empty string
         assertEquals(Name.MESSAGE_EMPTY, Name.getNameValidationError(""));
 
-        // too long
+        // BVA: length = 101, just above max valid length 100
         assertEquals(Name.MESSAGE_TOO_LONG, Name.getNameValidationError("a".repeat(101)));
 
-        // invalid spaces
-        assertEquals(Name.MESSAGE_MULTIPLE_SPACES, Name.getNameValidationError("  Bob"));
-        assertEquals(Name.MESSAGE_MULTIPLE_SPACES, Name.getNameValidationError("Bob  "));
-        assertEquals(Name.MESSAGE_MULTIPLE_SPACES, Name.getNameValidationError("Bob  Tan"));
+        // BVA: length = 100, max valid length
+        assertEquals(null, Name.getNameValidationError("a".repeat(100)));
 
-        // invalid characters
+        // BVA: length = 1, min valid length
+        assertEquals(null, Name.getNameValidationError("a"));
+
+        // EP: leading spaces
+        assertEquals(Name.MESSAGE_INVALID_SPACING, Name.getNameValidationError("  Bob"));
+
+        // EP: trailing spaces
+        assertEquals(Name.MESSAGE_INVALID_SPACING, Name.getNameValidationError("Bob  "));
+
+        // EP: multiple consecutive spaces inside
+        assertEquals(Name.MESSAGE_INVALID_SPACING, Name.getNameValidationError("Bob  Tan"));
+
+        // EP: invalid characters
         assertEquals(Name.MESSAGE_INVALID_CHARACTERS, Name.getNameValidationError("James123*"));
 
-        // valid
+        // EP: valid typical name
         assertEquals(null, Name.getNameValidationError("Bob Tan"));
     }
 
     @Test
     public void isValidName() {
-        // null name
+        // EP: null input
         assertThrows(NullPointerException.class, () -> Name.isValidName(null));
 
-        // invalid name
-        assertFalse(Name.isValidName("")); // empty string
-        assertFalse(Name.isValidName(" ")); // spaces only
-        assertFalse(Name.isValidName("^")); // only non-alphanumeric characters
-        assertFalse(Name.isValidName("peter*")); // contains non-alphanumeric characters
-        assertFalse(Name.isValidName("123")); // numbers only
-        assertFalse(Name.isValidName("peter the 2nd")); // alphanumeric characters
+        // EP: empty string
+        assertFalse(Name.isValidName(""));
 
-        // valid name
-        assertTrue(Name.isValidName("peter jack")); // alphabets only
-        assertTrue(Name.isValidName("Capital Tan")); // with capital letters
-        assertTrue(Name.isValidName("David Roger Jackson Ray Jr Robin")); // long names
+        // EP: whitespace-only input
+        assertFalse(Name.isValidName(" "));
+
+        // EP: only invalid symbol characters
+        assertFalse(Name.isValidName("^"));
+
+        // EP: invalid symbol mixed into name
+        assertFalse(Name.isValidName("peter*"));
+
+        // EP: digits only
+        assertFalse(Name.isValidName("123"));
+
+        // EP: alphanumeric name not allowed by spec
+        assertFalse(Name.isValidName("peter the 2nd"));
+
+        // BVA: length = 101, just above max valid length 100
+        assertFalse(Name.isValidName("a".repeat(101)));
+
+        // BVA: length = 100, max valid length
+        assertTrue(Name.isValidName("a".repeat(100)));
+
+        // BVA: length = 1, min valid length
+        assertTrue(Name.isValidName("a"));
+
+        // EP: valid lowercase multi-word name
+        assertTrue(Name.isValidName("peter jack"));
+
+        // EP: valid capitalized name
+        assertTrue(Name.isValidName("Capital Tan"));
+
+        // EP: valid long name within boundary
+        assertTrue(Name.isValidName("David Roger Jackson Ray Jr Robin"));
     }
 
     @Test
     public void equals() {
         Name name = new Name("Valid Name");
 
-        // same values -> returns true
+        // Same values
         assertTrue(name.equals(new Name("Valid Name")));
 
-        // same object -> returns true
+        // Same object
         assertTrue(name.equals(name));
 
-        // null -> returns false
+        // Null comparison
         assertFalse(name.equals(null));
 
-        // different types -> returns false
+        // Different type
         assertFalse(name.equals(5.0f));
 
-        // different values -> returns false
+        // Different value
         assertFalse(name.equals(new Name("Other Valid Name")));
     }
 }

@@ -66,7 +66,7 @@ public class Tag {
     }
 
     /**
-     * Returns the error message if the tag name is invalid, otherwise null.
+     * Returns the error message if the tag name is invalid, otherwise {@code null}.
      */
     public static String getTagNameValidationError(String test) {
         if (test == null) {
@@ -90,10 +90,11 @@ public class Tag {
 
     /**
      * Returns true if a given string is a valid tag name.
+     * @throws NullPointerException If {@code tagName} is null.
      */
-    public static boolean isValidTagName(String test) {
-        requireNonNull(test);
-        return getTagNameValidationError(test) == null;
+    public static boolean isValidTagName(String tagName) {
+        requireNonNull(tagName);
+        return getTagNameValidationError(tagName) == null;
     }
 
     public String getTagName() {

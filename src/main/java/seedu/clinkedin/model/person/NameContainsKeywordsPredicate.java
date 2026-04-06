@@ -1,5 +1,7 @@
 package seedu.clinkedin.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -12,12 +14,23 @@ import seedu.clinkedin.commons.util.ToStringBuilder;
 public class NameContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
 
+    /**
+     * Constructs a {@code NameContainsKeywordsPredicate} with the specified keywords.
+     *
+     * <p>The predicate tests whether a {@code Person}'s name field contains
+     * any of the given keywords (case-insensitive).</p>
+     *
+     * @param keywords A list of keywords to match against the person's name.
+     *                 Must not be null.
+     */
     public NameContainsKeywordsPredicate(List<String> keywords) {
-        this.keywords = keywords;
+        requireNonNull(keywords);
+        this.keywords = List.copyOf(keywords);
     }
 
     @Override
     public boolean test(Person person) {
+        requireNonNull(person);
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword));
     }
@@ -28,13 +41,12 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof NameContainsKeywordsPredicate)) {
             return false;
         }
 
-        NameContainsKeywordsPredicate otherNameContainsKeywordsPredicate = (NameContainsKeywordsPredicate) other;
-        return keywords.equals(otherNameContainsKeywordsPredicate.keywords);
+        NameContainsKeywordsPredicate otherPredicate = (NameContainsKeywordsPredicate) other;
+        return keywords.equals(otherPredicate.keywords);
     }
 
     @Override

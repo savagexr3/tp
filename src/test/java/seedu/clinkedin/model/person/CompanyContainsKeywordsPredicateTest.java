@@ -24,61 +24,66 @@ public class CompanyContainsKeywordsPredicateTest {
         CompanyContainsKeywordsPredicate secondPredicate =
                 new CompanyContainsKeywordsPredicate(secondPredicateKeywordList);
 
-        // same object -> returns true
+        // Same object
         assertTrue(firstPredicate.equals(firstPredicate));
 
-        // same values -> returns true
+        // Same values
         CompanyContainsKeywordsPredicate firstPredicateCopy =
                 new CompanyContainsKeywordsPredicate(firstPredicateKeywordList);
         assertTrue(firstPredicate.equals(firstPredicateCopy));
 
-        // different types -> returns false
+        // Different type
         assertFalse(firstPredicate.equals(1));
 
-        // null -> returns false
+        // Null comparison
         assertFalse(firstPredicate.equals(null));
 
-        // different predicate -> returns false
+        // Different keyword lists
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
     @Test
     public void test_companyContainsKeywords_returnsTrue() {
-        // One keyword
+        // Combination strategy: at least once over selected valid keyword inputs.
+        // Heuristic: each valid keyword category appears in at least one positive test case.
+
+        // EP: one keyword matches the company exactly
         CompanyContainsKeywordsPredicate predicate =
                 new CompanyContainsKeywordsPredicate(Collections.singletonList("Google"));
         assertTrue(predicate.test(new PersonBuilder().withCompany("Google").build()));
 
-        // Multiple keywords
+        // Combination: multiple valid keywords supplied, one of them matches
         predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Google", "Shopee"));
         assertTrue(predicate.test(new PersonBuilder().withCompany("Google").build()));
 
-        // Only one matching keyword
+        // Combination: only one keyword in a valid list matches
         predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Shopee", "Grab"));
         assertTrue(predicate.test(new PersonBuilder().withCompany("Grab").build()));
 
-        // Mixed-case keywords (case-insensitive)
+        // EP: case-insensitive match
         predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("gOoGlE"));
         assertTrue(predicate.test(new PersonBuilder().withCompany("Google").build()));
 
-        // Partial match (since using containsWordIgnoreCase)
+        // EP: keyword matches one full word inside a multi-word company name
         predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("NUS"));
         assertTrue(predicate.test(new PersonBuilder().withCompany("NUS Computing").build()));
     }
 
     @Test
     public void test_companyDoesNotContainKeywords_returnsFalse() {
-        // Zero keywords
+        // Heuristic: invalid/non-matching situations are tested one at a time before any more complex combinations.
+
+        // EP: zero keywords provided
         CompanyContainsKeywordsPredicate predicate =
                 new CompanyContainsKeywordsPredicate(Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder().withCompany("Google").build()));
 
-        // Non-matching keyword
+        // EP: non-matching keyword
         predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Shopee"));
         assertFalse(predicate.test(new PersonBuilder().withCompany("Google").build()));
 
-        // Keywords match other fields but not company
-        predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Alice", "12345678", "Main"));
+        // Combination: keywords match other Person fields, but not the company field under test
+        predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Alice", "12345678", "Main Street"));
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice")
                 .withPhone("12345678")

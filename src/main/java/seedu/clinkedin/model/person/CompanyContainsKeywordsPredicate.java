@@ -1,5 +1,7 @@
 package seedu.clinkedin.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -12,8 +14,18 @@ import seedu.clinkedin.commons.util.ToStringBuilder;
 public class CompanyContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
 
+    /**
+     * Constructs a {@code CompanyContainsKeywordsPredicate} with the specified keywords.
+     *
+     * <p>The predicate tests whether a {@code Person}'s company field contains
+     * any of the given keywords (case-insensitive).</p>
+     *
+     * @param keywords A list of keywords to match against the person's company.
+     *                 Must not be null.
+     */
     public CompanyContainsKeywordsPredicate(List<String> keywords) {
-        this.keywords = keywords;
+        requireNonNull(keywords);
+        this.keywords = List.copyOf(keywords);
     }
 
     public String getKeywordsString() {
@@ -22,9 +34,14 @@ public class CompanyContainsKeywordsPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
+        requireNonNull(person);
+        Company company = person.getCompany();
+        if (company == null) {
+            return false;
+        }
+
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
-                        person.getCompany().companyName, keyword));
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(company.value, keyword));
     }
 
     @Override
@@ -33,14 +50,12 @@ public class CompanyContainsKeywordsPredicate implements Predicate<Person> {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof CompanyContainsKeywordsPredicate)) {
             return false;
         }
 
-        CompanyContainsKeywordsPredicate otherCompanyContainsKeywordsPredicate =
-                (CompanyContainsKeywordsPredicate) other;
-        return keywords.equals(otherCompanyContainsKeywordsPredicate.keywords);
+        CompanyContainsKeywordsPredicate otherPredicate = (CompanyContainsKeywordsPredicate) other;
+        return keywords.equals(otherPredicate.keywords);
     }
 
     @Override
@@ -48,4 +63,3 @@ public class CompanyContainsKeywordsPredicate implements Predicate<Person> {
         return new ToStringBuilder(this).add("keywords", keywords).toString();
     }
 }
-

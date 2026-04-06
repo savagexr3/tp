@@ -9,28 +9,19 @@ import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
  */
 public class Name {
 
+    public static final int MAX_LENGTH = 100;
+
     public static final String MESSAGE_CONSTRAINTS =
             "Name must be 1-100 characters long, contain only letters, spaces, apostrophes (') and hyphens (-), "
                     + "and use only single spaces between words.";
 
-    /**
-     * Name must have a maximum length of 100 characters,
-     * use only letters, spaces, apostrophes (') and hyphens (-),
-     * and contain only single spaces between words.
-     */
-    public static final int MAX_LENGTH = 100;
-    public static final String MESSAGE_NULL = "Name cannot be null";
-    public static final String MESSAGE_EMPTY =
-            "Name cannot be empty.";
-
-    public static final String MESSAGE_TOO_LONG =
-            "Name cannot exceed 100 characters.";
-
+    public static final String MESSAGE_NULL = "Name cannot be null.";
+    public static final String MESSAGE_EMPTY = "Name cannot be empty.";
+    public static final String MESSAGE_TOO_LONG = "Name cannot exceed 100 characters.";
     public static final String MESSAGE_INVALID_CHARACTERS =
             "Name can only contain letters, spaces, apostrophes (') and hyphens (-).";
-
-    public static final String MESSAGE_MULTIPLE_SPACES =
-            "Name can only contain single spaces between words.";
+    public static final String MESSAGE_INVALID_SPACING =
+            "Name can only contain single spaces between words and cannot start or end with spaces.";
 
     private static final String VALID_CHAR_REGEX = "[A-Za-z'\\- ]+";
 
@@ -40,6 +31,8 @@ public class Name {
      * Constructs a {@code Name}.
      *
      * @param name A valid name.
+     * @throws NullPointerException If {@code name} is null.
+     * @throws IllegalArgumentException If {@code name} is invalid.
      */
     public Name(String name) {
         requireNonNull(name);
@@ -49,25 +42,26 @@ public class Name {
     }
 
     /**
-     * Returns the error message if the name is invalid, otherwise null.
+     * Returns the validation error message if the name is invalid, or {@code null} otherwise.
      */
-    public static String getNameValidationError(String test) {
-        if (test == null) {
+    public static String getNameValidationError(String name) {
+        if (name == null) {
             return MESSAGE_NULL;
         }
-        if (test.isEmpty()) {
+
+        if (name.isEmpty() || name.trim().isEmpty()) {
             return MESSAGE_EMPTY;
         }
 
-        if (test.length() > MAX_LENGTH) {
+        if (name.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
         }
 
-        if (test.startsWith(" ") || test.endsWith(" ") || test.contains("  ")) {
-            return MESSAGE_MULTIPLE_SPACES;
+        if (name.startsWith(" ") || name.endsWith(" ") || name.contains("  ")) {
+            return MESSAGE_INVALID_SPACING;
         }
 
-        if (!test.matches(VALID_CHAR_REGEX)) {
+        if (!name.matches(VALID_CHAR_REGEX)) {
             return MESSAGE_INVALID_CHARACTERS;
         }
 
@@ -76,10 +70,12 @@ public class Name {
 
     /**
      * Returns true if a given string is a valid name.
+     *
+     * @throws NullPointerException If {@code name} is null.
      */
-    public static boolean isValidName(String test) {
-        requireNonNull(test);
-        return getNameValidationError(test) == null;
+    public static boolean isValidName(String name) {
+        requireNonNull(name);
+        return getNameValidationError(name) == null;
     }
 
     @Override
@@ -93,7 +89,6 @@ public class Name {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Name)) {
             return false;
         }
@@ -106,5 +101,4 @@ public class Name {
     public int hashCode() {
         return fullName.hashCode();
     }
-
 }

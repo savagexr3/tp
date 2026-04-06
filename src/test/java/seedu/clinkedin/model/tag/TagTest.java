@@ -1,6 +1,8 @@
 package seedu.clinkedin.model.tag;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.clinkedin.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -24,27 +26,25 @@ public class TagTest {
         assertThrows(IllegalArgumentException.class, () -> new Tag("s", invalidColorName));
     }
 
-    @Test
     public void getTagNameValidationError() {
-        // null
+        // EP: null tag name
         assertEquals(Tag.MESSAGE_NULL, Tag.getTagNameValidationError(null));
 
-        // empty
+        // EP: empty tag name
         assertEquals(Tag.MESSAGE_EMPTY, Tag.getTagNameValidationError(""));
 
-        // too long
-        assertEquals(Tag.MESSAGE_TOO_LONG,
-                Tag.getTagNameValidationError("a".repeat(21)));
+        // BVA: length = 21, just above max valid length 20
+        assertEquals(Tag.MESSAGE_TOO_LONG, Tag.getTagNameValidationError("a".repeat(21)));
 
-        // invalid characters
-        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS,
-                Tag.getTagNameValidationError("friends!"));
-        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS,
-                Tag.getTagNameValidationError("cs2103 t"));
-        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS,
-                Tag.getTagNameValidationError("tag-1"));
+        // EP: invalid characters
+        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS, Tag.getTagNameValidationError("friends!"));
+        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS, Tag.getTagNameValidationError("cs2103 t"));
+        assertEquals(Tag.MESSAGE_INVALID_CHARACTERS, Tag.getTagNameValidationError("tag-1"));
 
-        // valid tags
+        // BVA: length = 20, max valid length
+        assertEquals(null, Tag.getTagNameValidationError("a".repeat(20)));
+
+        // EP: valid tags
         assertEquals(null, Tag.getTagNameValidationError("friends"));
         assertEquals(null, Tag.getTagNameValidationError("CS2103"));
         assertEquals(null, Tag.getTagNameValidationError("tag123"));
@@ -52,8 +52,17 @@ public class TagTest {
 
     @Test
     public void isValidTagName() {
-        // null tag name
+        // EP: null tag name
         assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
+
+        // EP: invalid characters
+        assertFalse(Tag.isValidTagName("friends!"));
+
+        // BVA: length = 20, max valid length
+        assertTrue(Tag.isValidTagName("a".repeat(20)));
+
+        // BVA: length = 21, just above max valid length 20
+        assertFalse(Tag.isValidTagName("a".repeat(21)));
     }
 
     @Test
