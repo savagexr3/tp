@@ -5,35 +5,29 @@ import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's phone number in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidPhone(String)}
+ * Guarantees: immutable; is valid as declared in {@link #getPhoneValidationError(String)}.
  */
 public class Phone {
 
     public static final int MIN_LENGTH = 8;
     public static final int MAX_LENGTH = 15;
 
-    public static final String MESSAGE_NULL = "Phone number cannot be null";
-
+    public static final String MESSAGE_NULL = "Phone number cannot be null.";
     public static final String MESSAGE_CONSTRAINTS =
             "Phone number must contain digits only and be between 8 and 15 digits long.";
+    public static final String MESSAGE_EMPTY = "Phone number cannot be empty.";
+    public static final String MESSAGE_NON_DIGIT = "Phone number must contain digits only.";
+    public static final String MESSAGE_TOO_SHORT = "Phone number must contain at least 8 digits.";
+    public static final String MESSAGE_TOO_LONG = "Phone number cannot exceed 15 digits.";
 
-    public static final String MESSAGE_EMPTY =
-            "Phone number cannot be empty.";
-
-    public static final String MESSAGE_NON_DIGIT =
-            "Phone number must contain digits only.";
-
-    public static final String MESSAGE_TOO_SHORT =
-            "Phone number must contain at least 8 digits.";
-
-    public static final String MESSAGE_TOO_LONG =
-            "Phone number cannot exceed 15 digits.";
     public final String value;
 
     /**
      * Constructs a {@code Phone}.
      *
      * @param phone A valid phone number.
+     * @throws NullPointerException If {@code phone} is null.
+     * @throws IllegalArgumentException If {@code phone} is invalid.
      */
     public Phone(String phone) {
         requireNonNull(phone);
@@ -43,26 +37,26 @@ public class Phone {
     }
 
     /**
-     * Returns the error message if the phone number is invalid, otherwise null.
+     * Returns the validation error message if the phone number is invalid, or {@code null} otherwise.
      */
-    public static String getPhoneValidationError(String test) {
-        if (test == null) {
+    public static String getPhoneValidationError(String phone) {
+        if (phone == null) {
             return MESSAGE_NULL;
         }
 
-        if (test.isEmpty()) {
+        if (phone.isEmpty()) {
             return MESSAGE_EMPTY;
         }
 
-        if (!test.matches("\\d+")) {
+        if (!phone.matches("\\d+")) {
             return MESSAGE_NON_DIGIT;
         }
 
-        if (test.length() < MIN_LENGTH) {
+        if (phone.length() < MIN_LENGTH) {
             return MESSAGE_TOO_SHORT;
         }
 
-        if (test.length() > MAX_LENGTH) {
+        if (phone.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
         }
 
@@ -71,10 +65,12 @@ public class Phone {
 
     /**
      * Returns true if a given string is a valid phone number.
+     *
+     * @throws NullPointerException If {@code phone} is null.
      */
-    public static boolean isValidPhone(String test) {
-        requireNonNull(test);
-        return getPhoneValidationError(test) == null;
+    public static boolean isValidPhone(String phone) {
+        requireNonNull(phone);
+        return getPhoneValidationError(phone) == null;
     }
 
     @Override
@@ -88,7 +84,6 @@ public class Phone {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Phone)) {
             return false;
         }
@@ -101,5 +96,4 @@ public class Phone {
     public int hashCode() {
         return value.hashCode();
     }
-
 }

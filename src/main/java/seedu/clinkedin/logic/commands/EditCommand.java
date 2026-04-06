@@ -233,7 +233,11 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Returns true if at least one field is edited.
+         * Returns true if at least one field has been edited.
+         *
+         * A field is considered edited if:
+         * - A new value is provided (non-null), OR
+         * - The field is explicitly cleared via its corresponding clear method.
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, phone, email, company, address, remark, link, tags)
@@ -272,29 +276,56 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
+        /**
+         * Sets the company to be edited.
+         *
+         * Marks the company field as edited and replaces the existing company value.
+         *
+         * @param company The new company value. Must not be null.
+         */
         public void setCompany(Company company) {
             this.company = company;
             this.isCompanyEdited = true;
         }
 
         /**
-         * Clears the company (i.e., removes any existing company).
+         * Clears the company.
+         *
+         * Marks the company field as edited and removes the existing company value
+         * by setting it to null.
          */
         public void clearCompany() {
             this.company = null;
             this.isCompanyEdited = true;
         }
 
+        /**
+         * Returns true if the company field has been edited.
+         *
+         * This includes both:
+         * - Setting a new company value
+         * - Explicitly clearing the company
+         */
         public boolean isCompanyEdited() {
             return isCompanyEdited;
         }
 
+        /**
+         * Returns the company to be edited.
+         *
+         * @return An {@code Optional} containing the new company if present,
+         *         or empty if the company is cleared or not set.
+         */
         public Optional<Company> getCompany() {
             return Optional.ofNullable(company);
         }
 
         /**
          * Sets the remark to be edited.
+         *
+         * Marks the remark field as edited and replaces the existing remark value.
+         *
+         * @param remark The new remark value. Must not be null.
          */
         public void setRemark(Remark remark) {
             this.remark = remark;
@@ -302,17 +333,33 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Clears the remark (i.e., removes any existing remark).
+         * Clears the remark.
+         *
+         * Marks the remark field as edited and removes the existing remark value
+         * by setting it to null.
          */
         public void clearRemark() {
             this.remark = null;
             this.isRemarkEdited = true;
         }
 
+        /**
+         * Returns the remark to be edited.
+         *
+         * @return An {@code Optional} containing the new remark if present,
+         *         or empty if the remark is cleared or not set.
+         */
         public Optional<Remark> getRemark() {
             return Optional.ofNullable(remark);
         }
 
+        /**
+         * Returns true if the remark field has been edited.
+         *
+         * This includes both:
+         * - Setting a new remark value
+         * - Explicitly clearing the remark
+         */
         public boolean isRemarkEdited() {
             return isRemarkEdited;
         }

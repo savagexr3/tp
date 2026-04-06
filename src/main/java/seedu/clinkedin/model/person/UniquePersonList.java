@@ -160,8 +160,12 @@ public class UniquePersonList implements Iterable<Person> {
 
     /**
      * Sorts the internal list with the given comparator.
+     *
+     * @param comparator Comparator used to order persons.
+     * @throws NullPointerException if {@code comparator} is null.
      */
     public void sort(Comparator<Person> comparator) {
+        requireNonNull(comparator);
         internalList.sort(comparator);
     }
 }

@@ -77,7 +77,7 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(tag -> tags.getChildren().add(TagUtil.tagLabel(tag.tagName, tag.tagColor)));
 
         if (person.getCompany() != null) {
-            company.setText(person.getCompany().companyName);
+            company.setText(person.getCompany().value);
         } else {
             company.setVisible(false);
             company.setManaged(false);

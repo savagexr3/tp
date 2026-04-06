@@ -11,8 +11,8 @@ import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.person.CompanyContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in address book whose company name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists all persons in the address book whose company name contains any of the argument keywords.
+ * Keyword matching is case-insensitive.
  */
 public class FindComCommand extends Command {
 
@@ -28,12 +28,10 @@ public class FindComCommand extends Command {
     private final CompanyContainsKeywordsPredicate predicate;
 
     /**
-     * Creates a FindComCommand with the given predicate.
-     *
+     * Creates a {@code FindComCommand} with the given predicate.
      * @param predicate Predicate used to filter persons by company keywords.
      */
     public FindComCommand(CompanyContainsKeywordsPredicate predicate) {
-        assert predicate != null : "Predicate should not be null";
         this.predicate = predicate;
     }
 
@@ -43,13 +41,11 @@ public class FindComCommand extends Command {
         logger.info("Executing findcom with keywords: " + predicate.getKeywordsString());
 
         model.updateFilteredPersonList(predicate);
+        int matchCount = model.getFilteredPersonList().size();
 
-        assert model.getFilteredPersonList() != null : "Filtered person list should not be null";
-        logger.info("findcom matched contacts count: " + model.getFilteredPersonList().size());
-
+        logger.info("findcom matched contacts count: " + matchCount);
         return new CommandResult(
-                String.format(Messages.MESSAGE_COMPANIES_LISTED_OVERVIEW, model.getFilteredPersonList().size(),
-                        predicate.getKeywordsString()));
+                String.format(Messages.MESSAGE_COMPANIES_LISTED_OVERVIEW, matchCount, predicate.getKeywordsString()));
     }
 
     @Override

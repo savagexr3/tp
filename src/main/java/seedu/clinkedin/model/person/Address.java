@@ -5,14 +5,18 @@ import static seedu.clinkedin.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's address in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
+ * Guarantees: immutable; is valid as declared in {@link #getAddressValidationError(String)}.
  */
 public class Address {
 
     public static final int MAX_LENGTH = 100;
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Address must be non-empty, at most 100 characters long, and use only single spaces between words.";
+            "Address must be non-empty, at most 100 characters long, contain no '/' or '@', "
+                    + "and use only single spaces between words.";
+
+    public static final String MESSAGE_NULL =
+            "Address cannot be null.";
 
     public static final String MESSAGE_EMPTY =
             "Address cannot be empty.";
@@ -20,10 +24,10 @@ public class Address {
     public static final String MESSAGE_TOO_LONG =
             "Address cannot exceed 100 characters.";
 
-    public static final String MESSAGE_MULTIPLE_SPACES =
-            "Address can only contain single spaces between words.";
+    public static final String MESSAGE_INVALID_SPACING =
+            "Address can only contain single spaces between words and cannot start or end with spaces.";
 
-    public static final String ADDRESS_CONTAINS_INVALID_CHARACTERS =
+    public static final String MESSAGE_INVALID_CHARACTERS =
             "Address contains invalid characters (/ @).";
 
     public final String value;
@@ -32,6 +36,8 @@ public class Address {
      * Constructs an {@code Address}.
      *
      * @param address A valid address.
+     * @throws NullPointerException If {@code address} is null.
+     * @throws IllegalArgumentException If {@code address} is invalid.
      */
     public Address(String address) {
         requireNonNull(address);
@@ -41,23 +47,27 @@ public class Address {
     }
 
     /**
-     * Returns the error message if the address is invalid, otherwise null.
+     * Returns the validation error message if the address is invalid, or {@code null} otherwise.
      */
-    public static String getAddressValidationError(String test) {
-        if (test.isEmpty() || test.trim().isEmpty()) {
+    public static String getAddressValidationError(String address) {
+        if (address == null) {
+            return MESSAGE_NULL;
+        }
+
+        if (address.isEmpty() || address.trim().isEmpty()) {
             return MESSAGE_EMPTY;
         }
 
-        if (test.length() > MAX_LENGTH) {
+        if (address.length() > MAX_LENGTH) {
             return MESSAGE_TOO_LONG;
         }
 
-        if (test.contains("  ")) {
-            return MESSAGE_MULTIPLE_SPACES;
+        if (address.startsWith(" ") || address.endsWith(" ") || address.contains("  ")) {
+            return MESSAGE_INVALID_SPACING;
         }
 
-        if (test.contains("/") || test.contains("@")) {
-            return ADDRESS_CONTAINS_INVALID_CHARACTERS;
+        if (address.contains("/") || address.contains("@")) {
+            return MESSAGE_INVALID_CHARACTERS;
         }
 
         return null;
@@ -65,10 +75,12 @@ public class Address {
 
     /**
      * Returns true if a given string is a valid address.
+     *
+     * @throws NullPointerException If {@code address} is null.
      */
-    public static boolean isValidAddress(String test) {
-        requireNonNull(test);
-        return getAddressValidationError(test) == null;
+    public static boolean isValidAddress(String address) {
+        requireNonNull(address);
+        return getAddressValidationError(address) == null;
     }
 
     @Override
@@ -82,7 +94,6 @@ public class Address {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Address)) {
             return false;
         }
@@ -95,5 +106,4 @@ public class Address {
     public int hashCode() {
         return value.hashCode();
     }
-
 }

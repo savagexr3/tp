@@ -33,7 +33,9 @@ import seedu.clinkedin.model.CLinkedin;
 import seedu.clinkedin.model.Model;
 import seedu.clinkedin.model.ModelManager;
 import seedu.clinkedin.model.UserPrefs;
+import seedu.clinkedin.model.person.Company;
 import seedu.clinkedin.model.person.Person;
+import seedu.clinkedin.model.person.Remark;
 import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.testutil.EditPersonDescriptorBuilder;
 import seedu.clinkedin.testutil.PersonBuilder;
@@ -233,7 +235,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_clearCompany_success() {
-        // Add friends tag to clinkedin
+        // EP: clearing company from a person that currently has one
         model.setTags(List.of(new Tag("friends")));
 
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -256,7 +258,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_clearRemark_success() {
-        // Add friends tag to clinkedin
+        // EP: clearing remark from a person that currently has one
         model.setTags(List.of(new Tag("friends")));
 
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -275,6 +277,100 @@ public class EditCommandTest {
         expectedModel.setPerson(personToEdit, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void editPersonDescriptor_setCompany_marksCompanyAsEditedAndStoresValue() {
+        // EP: setting a valid company marks the field as edited
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        Company company = new Company("Google");
+
+        descriptor.setCompany(company);
+
+        assertTrue(descriptor.isCompanyEdited());
+        assertEquals(java.util.Optional.of(company), descriptor.getCompany());
+    }
+
+    @Test
+    public void editPersonDescriptor_clearCompany_marksCompanyAsEditedAndClearsValue() {
+        // EP: clearing company marks the field as edited and removes the value
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.clearCompany();
+
+        assertTrue(descriptor.isCompanyEdited());
+        assertEquals(java.util.Optional.empty(), descriptor.getCompany());
+    }
+
+    @Test
+    public void editPersonDescriptor_setRemark_marksRemarkAsEditedAndStoresValue() {
+        // EP: setting a valid remark marks the field as edited
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        Remark remark = new Remark("Met during internship fair");
+
+        descriptor.setRemark(remark);
+
+        assertTrue(descriptor.isRemarkEdited());
+        assertEquals(java.util.Optional.of(remark), descriptor.getRemark());
+    }
+
+    @Test
+    public void editPersonDescriptor_clearRemark_marksRemarkAsEditedAndClearsValue() {
+        // EP: clearing remark marks the field as edited and removes the value
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.clearRemark();
+
+        assertTrue(descriptor.isRemarkEdited());
+        assertEquals(java.util.Optional.empty(), descriptor.getRemark());
+    }
+
+    @Test
+    public void editPersonDescriptor_isAnyFieldEdited_noFieldsEdited() {
+        // EP: fresh descriptor with no changes
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        assertFalse(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
+    public void editPersonDescriptor_isAnyFieldEditedCompanySet_returnsTrue() {
+        // EP: setting company makes descriptor edited
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setCompany(new Company("Google"));
+
+        assertTrue(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
+    public void editPersonDescriptor_isAnyFieldEditedCompanyCleared_returnsTrue() {
+        // EP: clearing company still counts as edited even though value becomes empty
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.clearCompany();
+
+        assertTrue(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
+    public void editPersonDescriptor_isAnyFieldEditedRemarkSet_returnsTrue() {
+        // EP: setting remark makes descriptor edited
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setRemark(new Remark("Follow up next week"));
+
+        assertTrue(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
+    public void editPersonDescriptor_isAnyFieldEditedRemarkCleared_returnsTrue() {
+        // EP: clearing remark still counts as edited even though value becomes empty
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.clearRemark();
+
+        assertTrue(descriptor.isAnyFieldEdited());
     }
 
     @Test

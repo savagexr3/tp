@@ -27,10 +27,15 @@ import seedu.clinkedin.model.person.Phone;
 import seedu.clinkedin.model.tag.Tag;
 import seedu.clinkedin.testutil.PersonBuilder;
 
+/**
+ * Contains unit tests (with stubs) for {@code SortComCommand}.
+ * Integration tests are placed in {@code SortComCommandIntegrationTest}.
+ */
 public class SortComCommandTest {
 
     @Test
     public void execute_emptyList_success() {
+        // EP: no displayed contacts
         ModelStubSortedByCompany modelStub = new ModelStubSortedByCompany();
         SortComCommand sortComCommand = new SortComCommand();
 
@@ -42,6 +47,7 @@ public class SortComCommandTest {
 
     @Test
     public void execute_sortByCompany_success() {
+        // EP: multiple displayed contacts with different company names
         ModelStubSortedByCompany modelStub = new ModelStubSortedByCompany();
 
         Person googlePerson = new PersonBuilder().withName("Alice")
@@ -80,6 +86,7 @@ public class SortComCommandTest {
 
     @Test
     public void execute_sortByCompany_caseInsensitive() {
+        // EP: sorting is case-insensitive
         ModelStubSortedByCompany modelStub = new ModelStubSortedByCompany();
 
         Person lowerCaseGoogle = new PersonBuilder().withName("A")
@@ -117,6 +124,7 @@ public class SortComCommandTest {
 
     @Test
     public void execute_nullModel_throwsNullPointerException() {
+        // EP: required execute input is null
         SortComCommand sortComCommand = new SortComCommand();
         assertThrows(NullPointerException.class, () -> sortComCommand.execute(null));
     }
@@ -255,8 +263,7 @@ public class SortComCommandTest {
 
         @Override
         public void sortFilteredPersonListByCompany() {
-            throw new AssertionError(
-                    "This method should not be called.");
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -285,7 +292,7 @@ public class SortComCommandTest {
         @Override
         public void sortFilteredPersonListByCompany() {
             persons.sort(Comparator.comparing(
-                    person -> person.getCompany() == null ? "" : person.getCompany().companyName,
+                    person -> person.getCompany() == null ? "" : person.getCompany().value,
                     String.CASE_INSENSITIVE_ORDER));
         }
 
