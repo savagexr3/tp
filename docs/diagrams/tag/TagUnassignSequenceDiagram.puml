@@ -1,0 +1,76 @@
+@startuml
+title Sequence Diagram for the `tag unassign` command
+
+actor User
+
+box Logic #E6E6FA
+participant ":LogicManager" as Logic
+participant ":AddressBookParser" as ABParser
+participant ":TagUnassignCommandParser" as Parser
+participant "cmd:TagUnassignCommand" as Command
+participant "result:CommandResult" as Result
+end box
+
+box Model #FFE4E1
+participant "m:Model" as Model
+end box
+
+User -> Logic : execute("tag unassign ...")
+activate Logic
+
+Logic -> ABParser : parseCommand("tag unassign ...")
+activate ABParser
+
+create Parser
+ABParser -> Parser
+activate Parser
+
+ABParser <-- Parser
+deactivate Parser
+
+ABParser -> Parser : parse("...")
+activate Parser
+
+create Command
+Parser -> Command
+activate Command
+
+Parser <-- Command
+deactivate Command
+
+ABParser <-- Parser
+deactivate Parser
+
+Logic <-- ABParser
+destroy Parser
+deactivate ABParser
+
+Logic -> Command : execute(m)
+activate Command
+
+Command -> Model : checkIfTagDoesNotExist(tag)
+activate Model
+Model --> Command
+deactivate Model
+
+loop for each specified contact
+    Command -> Model : unassign tag from person
+    activate Model
+    Model --> Command
+    deactivate Model
+end
+
+create Result
+Command -> Result
+activate Result
+Result --> Command
+deactivate Result
+
+Logic <-- Command
+deactivate Command
+
+User <-- Logic
+destroy Command
+deactivate Logic
+
+@enduml

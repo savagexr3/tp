@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# Clinkedin Developer Guide
+# CLinkedin Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
