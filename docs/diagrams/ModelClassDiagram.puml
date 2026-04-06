@@ -13,8 +13,10 @@ Class ModelManager
 Class UserPrefs
 
 Class UniquePersonList
+Class UniqueTagList
 Class Person
 Class Address
+Class Link
 Class Company
 Class Email
 Class Name
@@ -37,15 +39,19 @@ ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
-AddressBook *--> "1" UniquePersonList
+AddressBook *-down-> "1" UniquePersonList
+AddressBook *-down-> "1" UniqueTagList
+UniquePersonList -[hidden]right-> UniqueTagList
 UniquePersonList --> "~* all" Person
 Person *--> Address
 Person *--> Email
-Person *--> "0..1"Company
+Person *--> "0..1" Company
+Person *--> "0..1" Link
 Person *--> Name
 Person *--> Phone
-Person *--> "0..1"Remark
+Person *--> "0..1" Remark
 Person *--> "*" Tag
+Tag -up-> "~*" UniqueTagList
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
@@ -53,6 +59,7 @@ UniquePersonList -[hidden]right-> I
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Email
 Email -[hidden]right-> Address
+Link -[hidden]right-> Link
 Address -[hidden]right-> Company
 Company -[hidden]right-> Remark
 Remark -[hidden]right-> Tag
