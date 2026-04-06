@@ -82,6 +82,10 @@ CLInkedin is a **desktop app for managing contacts, optimized for use via a Comm
 | `l/` *(optional)* | Link | URL (e.g., LinkedIn) | `l/https://linkedin.com/in/john` |
 | `r/` *(optional)* | Remark | Additional notes | `r/Met at career fair` |
 | `t/` *(optional)* | Tag | Tag(s) for categorisation | `t/friend` |
+| `color/` *(optional, tag create only)* | Tag Color | Specifies the color of a tag when creating it | `color/blue` |
+
+> **Note:**  
+> The `color/` prefix is only applicable to the `tag create` command and cannot be used with other commands.
 ---
 
 ## Features
@@ -449,7 +453,7 @@ Action              | Format, Examples
 **Deleted**         | `deleted`
 **Restore**         | `restore INDEX`<br> e.g., `restore 1`
 **Delete Tag**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
-**Tag Create**      | `tag create TAG_NAME [COLOR]`<br> e.g., `tag create friend blue`
+**Tag Create**      | `tag create TAG_NAME [color/COLOR]`<br> e.g., `tag create friend color/blue`
 **Tag Assign**      | `tag assign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag assign 1,4,6 friend`
 **Tag Unassign**    | `tag unassign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag unassign 1,4,6 friend`
 **Tag List**        | `tag list`
