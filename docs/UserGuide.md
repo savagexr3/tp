@@ -43,30 +43,48 @@ CLInkedin is a **desktop app for managing contacts, optimized for use via a Comm
 1. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
-
-## Features
-
+## Command Format
 <box type="info" seamless>
 
-**Notes about the command format:**<br>
+- `UPPER_CASE` = user input  
+  Example: `add n/NAME` = `n/John Doe`
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+- `[OPTIONAL]` = optional field <br>
+  Example: `n/NAME [t/TAG]` = `n/John Doe t/friend` OR `n/John Doe`
 
-* Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+- `…` = can repeat multiple times (including 0 times) <br>
+  Example: `[t/TAG]…` = `t/friend` OR `t/friend t/family` etc.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+- Order of parameters **does not matter** <br>
+  Example: `n/NAME p/PHONE_NUMBER` = `p/PHONE_NUMBER n/NAME`
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+- Prefixes must not contain spaces:
+    - ✅ `c/Google`
+    - ❌ `c / Google`
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit`, `sortcom` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+- Extra parameters for commands that do not require them (e.g. `help`, `list`, `exit`, `sortcom`, `clear`) will be ignored.  
+  Example: `help 123` is treated as `help`.
 
-* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
-</box>
+- When copying commands from a PDF, ensure spaces are preserved, especially for multi-line commands.
+  </box>
+
+---
+
+## Prefix Summary
+
+| Prefix | Field | Description | Example |
+|--------|-------|------------|--------|
+| `n/`   | Name | Contact’s full name | `n/John Doe` |
+| `p/`   | Phone | Phone number | `p/98765432` |
+| `e/`   | Email | Email address | `e/john@example.com` |
+| `a/`   | Address | Address or context | `a/NUS Computing` |
+| `c/` *(optional)* | Company | Company name | `c/Google` |
+| `l/` *(optional)* | Link | URL (e.g., LinkedIn) | `l/https://linkedin.com/in/john` |
+| `r/` *(optional)* | Remark | Additional notes | `r/Met at career fair` |
+| `t/` *(optional)* | Tag | Tag(s) for categorisation | `t/friend` |
+---
+
+## Features
 
 ### Viewing help : `help`
 
@@ -439,45 +457,3 @@ Action              | Format, Examples
 **Tag Color**       | `tag color TAG_NAME COLOR`<br> e.g.,`tag color friends red`
 **Tag Delete**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
 **Help**            | `help`
-
-## Prefix Summary
-
-| Prefix | Field | Description | Example |
-|--------|-------|------------|--------|
-| `n/`   | Name | Contact’s full name | `n/John Doe` |
-| `p/`   | Phone | Phone number | `p/98765432` |
-| `e/`   | Email | Email address | `e/john@example.com` |
-| `a/`   | Address | Address or context | `a/NUS Computing` |
-| `c/` *(optional)* | Company | Company name | `c/Google` |
-| `l/` *(optional)* | Link | URL (e.g., LinkedIn) | `l/https://linkedin.com/in/john` |
-| `r/` *(optional)* | Remark | Additional notes | `r/Met at career fair` |
-| `t/` *(optional)* | Tag | Tag(s) for categorisation | `t/friend` |
-
-<box type="warning" seamless>
-
-**Prefix usage constraints:**
-
-* Prefixes must be used **without spaces** between the prefix and `/`.
-
-    * Valid:  
-      `c/Google`
-      `r/Met at event`
-
-    * Invalid:
-      `c / Google`  
-      `r / Met at event`
-
-* If a prefix is written incorrectly (e.g., with spaces), it may be interpreted as part of another field and lead to unexpected errors.
-
-* Fields marked as *(optional)* (`c/`, `l/`, `r/`, `t/`) can be omitted when adding or editing a contact.
-
-* Each field must still follow its respective input constraints
-  (refers to input constraints in [**Add command**](#adding-a-contact-add) section above for details).
-
-</box>
-
-<box type="tip" seamless>
-
-**Tip:** Each prefix applies only to the value immediately following it. Ensure correct formatting to avoid parsing errors.
-
-</box>
