@@ -739,15 +739,116 @@ testers are expected to do more *exploratory* testing.
     1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
        Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Finding contact by company
+1. Finding contacts by company
+
+    1. Prerequisites: Multiple contacts in the list with company names.
+
+    1. Test case: `findcom google`<br>
+       Expected: Contacts with the company `google` are shown in the list. Success message shown.
+
+    1. Test case: `findcom`<br>
+       Expected: No contacts are shown. Error details shown in the status message.
+
+### Sorting contact list by company name
+1. Sorting contacts by company name alphabetically
+
+    1. Prerequisites: Multiple contacts in the list with company names.
+
+    1. Test case: `sortcom`<br>
+       Expected: Contacts are shown in alphabetical order by company name. Success message shown.
+
+### Viewing recently deleted contacts
+1. Viewing deleted contacts
+
+    1. Prerequisites: At least 1 contact has been deleted within the past 7 days.
+
+    1. Test case: `deleted`<br>
+       Expected: Deleted contacts within the past 7 days are shown in the list. Success message shown.
+
+### Restoring a deleted contact
+1. Restoring a deleted contact from the deleted list
+
+    1. Prerequisites: At least 1 contact has been deleted within the past 7 days.
+
+    1. Test case: `restore 1`<br>
+       Expected: First deleted contact is restored to the end of the contact list. Details of restored contact shown in the status message.
+
+### Creating a new tag
+1. Creating a tag in the system
+
+    1. Test case: `tag create friends`<br>
+       Expected: A new tag `friends` with a default color is added to the system. Success message shown.
+
+    1. Test case: `tag create vip color/gold`<br>
+       Expected: A new tag `vip` with gold color is added to the system. Success message shown.
+
+### Assigning tag to contacts
+1. Assigning an existing tag to contacts
+
+    1. Prerequisites: Multiple contacts in the list. Tag `friends` exists. No contact currently has the `friends` tag.
+
+    1. Test case: `tag assign 1,2 friends`<br>
+       Expected: The `friends` tag is added to the first and second contacts. Success message shown.
+
+### Removing a tag from contacts
+1. Removing a tag from contacts
+
+    1. Prerequisites: Multiple contacts in the list. At least 1 contact has the `friends` tag.
+
+    1. Test case: `tag unassign 1 friends`<br>
+       Expected: The `friends` tag is removed from the first contact. Success message shown.
+
+### Deleting a tag from the system
+1. Deleting an existing tag
+
+    1. Prerequisites: At least 1 contact in the list. Tag `vip` exists. At least 1 contact has the `vip` tag.
+
+    1. Test case: `tag delete vip`<br>
+       Expected: The `vip` tag is deleted from the system. Contacts that previously had the `vip` tag no longer have it. Success message shown.
+
+### Viewing all existing tags
+1. Viewing all tags in the system
+
+    1. Prerequisites: At least 1 tag exists in the system.
+
+    1. Test case: `tag list`<br>
+       Expected: A success message is shown with the list of all existing tags.
+
+### Renaming an existing tag
+1. Renaming a tag
+
+    1. Prerequisites: At least 1 contact in the list. Tag `friends` exists. At least 1 contact has the `friends` tag.
+
+    1. Test case: `tag rename friends mates`<br>
+       Expected: The `friends` tag is renamed to `mates`. Contacts that previously had the `friends` tag now show `mates` instead. Success message shown.
+
+### Changing the color of an existing tag
+1. Changing the color of a tag
+
+    1. Prerequisites: At least 1 tag exists in the system. Tag `friends` exists.
+
+    1. Test case: `tag color friends gold`<br>
+       Expected: The color of the `friends` tag is changed to gold. Success message shown.
+
+### Showing contacts with a specific tag
+1. Filtering contacts by tag
+
+    1. Prerequisites: At least 1 contact has the tag `friends`. Tag `friends` exists.
+
+    1. Test case: `tag show friends`<br>
+       Expected: Contacts with the tag `friends` are shown in the list. Success message shown.
 
 ### Saving data
+1. Handling missing or corrupted data file
 
-1. Dealing with missing/corrupted data files
+    1. Prerequisites: Navigate to the `data` folder.
 
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. Test case: Delete the `addressbook.json` file and launch the application.<br>
+       Expected: A new data file is created.
 
-1. _{ more test cases …​ }_
+    1. Test case: Modify the `addressbook.json` file so that it becomes corrupted, then launch the application.<br>
+       Expected: Application starts with an empty dataset.
 
 ## **Appendix: Effort**
 
