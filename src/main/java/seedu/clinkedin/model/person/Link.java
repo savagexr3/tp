@@ -11,7 +11,7 @@ public class Link {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Links should be a valid URL and adhere to the following constraints:\n"
-            + "1. The link must start with 'http://' or 'https://'.\n"
+            + "1. The link must start with 'http://' or 'https://' and cannot contain spaces.\n"
             + "2. This is followed by a domain name made up of domain labels separated by periods.\n"
             + "The domain name must:\n"
             + "    - end with a domain label at least 2 characters long\n"
@@ -21,8 +21,6 @@ public class Link {
 
     public static final String MESSAGE_NULL =
             "Link cannot be null.";
-    public static final String MESSAGE_EMPTY =
-            "Link cannot be empty.";
     public static final String MESSAGE_SPACE_NOT_ALLOWED =
             "Link cannot contain spaces.";
     public static final String MESSAGE_INVALID_SCHEME =
@@ -52,10 +50,6 @@ public class Link {
     public static String getLinkValidationError(String test) {
         if (test == null) {
             return MESSAGE_NULL;
-        }
-
-        if (test.isEmpty()) {
-            return MESSAGE_EMPTY;
         }
 
         if (test.contains(" ")) {

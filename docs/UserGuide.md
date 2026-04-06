@@ -90,9 +90,13 @@ CLInkedin is a **desktop app for managing contacts, optimized for use via a Comm
 > The `color/` prefix is only applicable to the `tag create` command and cannot be used with other commands.
 ---
 
+<div style="page-break-after: always;"></div>
+
 ## Features
 
-### Viewing help : `help`
+### App controls
+
+#### 1. Viewing help : `help`
 
 Shows a message explaining how to access the help page.
 
@@ -100,7 +104,17 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
-### Adding a contact: `add`
+#### 2. Exiting the program : `exit`
+
+Exits the program.
+
+Format: `exit`
+
+---
+
+### Contact Management
+
+#### 1. Adding a contact: `add`
 
 Adds a contact to CLInkedin.
 
@@ -120,6 +134,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REM
     - Maximum 100 characters
 - **Link**
     - Must start with 'http://' or 'https://'
+    - Must not contain spaces in the link
 - **Remark**
     - Must not contain `/`
     - Maximum 200 characters
@@ -138,13 +153,13 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Pasir Ris Drive c/Google r/Follow up next week p/1234567 t/teacher`
 
-### Listing all contacts : `list`
+#### 2. Listing all contacts : `list`
 
 Shows a list of all contacts in CLInkedin.
 
 Format: `list`
 
-### Editing a contact : `edit`
+#### 3. Editing a contact : `edit`
 
 Edits an existing contact in CLInkedin.
 
@@ -160,7 +175,7 @@ Each field must still follow its respective input constraints (refers to input c
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the contact will be removed i.e adding of tags is not cumulative.
-* You can remove all the contact’s tags by typing `t/` without specifying any tags after it.
+* You can remove all the contact's tags by typing `t/` without specifying any tags after it.
 * You can clear the company or remark field by typing `c/` or `r/` without specifying any value.
 
 Examples:
@@ -168,7 +183,64 @@ Examples:
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
 *  `edit 3 c/ r/` Clears both the company and remark fields of the 3rd contact.
 
-### Locating contacts by name: `find`
+#### 4. Deleting a contact : `delete`
+
+Deletes the specified contact from CLInkedin.
+
+Format: `delete INDEX`
+
+* Deletes the contact at the specified `INDEX`.
+* The index refers to the index number shown in the displayed contact list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* Deleted contacts are not permanently removed immediately.
+* Deleted contacts are stored and can be viewed using the `deleted` command.
+* Contacts will be permanently removed after 7 days.
+
+Examples:
+* `list` followed by `delete 2` deletes the 2nd contact in CLInkedin.
+* `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
+
+#### 5. Viewing deleted contacts : `deleted`
+
+Shows a list of recently deleted contacts.
+
+Format: `deleted`
+
+* Displays all contacts that were deleted within the last 7 days.
+* Each deleted contact includes the date and time it was deleted.
+* Contacts that exceed 7 days from deletion will no longer be shown.
+
+Examples:
+* `deleted`
+
+#### 6. Restoring a contact : `restore`
+
+Restores a contact from the deleted list.
+
+Format: `restore INDEX`
+
+* Restores the contact at the specified `INDEX` from the deleted contacts list.
+* The index refers to the index number shown in the `deleted` list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* The restored contact will be added back to CLInkedin.
+* If a tag associated with the contact has been removed or renamed before restoration, the contact will be restored without that tag.
+* If restoring the contact results in duplicate phone number or existing contact conflicts, the restore will fail.
+* Once restored, the contact will be removed from the deleted list.
+
+Examples:
+* `deleted` followed by `restore 1`
+
+#### 7. Clearing all entries : `clear`
+
+Clears all entries from CLInkedin.
+
+Format: `clear`
+
+---
+
+### Search & Filtering
+
+#### 1. Locating contacts by name: `find`
 
 Finds contacts whose names contain any of the given keywords.
 
@@ -186,7 +258,7 @@ Examples:
 * `find alex david` returns `Alex David` only
 * `find alex; yu` returns `Alex Yeoh` and `Bernice Yu`
 
-### **Finding contacts by company: `findcom`**
+#### 2. Finding contacts by company: `findcom`
 
 Finds all contacts whose company name matches any of the given keywords.
 
@@ -201,15 +273,15 @@ Format:
 Examples:
 
 * `findcom Google`
-  Returns all contacts whose company contains “Google”.
+  Returns all contacts whose company contains "Google".
 
 * `findcom Google; Amazon`
-  Returns all contacts whose company contains either “Google” or “Amazon”.
+  Returns all contacts whose company contains either "Google" or "Amazon".
 
 * `findcom fintech; bank`
-  Returns all contacts whose company contains either “fintech” or “bank”.
+  Returns all contacts whose company contains either "fintech" or "bank".
 
-### Sorting contacts by company: `sortcom`
+#### 3. Sorting contacts by company: `sortcom`
 
 Sorts the currently displayed contact list alphabetically by company name.
 
@@ -229,56 +301,13 @@ Examples:
 
 * `findcom Google`
   `sortcom`
-  First filters contacts by company “Google”, then sorts the filtered results alphabetically.
+  First filters contacts by company "Google", then sorts the filtered results alphabetically.
 
-### Deleting a contact : `delete`
+---
 
-Deletes the specified contact from CLInkedin.
+### Tag Management
 
-Format: `delete INDEX`
-
-* Deletes the contact at the specified `INDEX`.
-* The index refers to the index number shown in the displayed contact list.
-* The index **must be a positive integer** 1, 2, 3, …​
-* Deleted contacts are not permanently removed immediately.
-* Deleted contacts are stored and can be viewed using the `deleted` command.
-* Contacts will be permanently removed after 7 days.
-
-Examples:
-* `list` followed by `delete 2` deletes the 2nd contact in CLInkedin.
-* `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
-
-### Viewing deleted contacts : `deleted`
-
-Shows a list of recently deleted contacts.
-
-Format: `deleted`
-
-* Displays all contacts that were deleted within the last 7 days.
-* Each deleted contact includes the date and time it was deleted.
-* Contacts that exceed 7 days from deletion will no longer be shown.
-
-Examples:
-* `deleted`
-
-### Restoring a contact : `restore`
-
-Restores a contact from the deleted list.
-
-Format: `restore INDEX`
-
-* Restores the contact at the specified `INDEX` from the deleted contacts list.
-* The index refers to the index number shown in the `deleted` list.
-* The index **must be a positive integer** 1, 2, 3, …​
-* The restored contact will be added back to CLInkedin.
-* If a tag associated with the contact has been removed or renamed before restoration, the contact will be restored without that tag.
-* If restoring the contact results in duplicate phone number or existing contact conflicts, the restore will fail.
-* Once restored, the contact will be removed from the deleted list.
-
-Examples:
-* `deleted` followed by `restore 1`
-
-### Creating a tag: `tag create`
+#### 1. Creating a tag: `tag create`
 
 Creates a new tag with an optional color.
 
@@ -301,7 +330,7 @@ Examples:
 * `tag create colleague color/blue`
 * `tag create vip color/#ff6688`
 
-### Assigning/Unassigning a tag: `tag assign`, `tag unassign`
+#### 2. Assigning/Unassigning a tag: `tag assign`, `tag unassign`
 
 Assign/remove a tag to/from 1 or multiple contacts at once.
 
@@ -317,7 +346,7 @@ Examples:
 * `tag unassign 1 friend`
 * `tag unassign 1,4,6 friend`
 
-### Deleting a tag: `tag delete`
+#### 3. Deleting a tag: `tag delete`
 
 Deletes a tag and removes it from all contacts.
 
@@ -331,29 +360,29 @@ Format: `tag delete TAG_NAME`
 Examples:
 * `tag delete friend`
 
-### Listing all tags: `tag list`
+#### 4. Listing all tags: `tag list`
 
 Shows a list of all tags in CLInkedin.
 
 Format: `tag list`
 
-### Renaming a tag: `tag rename`
+#### 5. Renaming a tag: `tag rename`
 
 Renames an existing tag and updates all respective contacts with it.
 
 Format: `tag rename OLD_TAG_NAME NEW_TAG_NAME`
 
-* Renames the tag specified by `OLD_TAG_NAME` to the `NEW_TAG_NAME`. 
-* The tag will be updated for all contacts that currently have it assigned. 
+* Renames the tag specified by `OLD_TAG_NAME` to the `NEW_TAG_NAME`.
+* The tag will be updated for all contacts that currently have it assigned.
 * Note: Tag names cannot contain spaces.
-* The old and new tag names cannot be the same. 
+* The old and new tag names cannot be the same.
 * If the `OLD_TAG_NAME` does not exist, an error message will be shown.
 
 Examples:
 * `tag rename friends closefriends`
 * `tag rename colleagues coworkers`
 
-### Adding color to a tag: `tag color`
+#### 6. Adding color to a tag: `tag color`
 
 Adds a color to a tag.
 
@@ -368,7 +397,7 @@ Examples:
 * `tag color friends blue`
 * `tag color coworker #343434`
 
-### Filter contacts by tag: `tag show`
+#### 7. Filter contacts by tag: `tag show`
 
 Show contacts that have a specific tag.
 
@@ -382,17 +411,7 @@ Examples:
 * `tag show friends`
 * `tag show coworkers`
 
-### Clearing all entries : `clear`
-
-Clears all entries from CLInkedin.
-
-Format: `clear`
-
-### Exiting the program : `exit`
-
-Exits the program.
-
-Format: `exit`
+---
 
 ### Saving the data
 
@@ -405,7 +424,7 @@ CLInkedin data are saved automatically as a JSON file `[JAR file location]/data/
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, CLInkedin will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+If your changes to the data file makes its format invalid, CLInkedin will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause CLInkedin to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
@@ -441,6 +460,8 @@ Furthermore, certain edits can cause CLInkedin to behave in unexpected ways (e.g
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## Command summary
 
