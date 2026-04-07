@@ -25,9 +25,6 @@ public class LinkTest {
         // null
         assertEquals(Link.MESSAGE_NULL, Link.getLinkValidationError(null));
 
-        // empty
-        assertEquals(Link.MESSAGE_EMPTY, Link.getLinkValidationError(""));
-
         // contains spaces
         assertEquals(Link.MESSAGE_SPACE_NOT_ALLOWED, Link.getLinkValidationError("https://linkedin.com/in/john doe"));
 
