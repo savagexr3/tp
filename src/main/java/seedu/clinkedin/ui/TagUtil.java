@@ -21,6 +21,9 @@ public class TagUtil {
         return tag;
     }
 
+    //@@author crow
+    //Reused from https://stackoverflow.com/a/56733608
+    // with minor modifications
     // Helper method
     private static String format(double val) {
         String in = Integer.toHexString((int) Math.round(val * 255));
@@ -39,6 +42,7 @@ public class TagUtil {
                         + format(value.getOpacity()))
                 .toUpperCase();
     }
+    //@@author
 
     /**
      * Returns a brightness value
