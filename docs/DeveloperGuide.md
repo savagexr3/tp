@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+* **Original Codebase:** This project expands the features of the AddressBook Level3 (AB3) project, originally created by the [SE-EDU initiative](https://se-education.org).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -22,6 +22,8 @@ _{ list here sources of all reused/adapted ideas, code, documentation, and third
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## **Design**
 
@@ -685,7 +687,8 @@ testers are expected to do more *exploratory* testing.
 
     1. Download the jar file and copy into an empty folder
 
-    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Double-click the jar file.
+       Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
@@ -694,10 +697,8 @@ testers are expected to do more *exploratory* testing.
     1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Adding a person
-1. Adding a person to the contact list
+- Adding a person to the contact list
 
     1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/clementi`<br>
        Expected: Contact is added to the end of the list. Details of contact shown in status message. Timestamp added to contact detail.
@@ -712,7 +713,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Similar to previous
 
 ### Editing a person
-1. Editing a person while all persons are being shown
+- Editing a person while all persons are being shown
 
     1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
@@ -725,8 +726,7 @@ testers are expected to do more *exploratory* testing.
     1. Other incorrect edit commands to try: `edit`, `edit x`, `...` (where x is large than the list size)<br>
        Expected: Similar to previous.
 ### Deleting a person
-
-1. Deleting a person while all persons are being shown
+- Deleting a person while all persons are being shown
 
     1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
@@ -740,7 +740,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Similar to previous.
 
 ### Finding contact by company
-1. Finding contacts by company
+- Finding contacts by company
 
     1. Prerequisites: Multiple contacts in the list with company names.
 
@@ -751,7 +751,7 @@ testers are expected to do more *exploratory* testing.
        Expected: No contacts are shown. Error details shown in the status message.
 
 ### Sorting contact list by company name
-1. Sorting contacts by company name alphabetically
+- Sorting contacts by company name alphabetically
 
     1. Prerequisites: Multiple contacts in the list with company names.
 
@@ -759,7 +759,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Contacts are shown in alphabetical order by company name. Success message shown.
 
 ### Viewing recently deleted contacts
-1. Viewing deleted contacts
+- Viewing deleted contacts
 
     1. Prerequisites: At least 1 contact has been deleted within the past 7 days.
 
@@ -767,7 +767,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Deleted contacts within the past 7 days are shown in the list. Success message shown.
 
 ### Restoring a deleted contact
-1. Restoring a deleted contact from the deleted list
+- Restoring a deleted contact from the deleted list
 
     1. Prerequisites: At least 1 contact has been deleted within the past 7 days.
 
@@ -775,7 +775,7 @@ testers are expected to do more *exploratory* testing.
        Expected: First deleted contact is restored to the end of the contact list. Details of restored contact shown in the status message.
 
 ### Creating a new tag
-1. Creating a tag in the system
+- Creating a tag in the system
 
     1. Test case: `tag create friends`<br>
        Expected: A new tag `friends` with a default color is added to the system. Success message shown.
@@ -784,7 +784,7 @@ testers are expected to do more *exploratory* testing.
        Expected: A new tag `vip` with gold color is added to the system. Success message shown.
 
 ### Assigning tag to contacts
-1. Assigning an existing tag to contacts
+- Assigning an existing tag to contacts
 
     1. Prerequisites: Multiple contacts in the list. Tag `friends` exists. No contact currently has the `friends` tag.
 
@@ -792,7 +792,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The `friends` tag is added to the first and second contacts. Success message shown.
 
 ### Removing a tag from contacts
-1. Removing a tag from contacts
+- Removing a tag from contacts
 
     1. Prerequisites: Multiple contacts in the list. At least 1 contact has the `friends` tag.
 
@@ -800,7 +800,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The `friends` tag is removed from the first contact. Success message shown.
 
 ### Deleting a tag from the system
-1. Deleting an existing tag
+- Deleting an existing tag
 
     1. Prerequisites: At least 1 contact in the list. Tag `vip` exists. At least 1 contact has the `vip` tag.
 
@@ -808,7 +808,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The `vip` tag is deleted from the system. Contacts that previously had the `vip` tag no longer have it. Success message shown.
 
 ### Viewing all existing tags
-1. Viewing all tags in the system
+- Viewing all tags in the system
 
     1. Prerequisites: At least 1 tag exists in the system.
 
@@ -816,7 +816,7 @@ testers are expected to do more *exploratory* testing.
        Expected: A success message is shown with the list of all existing tags.
 
 ### Renaming an existing tag
-1. Renaming a tag
+- Renaming a tag
 
     1. Prerequisites: At least 1 contact in the list. Tag `friends` exists. At least 1 contact has the `friends` tag.
 
@@ -824,7 +824,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The `friends` tag is renamed to `mates`. Contacts that previously had the `friends` tag now show `mates` instead. Success message shown.
 
 ### Changing the color of an existing tag
-1. Changing the color of a tag
+- Changing the color of a tag
 
     1. Prerequisites: At least 1 tag exists in the system. Tag `friends` exists.
 
@@ -832,7 +832,7 @@ testers are expected to do more *exploratory* testing.
        Expected: The color of the `friends` tag is changed to gold. Success message shown.
 
 ### Showing contacts with a specific tag
-1. Filtering contacts by tag
+- Filtering contacts by tag
 
     1. Prerequisites: At least 1 contact has the tag `friends`. Tag `friends` exists.
 
@@ -840,7 +840,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Contacts with the tag `friends` are shown in the list. Success message shown.
 
 ### Saving data
-1. Handling missing or corrupted data file
+- Handling missing or corrupted data file
 
     1. Prerequisites: Navigate to the `data` folder.
 
@@ -850,9 +850,10 @@ testers are expected to do more *exploratory* testing.
     1. Test case: Modify the `addressbook.json` file so that it becomes corrupted, then launch the application.<br>
        Expected: Application starts with an empty dataset.
 
-
 ### Further testing
-1. _{ more test cases for testers to explore ...}_
+1. _{ more test cases for testers to explore ... }_
+
+<div style="page-break-after: always;"></div>
 
 ## **Appendix: Effort**
 

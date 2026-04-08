@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# CLInkedin User Guide
+# CLinkedin User Guide
 
-CLInkedin is a **desktop app for managing contacts, optimized for use via a Command Line Interface (CLI)** while still having the benefits of a Graphical User Interface (GUI). If you can type fast, CLInkedin can get your contact management tasks done faster than traditional GUI apps.
+CLinkedin is a **desktop app for managing contacts, optimized for use via a Command Line Interface (CLI)** while still having the benefits of a Graphical User Interface (GUI). If you can type fast, CLinkedin can get your contact management tasks done faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 
@@ -23,7 +23,7 @@ CLInkedin is a **desktop app for managing contacts, optimized for use via a Comm
 
 1. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-T11-1/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your CLInkedin.
+1. Copy the file to the folder you want to use as the _home folder_ for your CLinkedin.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar clinkedin.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -34,7 +34,7 @@ CLInkedin is a **desktop app for managing contacts, optimized for use via a Comm
 
     * `list` : Lists all contacts.
 
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to CLInkedin.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to CLinkedin.
 
     * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -116,7 +116,7 @@ Format: `exit`
 
 #### 1. Adding a contact: `add`
 
-Adds a contact to CLInkedin.
+Adds a contact to CLinkedin.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
 <box type="warning" seamless>
@@ -155,13 +155,13 @@ Examples:
 
 #### 2. Listing all contacts : `list`
 
-Shows a list of all contacts in CLInkedin.
+Shows a list of all contacts in CLinkedin.
 
 Format: `list`
 
 #### 3. Editing a contact : `edit`
 
-Edits an existing contact in CLInkedin.
+Edits an existing contact in CLinkedin.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
 
@@ -299,9 +299,9 @@ Examples:
 * `sortcom`
   Sorts all currently displayed contacts by company name in alphabetical order.
 
-* `findcom Google`
-  `sortcom`
-  First filters contacts by company "Google", then sorts the filtered results alphabetically.
+  * `findcom Google`
+    `sortcom`
+    First filters contacts by company "Google", then sorts the filtered results alphabetically.
 
 ---
 
@@ -362,7 +362,7 @@ Examples:
 
 #### 4. Listing all tags: `tag list`
 
-Shows a list of all tags in CLInkedin.
+Shows a list of all tags in CLinkedin.
 
 Format: `tag list`
 
@@ -415,17 +415,17 @@ Examples:
 
 ### Saving the data
 
-CLInkedin data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+CLinkedin data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-CLInkedin data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+CLinkedin data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
 If your changes to the data file makes its format invalid, CLInkedin will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause CLInkedin to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+Furthermore, certain edits can cause CLinkedin to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -435,7 +435,7 @@ Furthermore, certain edits can cause CLInkedin to behave in unexpected ways (e.g
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous CLInkedin home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous CLinkedin home folder.
 
 **Q**: Why does `sortcom` not sort all contacts after using `tag show`?<br>
 **A**: `sortcom` sorts only the **currently displayed contact list**. After `tag show`, the list is filtered, so only that subset is sorted. Use `list` first to sort all contacts.
