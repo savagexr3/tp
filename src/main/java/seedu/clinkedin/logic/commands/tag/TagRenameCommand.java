@@ -60,8 +60,15 @@ public class TagRenameCommand extends TagCommand {
             throw new CommandException(MESSAGE_DUPLICATE_TAG);
         }
 
-        model.addTag(newTag);
-        updateWithNewTag(model);
+        Tag oldTagWithColor = model.getCLinkedin().getTagList().stream()
+                .filter(t -> t.equals(oldTag))
+                .findFirst()
+                .orElseThrow(() -> new CommandException(MESSAGE_TAG_NOT_FOUND));
+
+        Tag newTagWithColor = new Tag(newTag.tagName, oldTagWithColor.tagColor);
+
+        model.addTag(newTagWithColor);
+        updateWithNewTag(model, newTagWithColor);
         model.deleteTag(oldTag);
 
         return new CommandResult(MESSAGE_SUCCESS);
@@ -70,12 +77,12 @@ public class TagRenameCommand extends TagCommand {
     /**
      * Replaces all contacts with old tags with the new tag.
      */
-    private void updateWithNewTag(Model model) {
+    private void updateWithNewTag(Model model, Tag newTagWithColor) {
         List<Person> personList = new ArrayList<>(model.getCLinkedin().getPersonList());
 
         for (Person person : personList) {
             if (person.getTags().contains(oldTag)) {
-                Person editedPerson = editPerson(person, oldTag, newTag);
+                Person editedPerson = editPerson(person, oldTag, newTagWithColor);
                 model.setPerson(person, editedPerson);
             }
         }
