@@ -165,12 +165,7 @@ Edits an existing contact in CLinkedin.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`
 
-<box type="warning" seamless>
-
-Each field must still follow its respective input constraints (refers to input constraints in [**Add command**](#1-adding-a-contact-add) section above for details).
-
-</box>
-
+* Each field must still follow its respective input constraints (refers to input constraints in [**Add command**](#1-adding-a-contact-add) section above for details).
 * Edits the contact at the specified `INDEX`. The index refers to the index number shown in the displayed contact list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
@@ -429,6 +424,8 @@ Furthermore, certain edits can cause CLinkedin to behave in unexpected ways (e.g
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## FAQ
 
