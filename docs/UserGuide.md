@@ -131,7 +131,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/COMPANY] [l/LINK] [r/REM
     - Must not contain multiple consecutive spaces
     - Maximum 100 characters
 - **Link**
-    - Must start with 'http://' or 'https://'
+    - Must start with `http://` or `https://`
     - Must not contain spaces in the link
 - **Remark**
     - Must not contain `/`
@@ -475,7 +475,6 @@ Action              | Format, Examples
 **List**            | `list`
 **Deleted**         | `deleted`
 **Restore**         | `restore INDEX`<br> e.g., `restore 1`
-**Delete Tag**      | `tag delete TAG_NAME`<br> e.g., `tag delete friend`
 **Tag Create**      | `tag create TAG_NAME [color/COLOR]`<br> e.g., `tag create friend color/blue`
 **Tag Assign**      | `tag assign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag assign 1,4,6 friend`
 **Tag Unassign**    | `tag unassign INDEX[,INDEX]... TAG_NAME`<br> e.g., `tag unassign 1,4,6 friend`
