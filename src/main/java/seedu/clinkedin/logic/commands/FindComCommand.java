@@ -19,7 +19,7 @@ public class FindComCommand extends Command {
     public static final String COMMAND_WORD = "findcom";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all contacts whose company matches "
-            + "the specified company name (case-insensitive).\n"
+            + "the specified company name (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: COMPANY [;MORE_COMPANIES]...\n"
             + "Example: " + COMMAND_WORD + " Google; Shopee; DBS";
 
