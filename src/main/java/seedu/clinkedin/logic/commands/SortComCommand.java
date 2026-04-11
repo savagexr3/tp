@@ -9,15 +9,15 @@ import seedu.clinkedin.commons.util.ToStringBuilder;
 import seedu.clinkedin.model.Model;
 
 /**
- * Sorts the currently displayed contact list alphabetically by company name, case-insensitively.
- * If no contacts are currently displayed, returns a message indicating that there is nothing to sort.
+ * Sorts the active contact list alphabetically by company name, case-insensitively.
+ * If no contacts are active, returns a message indicating that there is nothing to sort.
  */
 public class SortComCommand extends Command {
 
     public static final String COMMAND_WORD = "sortcom";
-    public static final String MESSAGE_EMPTY = "No contacts to be sorted by company name.";
-    public static final String MESSAGE_SUCCESS = "Contacts sorted by company name.";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts all displayed contacts by company name "
+    public static final String MESSAGE_EMPTY = "No active contacts to be sorted by company name.";
+    public static final String MESSAGE_SUCCESS = "Active contacts sorted by company name.";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts all active contacts by company name "
             + "alphabetically (case-insensitive).\n"
             + "Example: " + COMMAND_WORD;
 
@@ -28,10 +28,10 @@ public class SortComCommand extends Command {
         requireNonNull(model);
 
         int displayedCount = model.getFilteredPersonList().size();
-        logger.info("Executing sortcom on " + displayedCount + " displayed contact(s).");
+        logger.info("Executing sortcom on " + displayedCount + " active contact(s).");
 
         if (displayedCount == 0) {
-            logger.info("sortcom finished without sorting because there were no displayed contacts.");
+            logger.info("sortcom finished without sorting because there were no active contacts.");
             return new CommandResult(MESSAGE_EMPTY);
         }
 

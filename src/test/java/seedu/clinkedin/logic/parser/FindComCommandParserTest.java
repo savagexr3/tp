@@ -69,12 +69,35 @@ public class FindComCommandParserTest {
     }
 
     @Test
-    public void parse_oneValidOneEmptyKeyword_ignoresEmptyAndSucceeds() {
-        // Heuristic for multiple inputs: empty optional components after splitting are removed,
-        // while remaining valid components should still produce a positive test case.
-        FindComCommand expectedFindComCommand =
-                new FindComCommand(new CompanyContainsKeywordsPredicate(Arrays.asList("Google")));
+    public void parse_oneValidOneEmptyKeyword_throwsParseException() {
+        // Heuristic for multiple inputs: only one invalid input
+        // (an empty keyword segment after trimming) should appear in one negative test case.
+        assertParseFailure(parser, "Google; ;",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
 
-        assertParseSuccess(parser, "Google;   ;", expectedFindComCommand);
+    }
+
+    @Test
+    public void parse_validKeywordWithTrailingSeparator_throwsParseException() {
+        // EP: one valid keyword followed by one empty keyword segment
+        assertParseFailure(parser,
+                "Google;",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_leadingSeparatorBeforeValidKeyword_throwsParseException() {
+        // EP: one empty keyword segment followed by one valid keyword
+        assertParseFailure(parser,
+                ";Google",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_onlySeparator_throwsParseException() {
+        // EP: semicolon input where all keyword segments are empty
+        assertParseFailure(parser,
+                ";",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
     }
 }

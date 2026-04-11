@@ -5,15 +5,15 @@ start
 
 :User executes `sortcom`;
 
-if () then ([list is empty])
-    :Show message that there are no contacts to sort;
+if () then ([active contact list is empty?])
+    :Show message that there are no active contacts to sort;
     stop
 else ([else])
 endif
 
-:Sort currently displayed contacts by company name;
-:Update displayed contact list;
+:Display the sorted active contact list by company name;
 :Show success message;
 
 stop
 @enduml
+

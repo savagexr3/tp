@@ -194,19 +194,22 @@ public class ModelManager implements Model {
     }
 
     //@@author savagexr3
-    //=========== Filtered Person List Sorting =============================================================
+    //=========== Active Person List Sorting =============================================================
 
     /**
-     * Sorts the currently displayed (filtered) list of {@code Person} by company name (case-insensitive).
+     * Sorts the active list of {@code Person}
+     * by company name in a case-insensitive manner.
      *
      * <p>
-     * Sorting is applied only to the filtered view (i.e., {@code sortedPersons}),
+     * Sorting is applied only to the active view (i.e., {@code sortedPersons}),
      * and does not modify the underlying {@code CLinkedin} person list.
      * </p>
      *
      * <p>
-     * Persons without a company are treated as having an empty string (""),
-     * and will appear before persons with non-empty company names.
+     * Persons without a company are treated as having an empty string ("") and
+     * will appear before persons with non-empty company names. If multiple persons
+     * have the same company value, their names are used as a secondary sorting key
+     * to keep the ordering deterministic.
      * </p>
      */
     @Override
@@ -214,15 +217,21 @@ public class ModelManager implements Model {
         sortedPersons.setComparator((p1, p2) -> {
             String company1 = p1.getCompany() != null ? p1.getCompany().value : "";
             String company2 = p2.getCompany() != null ? p2.getCompany().value : "";
-            return company1.compareToIgnoreCase(company2);
+
+            int companyCompare = company1.compareToIgnoreCase(company2);
+            if (companyCompare != 0) {
+                return companyCompare;
+            }
+
+            return p1.getName().fullName.compareToIgnoreCase(p2.getName().fullName);
         });
     }
 
     /**
-     * Resets any sorting applied to the filtered person list.
+     * Resets any sorting applied to the active person list.
      *
      * <p>
-     * After calling this method, the filtered list will revert to its original
+     * After calling this method, the active list will revert to its original
      * order as defined by the underlying {@code CLinkedin} data.
      * </p>
      */

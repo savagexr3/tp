@@ -38,15 +38,17 @@ public class FindComCommandParser implements Parser<FindComCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
         }
 
-        List<String> companyKeywords = Arrays.stream(trimmedArgs.split(";"))
-                .map(String::trim)
-                .filter(keyword -> !keyword.isEmpty())
-                .toList();
-
-        if (companyKeywords.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
+        String[] companyKeywordsArray = trimmedArgs.split(";", -1);
+        for (String keyword : companyKeywordsArray) {
+            if (keyword.trim().isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindComCommand.MESSAGE_USAGE));
+            }
         }
+
+        List<String> companyKeywords = Arrays.stream(companyKeywordsArray)
+                .map(String::trim)
+                .toList();
 
         logger.info("Parsed findcom keywords: " + companyKeywords);
         return new FindComCommand(new CompanyContainsKeywordsPredicate(companyKeywords));

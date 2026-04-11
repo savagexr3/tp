@@ -45,4 +45,28 @@ public class FindCommandParserTest {
                 "irfan;   ;",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_validKeywordWithTrailingSeparator_throwsParseException() {
+        // EP: one valid keyword followed by one empty keyword segment
+        assertParseFailure(parser,
+                "irfan;",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_leadingSeparatorBeforeValidKeyword_throwsParseException() {
+        // EP: one empty keyword segment followed by one valid keyword
+        assertParseFailure(parser,
+                ";irfan",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_onlySeparator_throwsParseException() {
+        // EP: semicolon input where all keyword segments are empty
+        assertParseFailure(parser,
+                ";",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
 }

@@ -33,7 +33,7 @@ deactivate ABParser
 Logic -> Command : execute(m)
 activate Command
 
-Command -> Model : sort displayed contacts by company
+Command -> Model : sort active contacts by company
 activate Model
 Model --> Command
 deactivate Model

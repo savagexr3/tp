@@ -309,6 +309,67 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void sortFilteredPersonListByCompany_noCompany_sortsByName() {
+        // EP: persons without a company are treated as having the same empty company value
+        // and are further sorted by name
+        Person ben = new PersonBuilder()
+                .withName("Ben Tan")
+                .withPhone("93456789")
+                .withEmail("ben@example.com")
+                .withAddress("Ben Street")
+                .build();
+
+        Person alex = new PersonBuilder()
+                .withName("Alex Tan")
+                .withPhone("91234567")
+                .withEmail("alex@example.com")
+                .withAddress("Alex Street")
+                .build();
+
+        CLinkedin cLinkedin = new AddressBookBuilder()
+                .withPerson(ben)
+                .withPerson(alex)
+                .build();
+        ModelManager sortedModelManager = new ModelManager(cLinkedin, new UserPrefs());
+
+        sortedModelManager.sortFilteredPersonListByCompany();
+
+        assertEquals(alex, sortedModelManager.getFilteredPersonList().get(0));
+        assertEquals(ben, sortedModelManager.getFilteredPersonList().get(1));
+    }
+
+    @Test
+    public void sortFilteredPersonListByCompany_sameCompany_sortsByName() {
+        // EP: persons with the same company value are sorted by name as a secondary key
+        Person beta = new PersonBuilder()
+                .withName("Beta Tan")
+                .withPhone("92345678")
+                .withEmail("beta@example.com")
+                .withAddress("Beta Street")
+                .withCompany("Google")
+                .build();
+
+        Person alpha = new PersonBuilder()
+                .withName("Alpha Tan")
+                .withPhone("91234567")
+                .withEmail("alpha@example.com")
+                .withAddress("Alpha Street")
+                .withCompany("Google")
+                .build();
+
+        CLinkedin cLinkedin = new AddressBookBuilder()
+                .withPerson(beta)
+                .withPerson(alpha)
+                .build();
+        ModelManager sortedModelManager = new ModelManager(cLinkedin, new UserPrefs());
+
+        sortedModelManager.sortFilteredPersonListByCompany();
+
+        assertEquals(alpha, sortedModelManager.getFilteredPersonList().get(0));
+        assertEquals(beta, sortedModelManager.getFilteredPersonList().get(1));
+    }
+
+    @Test
     public void equals_differentSortedPersons_returnsFalse() {
         // EP: sorted view differs between two otherwise equal model managers
         CLinkedin cLinkedin = new AddressBookBuilder().withPerson(BENSON).withPerson(ALICE).build();
