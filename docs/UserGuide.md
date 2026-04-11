@@ -300,26 +300,26 @@ Examples:
 
 #### 3. Sorting contacts by company: `sortcom`
 
-Sorts the currently displayed non-deleted contact list alphabetically by company name.
+Sorts the active contact list alphabetically by company name.
 
 Format:
 `sortcom`
 
 * Sorting is **case-insensitive**.
   e.g. `apple`, `Apple`, `APPLE` are treated the same.
-* Only the **currently displayed non-deleted contact list** is sorted (e.g. after `findcom` or `tag show`).
+* Only the **active contact list** is sorted (e.g. after `findcom` or `tag show`).
 * Contacts without a company are treated as having an empty value and will appear at the **top of the list**. 
-* If multiple contacts have no company or the same company, they are further sorted by **name**, followed by **phone number**.
+* If multiple contacts have no company or the same company, they are further sorted by **name**.
 * The sorting does **not permanently change** the original order of contacts.
 
 Examples:
 
 * `sortcom`
-  Sorts all currently displayed non-deleted contacts by company name in alphabetical order.
+  Sorts all active contacts by company name in alphabetical order.
 
   * `findcom Google`
     `sortcom`
-    First filters non-deleted contacts by company "Google", then sorts the filtered results alphabetically.
+    First filters active contacts by company "Google", then sorts the filtered results alphabetically.
 
 ---
 
@@ -456,7 +456,7 @@ Furthermore, certain edits can cause CLinkedin to behave in unexpected ways (e.g
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous CLinkedin home folder.
 
 **Q**: Why does `sortcom` not sort all contacts after using `tag show`?<br>
-**A**: `sortcom` sorts only the **currently displayed non-deleted contact list**. After `tag show`, the list is filtered, so only that subset is sorted. Use `list` first to sort all contacts.
+**A**: `sortcom` sorts only the **active (currently displayed non-deleted) contact list**. After `tag show`, the list is filtered, so only that subset is sorted. Use `list` first to sort all contacts.
 
 **Q**: Why are tag changes (rename, delete, color) not reflected in the deleted list?<br>
 **A**: The deleted list stores a **snapshot** of the contact at the time it was deleted. Changes made to tags afterward (e.g., renaming, deletion, or color updates) will not affect this snapshot.
