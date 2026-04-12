@@ -469,8 +469,8 @@ Action              | Format, Examples
 **Clear**           | `clear`
 **Delete**          | `delete INDEX`<br> e.g., `delete 3`
 **Edit**            | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [l/LINK] [r/REMARK] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
-**Find**            | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**Find Company**            | `findcom KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Google; Amazon`
+**Find**            | `find KEYWORD [;MORE_KEYWORDS]`<br> e.g., `find James; Jake`
+**Find Company**            | `findcom KEYWORD [;MORE_KEYWORDS]`<br> e.g., `find Google; Amazon`
 **Sort Company**            | `sortcom`
 **List**            | `list`
 **Deleted**         | `deleted`
